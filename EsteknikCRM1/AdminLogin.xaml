@@ -1,0 +1,196 @@
+﻿<Window x:Class="EsteknikCRM1.AdminLogin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="#F5F5F5"
+        KeyDown="Window_KeyDown">
+
+    <Grid>
+
+        <!-- 3 SATIR -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <!-- ===================== -->
+        <!-- TOP BAR -->
+        <!-- ===================== -->
+        <Grid Grid.Row="0" Background="Transparent">
+            <StackPanel Orientation="Horizontal"
+            HorizontalAlignment="Left">
+                <Button Content="←"
+                        Width="50"
+                        Height="40"
+                        Click="Back_Click"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        Foreground ="Black"
+                        FontSize="18"
+                        Cursor="Hand"/>
+                </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+
+                <!-- Minimize -->
+                <Button Content="─"
+                        Width="50"
+                        Height="40"
+                        BorderThickness="0"
+                        FontSize="18"
+                        Cursor="Hand"
+                        Click="Minimize_Click">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#DDDDDD"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <!-- Close -->
+                <Button Content="X"
+                        Width="50"
+                        Height="40"
+                        BorderThickness="0"
+                        FontSize="16"
+                        Cursor="Hand"
+                        Click="Close_Click">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="Red"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+            </StackPanel>
+        </Grid>
+
+
+        <!-- ===================== -->
+        <!-- ANA İÇERİK -->
+        <!-- ===================== -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- SOL PANEL -->
+            <Grid Background="White">
+
+                <StackPanel VerticalAlignment="Center"
+                            Margin="80,0,40,0"
+                            x:Name="LoginStack">
+
+                    <!-- LOGO (BÜYÜTTÜK) -->
+                    <Image Source="/assets/eslogo.png"
+                           Width="320"
+                           Margin="0,0,0,40"/>
+
+                    <StackPanel x:Name="EmailPanel">
+
+                        <TextBlock Text="E-posta"
+                             FontSize="14"
+                             Foreground="Gray"/>
+
+                        <TextBox x:Name="EmailTextBox"
+                             Height="45"
+                             Margin="0,5,0,20"
+                             BorderBrush="#1E6F9F"
+                             BorderThickness="0,0,0,2"
+                             Background="Transparent"/>
+                    </StackPanel>
+                    <!-- ================= PASSWORD PANEL ================= -->
+                    <StackPanel x:Name="PasswordPanel"
+                    Visibility="Collapsed">
+
+                         <TextBlock Text="Şifre"
+                              FontSize="14"
+                              Foreground="Gray"/>
+
+                         <PasswordBox x:Name="PasswordTextBox"
+                             Height="45"
+                             Margin="0,5,0,20"
+                             BorderBrush="#1E6F9F"
+                             BorderThickness="0,0,0,2"
+                             Background="Transparent"/> 
+                    </StackPanel>
+
+                    <TextBlock Text="Bunun yerine telefon numarasını kullanın"
+                               Foreground="#1E6F9F"
+                               Cursor="Hand"
+                               Margin="0,0,0,30"/>
+
+                    <!-- BUTON -->
+                    <Button x:Name="ContinueButton"
+                            Content="DEVAM ET"
+                            Width="170"
+                            Height="45"
+                            Background="#1E6F9F"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Click="ContinueButton_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- SAĞ TARAF FOTO -->
+            <Grid Grid.Column="1">
+                <Grid.Background>
+                    <ImageBrush ImageSource="/assets/sideimg.png"
+                                Stretch="Fill"/>
+                </Grid.Background>
+            </Grid>
+        </Grid>
+
+
+        <!-- ===================== -->
+        <!-- FOOTER -->
+        <!-- ===================== -->
+        <Border Grid.Row="2"
+                Background="#112B55">
+
+            <UniformGrid Columns="4"
+                         VerticalAlignment="Center">
+
+                <TextBlock Text="Kurumsal Bilgi"
+                           Foreground="White"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Text="Veri Koruma Politikası"
+                           Foreground="White"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Text="Yasal Uyarı"
+                           Foreground="White"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Text="Kullanım Şartları"
+                           Foreground="White"
+                           HorizontalAlignment="Center"/>
+            </UniformGrid>
+
+        </Border>
+
+    </Grid>
+</Window>
