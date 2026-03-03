@@ -18,6 +18,7 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="#444"/>
             <Setter Property="Cursor" Value="Hand"/>
+            
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
@@ -30,8 +31,9 @@
                     <Setter Property="FontWeight" Value="Bold"/>
                 </Trigger>
             </Style.Triggers>
+            
         </Style>
-
+        
     </Window.Resources>
 
     <Grid>
@@ -124,25 +126,82 @@
                        FontSize="16"/>
 
             <!-- User Info -->
-            <StackPanel Grid.Column="2"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Margin="0,0,20,0">
+            <Grid Grid.Column="2"
+      HorizontalAlignment="Right"
+      VerticalAlignment="Center"
+      Margin="0,0,20,0">
 
-                <TextBlock Text="🔔"
-                           FontSize="18"
-                           Margin="0,0,15,0"/>
+                <ToggleButton x:Name="UserMenuButton"
+                  Background="Transparent"
+                  BorderThickness="0"
+                  Cursor="Hand">
 
-                <Ellipse Width="30"
-                         Height="30"
-                         Fill="#DDD"/>
+                    <StackPanel Orientation="Horizontal">
 
-                <TextBlock Text=" Erdal GÜL"
-                           VerticalAlignment="Center"
-                           FontWeight="Bold"
-                           Margin="6,0,0,0"/>
-            </StackPanel>
+                        <TextBlock Text="🔔"
+                       FontSize="18"
+                       Margin="0,0,15,0"/>
+
+                        <Ellipse Width="30"
+                     Height="30"
+                     Fill="#DDD"/>
+
+                        <TextBlock x:Name="UserNameText"
+                       VerticalAlignment="Center"
+                       FontWeight="Bold"
+                       Margin="8,0,5,0"/>
+
+                        <TextBlock Text="▼"
+                       VerticalAlignment="Center"
+                       FontSize="10"/>
+                    </StackPanel>
+                </ToggleButton>
+
+
+                <!-- DROPDOWN -->
+                <Popup PlacementTarget="{Binding ElementName=UserMenuButton}"
+           Placement="Bottom"
+           IsOpen="{Binding IsChecked, ElementName=UserMenuButton}"
+           StaysOpen="False">
+
+                    <Border Background="White"
+                CornerRadius="6"
+                Padding="10"
+                Width="180"
+                BorderBrush="#DDD"
+                BorderThickness="1">
+
+                        <StackPanel>
+
+                            <Button Content="👤 Profilim"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        HorizontalContentAlignment="Left"
+                        Padding="5"
+                        Cursor="Hand"/>
+
+                            <Button Content="🔐 Şifre Değiştir"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        HorizontalContentAlignment="Left"
+                        Padding="5"
+                        Cursor="Hand"/>
+
+                            <Separator Margin="5"/>
+
+                            <Button Content="🚪 Çıkış Yap"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        HorizontalContentAlignment="Left"
+                        Padding="5"
+                        Cursor="Hand"
+                        Click="Logout_Click"/>
+
+                        </StackPanel>
+                    </Border>
+                </Popup>
+
+            </Grid>
 
         </Grid>
 
@@ -164,31 +223,133 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel Margin="0,10">
                         <Button x:Name="HomeBtn"
-                            Content="🏠 Home"
+                            Content="🏠 Anasayfa"
                             Style="{StaticResource SidebarButtonStyle}"
                             Tag="Active"
                             Click="Menu_Click"/>
 
                         <Button x:Name="WorkflowBtn"
-                            Content="🔄 Workflow"
-                            Style="{StaticResource SidebarButtonStyle}"
-                            Click="Menu_Click"/>    
-
-                        <Button x:Name="OperationsBtn"
-                            Content="⚙ Operations"
+                            Content="🔄 İş Akışlar"
                             Style="{StaticResource SidebarButtonStyle}"
                             Click="Menu_Click"/>
 
-                        <Button x:Name="CardsBtn"
-                            Content="💳 Cards"
-                            Style="{StaticResource SidebarButtonStyle}"
-                            Click="Menu_Click"/>
+                        <Expander x:Name="OperationsExpander"
+                              Background="White"
+                              BorderThickness="0"
+                              FontSize="14">    
 
-                        <Button x:Name="DefinitionsBtn"
-                            Content="🗂 Definitions"
-                            Style="{StaticResource SidebarButtonStyle}"
-                            Click="Menu_Click"/>
+                            <!-- HEADER -->
+                            <Expander.Header>
+                                <Border Height="45"
+                                    Padding="20,0"
+                                    VerticalAlignment="Center"
+                                    Background="White">
+                                    <TextBlock Text="⚙ İşlemler"
+                                       VerticalAlignment="Center"
+                                       Foreground="#444"/>
+                                </Border>
+                            </Expander.Header>
 
+                            <!-- SUB MENU -->
+                            <StackPanel Background="#FAFAFA">
+
+                                <Button Content="   📦 Stok Hareketleri"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="StockAction_Click"/>
+                                <Button Content="   📦 Hakediş Kayıtları"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="StockAction_Click"/>
+                                <Button Content="   📦 İade İşlemleri"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="StockAction_Click"/>
+                                <Button Content="   📦 Bedelsiz Malzeme Talepleri"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="StockAction_Click"/>
+                                <Button Content="   📦 Servis Lokasyon"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="StockAction_Click"/>
+
+                                <Button Content="   📅 Randevu"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="Appointment_Click"/>
+                                <Button Content="   📦 Ücretli Siparişler"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="StockAction_Click"/>
+                            </StackPanel>
+
+                        </Expander>
+                        <Expander x:Name="CardsExpander"
+                              Background="White"
+                              BorderThickness="0"
+                              FontSize="14">
+
+                            <!-- HEADER -->
+                            <Expander.Header>
+                                <Border Height="45"
+                                    Padding="20,0"
+                                    VerticalAlignment="Center"
+                                    Background="White">
+                                    <TextBlock Text="💳 Cards"
+                                       VerticalAlignment="Center"
+                                       Foreground="#444"/>
+                                </Border>
+                            </Expander.Header>
+
+                            <!-- SUB MENU -->
+                            <StackPanel Background="#FAFAFA">
+
+                                <Button Content="   👤 Individual Customer Cards"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="IndividualCustomerCards_Click"/>
+
+                                <Button Content="   💻 Device Cards"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="DeviceCards_Click"/>
+
+                            </StackPanel>
+
+                        </Expander>
+
+                        <Expander x:Name="DefinitionsExpander"
+                          Background="White"
+                          BorderThickness="0"
+                          FontSize="14">
+
+                            <!-- HEADER -->
+                            <Expander.Header>
+                                <Border Height="45"
+                                    Padding="20,0"
+                                    VerticalAlignment="Center"
+                                    Background="White">
+                                    <TextBlock Text="🗂 Definitions"
+                                       VerticalAlignment="Center"
+                                       Foreground="#444"/>
+                                </Border>
+                            </Expander.Header>
+
+                            <!-- SUB MENU -->
+                            <StackPanel Background="#FAFAFA">
+
+                                <Button Content="   Spare Part Definitons"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="SparePartDefinitions_Click"/>
+
+
+
+                            </StackPanel>
+
+                        </Expander>
+                        
                         <Button x:Name="ReportsBtn"
                             Content="📊 Reports"
                             Style="{StaticResource SidebarButtonStyle}"
@@ -203,12 +364,49 @@
                             Content="📁 Documents"
                             Style="{StaticResource SidebarButtonStyle}"
                             Click="Menu_Click"/>
+                        <Expander x:Name="ContactsExpander"
+                          Background="White"
+                          BorderThickness="0"
+                          FontSize="14">
 
-                        <Button x:Name="ContactBtn"
-                            Content="📞 Contact"
+                            <!-- HEADER -->
+                            <Expander.Header>
+                                <Border Height="45"
+                                    Padding="20,0"
+                                    VerticalAlignment="Center"
+                                    Background="White">
+                                    <TextBlock Text="📞 Contact"
+                                       VerticalAlignment="Center"
+                                       Foreground="#444"/>
+                                </Border>
+                            </Expander.Header>
+                            
+
+                            <!-- SUB MENU -->
+                            <StackPanel Background="#FAFAFA">
+
+                                <Button Content="   E-Messages"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="EMessage_Click"/>
+
+                                <Button Content="   Notifications"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="Notifications_Click"/>
+
+                                <Button Content="   Bosch Corporate Magazine"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="Magazine_Click"/>
+
+                            </StackPanel>
+
+                        </Expander>
+                        <Button x:Name="EmpAddButton"
+                            Content="+ Çalışan Ekle"
                             Style="{StaticResource SidebarButtonStyle}"
                             Click="Menu_Click"/>
-
                         <Button x:Name="BoschTTBtn"
                             Content="🚗 Bosch TT"
                             Style="{StaticResource SidebarButtonStyle}"

@@ -1,0 +1,202 @@
+﻿<Page x:Class="EsteknikCRM1.Pages.SparePartPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EsteknikCRM1.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SparePartPage">
+    <Page.Resources>
+            <Style x:Key="ExportButtonStyle" TargetType="Button">
+                <Setter Property="Margin" Value="0,0,10,0"/>
+                <Setter Property="Padding" Value="12,5"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="BorderBrush" Value="#D1D5DB"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Style>
+    </Page.Resources>
+    
+
+    <Grid Background="#F5F6FA" Margin="20">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 🔹 Breadcrumb -->
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Home" Foreground="Gray"/>
+            <TextBlock Text="  >  " Foreground="Gray"/>
+            <TextBlock Text="Definitions" Foreground="Gray"/>
+            <TextBlock Text="  >  " Foreground="Gray"/>
+            <TextBlock Text="Spare Parts Definitions"
+                   FontWeight="SemiBold"
+                   Foreground="#1E3A8A"/>
+        </StackPanel>
+
+        <!-- 🔹 Header -->
+        <Grid Grid.Row="1" Margin="0,20,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Sparepart Definitions"
+                   FontSize="22"
+                   FontWeight="SemiBold"
+                   VerticalAlignment="Center"/>
+
+            <!-- Search -->
+            <Border Grid.Column="1"
+                Height="35"
+                CornerRadius="4"
+                BorderBrush="#D1D5DB"
+                BorderThickness="1"
+                Background="White"
+                Margin="10,0">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="SearchTextBox"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         VerticalContentAlignment="Center"
+                         Padding="10,0"/>
+
+                    <Button Grid.Column="1"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Cursor="Hand">
+                        <TextBlock Text="🔍"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Add Button -->
+            <Button Grid.Column="2"
+                Content="+ Add New Sparepart"
+                Background="#1E40AF"
+                Foreground="White"
+                Height="35"
+                BorderThickness="0"
+                Cursor="Hand"/>
+        </Grid>
+
+        <!-- 🔹 TABLE CARD -->
+        <Border Grid.Row="2"
+            Background="White"
+            CornerRadius="5"
+            Padding="15"
+            BorderBrush="#E5E7EB"
+            BorderThickness="1">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Export Buttons -->
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Copy" Style="{StaticResource ExportButtonStyle}"/>
+                    <Button Content="CSV" Style="{StaticResource ExportButtonStyle}"/>
+                    <Button Content="Excel" Style="{StaticResource ExportButtonStyle}"/>
+                    <Button Content="PDF" Style="{StaticResource ExportButtonStyle}"/>
+                    <Button Content="Print" Style="{StaticResource ExportButtonStyle}"/>
+                </StackPanel>
+
+                <!-- DataGrid -->
+                <DataGrid Grid.Row="1"
+                      x:Name="SparePartGrid"
+                      AutoGenerateColumns="False"
+                      HeadersVisibility="Column"
+                      AlternatingRowBackground="#F9FAFB"
+                      RowBackground="White"
+                      AlternationCount="2"
+                      GridLinesVisibility="None"
+                      Margin="0,15,0,0"
+                      CanUserAddRows="False">
+
+                    <!-- Hover -->
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#E0E7FF"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Header="Id"
+                                        Width="80"
+                                        Binding="{Binding Id}"/>
+
+                        <DataGridTextColumn Header="Sparepart Code"
+                                        Width="150"
+                                        Binding="{Binding Code}"/>
+
+                        <DataGridTextColumn Header="Sparepart Name"
+                                        Width="220"
+                                        Binding="{Binding Name}"/>
+
+                        <DataGridTextColumn Header="Vat"
+                                        Width="70"
+                                        Binding="{Binding Vat}"/>
+
+                        <DataGridTextColumn Header="Price"
+                                        Width="140"
+                                        Binding="{Binding PriceFormatted}"/>
+
+                        <DataGridTextColumn Header="Warranty"
+                                        Width="90"
+                                        Binding="{Binding Warranty}"/>
+
+                        <DataGridTextColumn Header="Supplier"
+                                        Width="120"
+                                        Binding="{Binding Supplier}"/>
+
+                        <DataGridTextColumn Header="B Code"
+                                        Width="250"
+                                        Binding="{Binding BCode}"/>
+
+                        <DataGridTextColumn Header="Status"
+                                        Width="100"
+                                        Binding="{Binding Status}"/>
+
+                        <!-- SELECT BUTTON -->
+                        <DataGridTemplateColumn Header="">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Select"
+                                        Background="#1E3A8A"
+                                        Foreground="White"
+                                        Padding="10,4"
+                                        BorderThickness="0"
+                                        Cursor="Hand"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
+        </Border>
+    </Grid>
+
+</Page>

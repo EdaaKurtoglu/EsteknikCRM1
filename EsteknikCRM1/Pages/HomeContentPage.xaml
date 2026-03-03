@@ -6,13 +6,14 @@
       xmlns:local="clr-namespace:EsteknikCRM1"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      Background="White"
       Title="HomeContentPage">
 
-    <Grid Margin="40">
+    <Grid Margin="40" Background="White">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
 
@@ -31,6 +32,7 @@
         <!-- TABLE -->
         <Border Grid.Row="1"
                 Background="White"
+                Width="600"
                 CornerRadius="8"
                 BorderBrush="#E0E0E0"
                 BorderThickness="1">
@@ -39,11 +41,17 @@
                       AutoGenerateColumns="False"
                       HeadersVisibility="Column"
                       CanUserAddRows="False"
-                      RowHeight="50"
+                      RowHeight="65"
+                      FontSize="15"
                       AlternationCount="2"
                       GridLinesVisibility="None"
                       SelectionMode="Single">
-
+                <DataGrid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Padding" Value="10,0"/>
+                    </Style>
+                </DataGrid.Resources>
                 <!-- ROW STYLE -->
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
@@ -73,7 +81,7 @@
 
                 <DataGrid.Columns>
 
-                    <DataGridTextColumn Header="Subject"
+                    <DataGridTextColumn Header="Başlık"
                                         Binding="{Binding Subject}"
                                         Width="*"/>
 

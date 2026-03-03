@@ -101,17 +101,18 @@ namespace EsteknikCRM1
             {
                 FirebaseService firebase = new FirebaseService();
 
-                bool isValid = await firebase.CheckUserAsync(
+                var user = await firebase.LoginAsync(EmailTextBox.Text, PasswordTextBox.Password, "admin");
+                /*bool isValid = await firebase.CheckUserAsync(
                     EmailTextBox.Text,
                     PasswordTextBox.Password,
                     "admin"   // burada role belirliyoruz
-                );
+                );*/
 
-                if (isValid)
+                if (user!=null)
                 {
                     MessageBox.Show("Giriş başarılı!");
 
-                    HomePage home = new HomePage();
+                    HomePage home = new HomePage(user);
                     home.Show();
 
                     this.Close(); // login ekranını kapatır;

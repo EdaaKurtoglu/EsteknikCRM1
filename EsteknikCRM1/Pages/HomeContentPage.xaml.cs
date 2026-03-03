@@ -1,7 +1,9 @@
-﻿using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.DatabaseCon;
+using EsteknikCRM1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,21 +20,21 @@ namespace EsteknikCRM1
         public HomeContentPage()
         {
             InitializeComponent();
-            LoadData();
+            _ = LoadDataAsync();
         }
 
-        private void LoadData()
+        private async Task LoadDataAsync()
         {
-            _allRecords = new List<RecordModel>();
+            FirebaseService firebase = new FirebaseService();
 
-            for (int i = 1; i <= 50; i++)
+            var data = await firebase.GetHomeTextsAsync();
+
+            _allRecords = data.Select(x => new RecordModel
             {
-                _allRecords.Add(new RecordModel
-                {
-                    Subject = $"Bilgilendirme Kaydı {i}"
-                });
-            }
+                Subject = x.HomeText
+            }).ToList();
 
+            _currentPage = 1;
             LoadPage();
         }
 

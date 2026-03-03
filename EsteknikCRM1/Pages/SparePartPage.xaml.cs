@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EsteknikCRM1
+namespace EsteknikCRM1.Pages
 {
     /// <summary>
-    /// Interaction logic for WorkflowPage.xaml
+    /// Interaction logic for SparePartPage.xaml
     /// </summary>
-    public partial class WorkflowPage : Page
+    public partial class SparePartPage : Page
     {
-        public WorkflowPage()
+        public SparePartPage()
         {
             InitializeComponent();
         }

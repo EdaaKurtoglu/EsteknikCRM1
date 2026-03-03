@@ -1,0 +1,281 @@
+﻿<Page x:Class="EsteknikCRM1.WorkflowPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EsteknikCRM1"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="WorkflowPage">
+    <Page.Resources>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#1F4E79"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="6"
+                            Padding="{TemplateBinding Padding}">
+                            <ContentPresenter 
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+
+                            <!-- Hover -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                                    Property="Background"
+                                    Value="#163E63"/>
+                            </Trigger>
+
+                            <!-- Press -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border"
+                                    Property="Background"
+                                    Value="#12324F"/>
+                            </Trigger>
+
+                            <!-- Disabled -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border"
+                                    Property="Opacity"
+                                    Value="0.6"/>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D0D5DD"/>
+            <Setter Property="Foreground" Value="#344054"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="6"
+                        Padding="{TemplateBinding Padding}">
+                            <ContentPresenter 
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                                Property="Background"
+                                Value="#F2F4F7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid Background="#F4F6F9">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- BREADCRUMB -->
+        <StackPanel Orientation="Horizontal"
+                VerticalAlignment="Center"
+                Margin="30,0"
+                Grid.Row="0">
+
+            <TextBlock Text="Home"
+                   Foreground="#7A8CA3"/>
+
+            <TextBlock Text="  >  "
+                   Foreground="#7A8CA3"/>
+
+            <TextBlock Text="Workflow"
+                   FontWeight="Bold"
+                   Foreground="#1E2A38"/>
+        </StackPanel>
+
+        <!-- HEADER -->
+        <Grid Grid.Row="1" Margin="30,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Workflow Records"
+                   FontSize="20"
+                   FontWeight="SemiBold"
+                   VerticalAlignment="Center"/>
+
+            <!-- SEARCH -->
+            <TextBox Grid.Column="1"
+                 Height="35"
+                 VerticalContentAlignment="Center"
+                 Padding="10,0"
+                 BorderBrush="#D0D5DD"
+                 Background="White"
+                 Margin="0,0,10,0"/>
+
+            <!-- START BUTTON -->
+            <Button Grid.Column="2"
+        Content="+ Start New Workflow"
+        Style="{StaticResource PrimaryButtonStyle}"
+                    Click="NewWorkflow_Click"/>
+        </Grid>
+
+        <!-- FILTER PANEL -->
+        <Border Grid.Row="2"
+            Background="White"
+            Margin="30,10"
+            BorderBrush="#E4E7EC"
+            BorderThickness="1"
+            CornerRadius="4"
+            Padding="20">
+
+            <StackPanel>
+
+                <!-- STATUS RADIOS -->
+                <StackPanel Orientation="Horizontal"
+                        Margin="0,0,0,20">
+
+                    <RadioButton Content="Person Assigned" Margin="0,0,30,0"/>
+                    <RadioButton Content="Waiting on me" Margin="0,0,30,0" IsChecked="True"/>
+                    <RadioButton Content="Live flow" Margin="0,0,30,0"/>
+                    <RadioButton Content="Completed" Margin="0,0,30,0"/>
+                    <RadioButton Content="Rejected"/>
+                </StackPanel>
+
+                <!-- INPUTS -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="150"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0"
+                         Height="35"
+                         Margin="0,0,20,0"
+                         VerticalContentAlignment="Center"
+                         />
+
+                    <TextBox Grid.Column="1"
+                         Height="35"
+                         Margin="0,0,20,0"
+                         VerticalContentAlignment="Center"
+                         />
+
+                    <TextBox Grid.Column="2"
+                         Height="35"
+                         Margin="0,0,20,0"
+                         VerticalContentAlignment="Center"
+                         />
+
+                    <Button Grid.Column="3"
+                        Content="Refresh Data"
+                        Style="{StaticResource PrimaryButtonStyle}"/>
+                </Grid>
+
+            </StackPanel>
+        </Border>
+
+        <!-- EXPORT BUTTONS -->
+        <StackPanel Grid.Row="3"
+                Orientation="Horizontal"
+                Margin="30,0"
+                VerticalAlignment="Center">
+
+            <Button Content="Copy" Style="{StaticResource SecondaryButtonStyle}" Margin="0,0,10,0"/>
+            <Button Content="CSV" Style="{StaticResource SecondaryButtonStyle}" Margin="0,0,10,0"/>
+            <Button Content="Excel" Style="{StaticResource SecondaryButtonStyle}" Margin="0,0,10,0"/>
+            <Button Content="PDF" Style="{StaticResource SecondaryButtonStyle}" Margin="0,0,10,0"/>
+            <Button Content="Print" Style="{StaticResource SecondaryButtonStyle}" Margin="0,0,10,0"/>
+        </StackPanel>
+
+        <!-- DATA GRID -->
+        <Border Grid.Row="4"
+            Margin="30,10,30,20"
+            BorderBrush="#D0D5DD"
+            BorderThickness="1"
+            CornerRadius="4"
+            Background="White">
+
+            <DataGrid AutoGenerateColumns="False"
+                  HeadersVisibility="Column"
+                  RowHeight="45"
+                  AlternationCount="2"
+                  GridLinesVisibility="None">
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="White"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="#F9FAFB"/>
+                            </Trigger>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#EAF2FC"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Header="Id" Width="100" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Workflow Status" Width="150" Binding="{Binding Status}"/>
+                    <DataGridTextColumn Header="Flow Type" Width="130" Binding="{Binding FlowType}"/>
+                    <DataGridTextColumn Header="Last Transaction" Width="170" Binding="{Binding Transaction}"/>
+                    <DataGridTextColumn Header="Subject" Width="250" Binding="{Binding Subject}"/>
+                    <DataGridTextColumn Header="Customer" Width="150" Binding="{Binding Customer}"/>
+                    <DataGridTextColumn Header="Customer Phone" Width="150" Binding="{Binding Phone}"/>
+                    <DataGridTextColumn Header="CreatedDate" Width="180" Binding="{Binding CreatedDate}"/>
+                    <DataGridTextColumn Header="Created By" Width="180" Binding="{Binding CreatedBy}"/>
+                    <DataGridTextColumn Header="Start Type" Width="150" Binding="{Binding StartType}"/>
+
+                    <DataGridTemplateColumn Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Select"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Padding="12,4"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+    </Grid>
+
+</Page>
