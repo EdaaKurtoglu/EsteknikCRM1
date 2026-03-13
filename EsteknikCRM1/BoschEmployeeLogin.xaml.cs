@@ -28,7 +28,6 @@ namespace EsteknikCRM1
         public BoschEmployeeLogin()
         {
             InitializeComponent();
-            firebaseService = new FirebaseService();
 
         }
         private async void ActionButton_Click(object sender, RoutedEventArgs e)

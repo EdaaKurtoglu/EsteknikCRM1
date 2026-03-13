@@ -1,4 +1,6 @@
 ﻿using EsteknikCRM1.Pages;
+using EsteknikCRM1.Models;
+using EsteknikCRM1.Popups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +37,21 @@ namespace EsteknikCRM1
         }
         private void NewWorkflow_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new WorkflowWizardPage());
+            /*CustomerSearchWindow window = new CustomerSearchWindow();
+            window.Owner = Window.GetWindow(this);
+
+            if (window.ShowDialog() == true)
+            {
+                var selectedCustomer = window.SelectedCustomer;
+
+               /* if (selectedCustomer != null)
+                {
+                    CustomerNameText.Text = selectedCustomer.Name;
+                }*/
+            WorkflowWizardPage workflowWizardPage = new WorkflowWizardPage();
+            HomePage home = (HomePage)Window.GetWindow(this);
+            home.MainFrame.Navigate(workflowWizardPage);
+
         }
     }
 }

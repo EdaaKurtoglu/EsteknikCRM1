@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace EsteknikCRM1.Models
 {
-    public class HomePageModel
+    public class AddressModel
     {
         public string Id { get; set; }
-        public string HomeText { get; set; }
-        public DateTime Date { get; set; }
+        public string CustomerId { get; set; }
+
+        public string AddressLine { get; set; }
     }
 }

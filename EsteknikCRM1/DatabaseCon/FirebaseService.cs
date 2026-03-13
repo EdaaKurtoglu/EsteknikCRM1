@@ -10,11 +10,13 @@ using System.Threading.Tasks;
 
 namespace EsteknikCRM1.DatabaseCon
 {
-    internal class FirebaseService
+    public class FirebaseService
     {
+        private static FirebaseService _instance;
+        private static readonly object _lock = new object();
         private FirestoreDb db;
 
-        public FirebaseService()
+        private FirebaseService()
         {
             string path = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
@@ -25,6 +27,19 @@ namespace EsteknikCRM1.DatabaseCon
             db = FirestoreDb.Create("esteknikcrm"); // 🔥 Burayı doldur
 
 
+        }
+        public static FirebaseService Instance
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    if (_instance == null)
+                        _instance = new FirebaseService();
+
+                    return _instance;
+                }
+            }
         }
 
         public async Task AddUserAsync(string usermail, string password)
@@ -102,5 +117,58 @@ namespace EsteknikCRM1.DatabaseCon
             return list;
         }
 
+        public async Task<List<CustomerModel>> GetCustomersAsync()
+        {
+            Query query = db.Collection("Customers");
+
+            QuerySnapshot snapshot = await query.GetSnapshotAsync();
+
+            List<CustomerModel> customers = new List<CustomerModel>();
+
+            foreach (DocumentSnapshot doc in snapshot.Documents)
+            {
+                if (doc.Exists)
+                {
+                    customers.Add(new CustomerModel
+                    {
+                        Id = doc.Id,
+                        Name = doc.ContainsField("CustomerName") ? doc.GetValue<string>("CustomerName") : "",
+                        Surname = doc.ContainsField("CustomerSurname") ? doc.GetValue<string>("CustomerSurname") : "",
+                        Phone = doc.ContainsField("MobilPhone") ? doc.GetValue<string>("MobilPhone") : "",
+                        Adress = doc.ContainsField("Adress") ? doc.GetValue<string>("Adress") : ""
+                    });
+                }
+            }
+
+            return customers;
+        }
+
+        public async Task<List<AddressModel>> GetCustomerAddressesAsync(string customerId)
+        {
+            Query query = db.Collection("Adresses")
+                            .WhereEqualTo("CustomerId", customerId);
+
+            QuerySnapshot snapshot = await query.GetSnapshotAsync();
+
+            List<AddressModel> addresses = new List<AddressModel>();
+
+            foreach (DocumentSnapshot doc in snapshot.Documents)
+            {
+                if (doc.Exists)
+                {
+                    addresses.Add(new AddressModel
+                    {
+                        Id = doc.Id,
+                        CustomerId = doc.GetValue<string>("CustomerId"),
+                        AddressLine = doc.GetValue<string>("AdressLine")
+                    });
+                }
+            }
+
+            return addresses;
+        }
+
     }
+
+
 }

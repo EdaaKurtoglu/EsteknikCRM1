@@ -25,9 +25,8 @@ namespace EsteknikCRM1
 
         private async Task LoadDataAsync()
         {
-            FirebaseService firebase = new FirebaseService();
 
-            var data = await firebase.GetHomeTextsAsync();
+            var data = await FirebaseService.Instance.GetHomeTextsAsync();
 
             _allRecords = data.Select(x => new RecordModel
             {

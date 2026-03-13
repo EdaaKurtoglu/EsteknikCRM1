@@ -1,4 +1,6 @@
-﻿using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.DatabaseCon;
+using EsteknikCRM1.Models;
+using EsteknikCRM1.Popups;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Firebase;
 
 namespace EsteknikCRM1.Pages
 {
@@ -26,48 +29,59 @@ namespace EsteknikCRM1.Pages
             InitializeComponent();
         }
 
-        private int _currentStep = 1;
-        private WorkflowModel _workflow = new WorkflowModel();
-
-        private void Next_Click(object sender, RoutedEventArgs e)
+        private void StartTypeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_currentStep == 1)
+            if (StartTypeBox.SelectedItem != null)
             {
-                _workflow.StartType = (StartTypeBox.SelectedItem as ComboBoxItem)?.Content.ToString();
-                GoToStep(2);
-            }
-            else if (_currentStep == 2)
-            {
-                _workflow.CustomerName = CustomerNameBox.Text;
-                GoToStep(3);
-            }
-            else if (_currentStep == 3)
-            {
-                _workflow.Description = DescriptionBox.Text;
+                // Combobox kilitle
+                StartTypeBox.IsEnabled = false;
 
-                MessageBox.Show("Workflow Kaydedildi");
-                // Burada Firestore save yapılabilir
+                // Müşteri alanını göster
+                CustomerSelectionPanel.Visibility = Visibility.Visible;
+            }
+        }
+        private async void SearchCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerSearchWindow window = new CustomerSearchWindow();
+            window.Owner = Window.GetWindow(this);
+
+            if(window.ShowDialog() == true)
+            {
+                var selectedCustomer = window.SelectedCustomer;
+
+                if (selectedCustomer != null)
+                {
+                    CustomerNameBox.Text = selectedCustomer.Name+ " " + selectedCustomer.Surname;
+
+                    // adres panelini göster
+
+                    AddressSelectionPanel.Visibility = Visibility.Visible;
+
+
+                    var addresses = await FirebaseService.Instance.GetCustomerAddressesAsync(selectedCustomer.Id);
+
+                    AddressComboBox.ItemsSource = addresses;
+                }
             }
         }
 
-        private void Back_Click(object sender, RoutedEventArgs e)
+        private void AddressComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_currentStep > 1)
-                GoToStep(_currentStep - 1);
+            var selectedAddress = AddressComboBox.SelectedItem as AddressModel;
+
+            if (selectedAddress != null)
+            {
+                // Seçilen adresi kullan
+                MessageBox.Show("Seçilen adres: " + selectedAddress.AddressLine);
+            }
         }
 
-        private void GoToStep(int step)
+        private void AddCustomer_Click(object sender, RoutedEventArgs e)
         {
-            _currentStep = step;
-
-            Step1Panel.Visibility = step == 1 ? Visibility.Visible : Visibility.Collapsed;
-            Step2Panel.Visibility = step == 2 ? Visibility.Visible : Visibility.Collapsed;
-            Step3Panel.Visibility = step == 3 ? Visibility.Visible : Visibility.Collapsed;
-
-            Step1Indicator.Fill = step >= 1 ? Brushes.Blue : Brushes.Gray;
-            Step2Indicator.Fill = step >= 2 ? Brushes.Blue : Brushes.Gray;
-            Step3Indicator.Fill = step >= 3 ? Brushes.Blue : Brushes.Gray;
+            MessageBox.Show("Müşteri ekleme sayfası açılacak.");
         }
+
+
 
 
     }
