@@ -28,11 +28,21 @@ namespace EsteknikCRM1.Pages
         {
             // Filtreleme logic buraya
         }
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            // arama işlemi burada yapılabilir
+        }
 
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
             var row = (sender as Button).DataContext;
             MessageBox.Show("Selected: " + row.ToString());
+        }
+
+        private void AddNewCustomer_Click(object sender, RoutedEventArgs e) 
+        {
+            NavigationService?.Navigate(new IndividualCustomerOperationPage());
+
         }
 
     }

@@ -1,0 +1,256 @@
+﻿<Page x:Class="EsteknikCRM1.Pages.ServiceLocationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignWidth="1600"
+      d:DesignHeight="900"
+      Title="ServiceLocationPage"
+      Background="#F3F3F3">
+
+    <Page.Resources>
+
+        <Style x:Key="BlueButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Background" Value="#005A9E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#005A9E"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="LineTextBoxStyle" TargetType="TextBox">
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#BFC5CC"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="LineDatePickerStyle" TargetType="DatePicker">
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#BFC5CC"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Height" Value="38"/>
+        </Style>
+
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto">
+
+        <Grid Margin="16,10,16,8" MinWidth="1450">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Breadcrumb -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,8,0,14">
+                <TextBlock Text="⌂ Anasayfa" Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="İşlemler" Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="Servis Lokasyon İşlem"
+                           Foreground="#0A67B2"
+                           FontSize="14"
+                           FontWeight="SemiBold"/>
+            </StackPanel>
+
+            <!-- Blue line -->
+            <Border Grid.Row="1"
+                    Background="#0A67B2"
+                    Height="2"
+                    Margin="0,0,0,24"/>
+
+            <!-- Title -->
+            <TextBlock Grid.Row="2"
+                       Text="Servis Lokasyon"
+                       FontSize="22"
+                       Foreground="Black"
+                       Margin="0,0,0,28"/>
+
+            <!-- Filter panel -->
+            <Border Grid.Row="3"
+                    BorderBrush="#D0D5DA"
+                    BorderThickness="1"
+                    Background="Transparent">
+
+                <StackPanel>
+
+                    <!-- Top bar -->
+                    <Border Background="#E8E8E8" Height="50">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="18,0,0,0">
+                            <TextBlock Text="⌃"
+                                       Foreground="#0A67B2"
+                                       FontSize="16"
+                                       Margin="0,0,10,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Filtreleri Gizle"
+                                       Foreground="#0A67B2"
+                                       FontSize="16"
+                                       Margin="0,0,34,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="◌"
+                                       Foreground="#0A67B2"
+                                       FontSize="16"
+                                       Margin="0,0,10,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Filtreleri Sıfırla"
+                                       Foreground="#0A67B2"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Content -->
+                    <Grid Margin="36,28,36,18">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="36"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Left radio -->
+                            <StackPanel Grid.Column="0">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,28">
+                                    <RadioButton x:Name="ServiceBasedRadio"
+                                                 IsChecked="True"
+                                                 GroupName="FilterMode"
+                                                 Width="26"
+                                                 Height="26"
+                                                 VerticalAlignment="Center"/>
+                                    <TextBlock Text="Servis Bazında Filtre"
+                                               FontSize="18"
+                                               Foreground="#1F2D3D"
+                                               VerticalAlignment="Center"
+                                               Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Right radio -->
+                            <StackPanel Grid.Column="2">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,28">
+                                    <RadioButton x:Name="GeneralFilterRadio"
+                                                 GroupName="FilterMode"
+                                                 Width="26"
+                                                 Height="26"
+                                                 VerticalAlignment="Center"/>
+                                    <TextBlock Text="Genel Filtre"
+                                               FontSize="18"
+                                               Foreground="#1F2D3D"
+                                               VerticalAlignment="Center"
+                                               Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="36"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Left date -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Tarih"
+                                           FontSize="13"
+                                           Margin="0,0,0,8"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="34"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <DatePicker x:Name="LocationDatePicker"
+                                                Grid.Column="0"
+                                                SelectedDate="2026-03-24"
+                                                Style="{StaticResource LineDatePickerStyle}"/>
+
+                                    <TextBlock Grid.Column="1"
+                                               Text="📅"
+                                               FontSize="20"
+                                               Foreground="#2D3A4A"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"/>
+                                </Grid>
+                            </StackPanel>
+
+                            <!-- Right service -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Servis"
+                                           FontSize="13"
+                                           Margin="0,0,0,8"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="34"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox x:Name="ServiceTextBox"
+                                             Grid.Column="0"
+                                             Text="ES İKLİMLENDİRME VE OTOMASYON SİSTEMLERİ OTOMOTİV TA"
+                                             Style="{StaticResource LineTextBoxStyle}"/>
+
+                                    <TextBlock Grid.Column="1"
+                                               Text="⌕"
+                                               FontSize="26"
+                                               Foreground="#2D3A4A"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"/>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Bottom row -->
+                        <Grid Grid.Row="2" Margin="0,30,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="⌃"
+                                           Foreground="#0A67B2"
+                                           FontSize="16"
+                                           Margin="0,0,10,0"/>
+                                <TextBlock Text="Filtreleri Gizle"
+                                           Foreground="#0A67B2"
+                                           FontSize="16"/>
+                            </StackPanel>
+
+                            <Button Grid.Column="1"
+                                    Content="⎘ Verileri Yenile"
+                                    Width="145"
+                                    Style="{StaticResource BlueButtonStyle}"
+                                    Click="RefreshButton_Click"/>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Empty state -->
+            <TextBlock Grid.Row="4"
+                       Text="Lütfen filtreleme yapınız."
+                       FontSize="18"
+                       Foreground="#C7C7C7"
+                       Margin="18,28,0,0"
+                       VerticalAlignment="Top"/>
+        </Grid>
+    </ScrollViewer>
+</Page>

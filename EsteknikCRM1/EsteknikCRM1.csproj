@@ -163,29 +163,67 @@
     </ApplicationDefinition>
     <Compile Include="Models\AddressModel.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
+    <Compile Include="Models\CorporateCustomerItem.cs" />
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\DeviceModel.cs" />
+    <Compile Include="Models\DutyDefinitionItem.cs" />
+    <Compile Include="Models\FreeMaterialRequestItem.cs" />
+    <Compile Include="Models\HakedisDetailItem.cs" />
+    <Compile Include="Models\HakedisOperationItem.cs" />
+    <Compile Include="Models\HakedisRecordItem.cs" />
     <Compile Include="Models\HomePageModel.cs" />
     <Compile Include="Models\NotificationTypeModel.cs" />
-    <Compile Include="Models\SparePartModel.cs" />
+    <Compile Include="Models\PaidOrderItem.cs" />
+    <Compile Include="Models\ProductItem.cs" />
+    <Compile Include="Models\ReturnSetItem.cs" />
+    <Compile Include="Models\ReturnSetItemDetail.cs" />
+    <Compile Include="Models\SparePartItem.cs" />
+    <Compile Include="Models\StockActionItem.cs" />
+    <Compile Include="Models\StockMovementItem.cs" />
     <Compile Include="Models\SubCategoriesModel.cs" />
+    <Compile Include="Models\TeamItem.cs" />
+    <Compile Include="Models\TeamMemberItem.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\WorkflowModel.cs" />
     <Compile Include="Pages\AppointmentPage.xaml.cs">
       <DependentUpon>AppointmentPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\RecordModel.cs" />
+    <Compile Include="Pages\CorporateCustomerCardsPage.xaml.cs">
+      <DependentUpon>CorporateCustomerCardsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\CustomerAddPage.xaml.cs">
       <DependentUpon>CustomerAddPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DeviceCardOperationPage.xaml.cs">
+      <DependentUpon>DeviceCardOperationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\DeviceCardsPage.xaml.cs">
       <DependentUpon>DeviceCardsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\DutyDefinitionsPage.xaml.cs">
+      <DependentUpon>DutyDefinitionsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\EMessagePage.xaml.cs">
       <DependentUpon>EMessagePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\FreeMaterialRequestsPage.xaml.cs">
+      <DependentUpon>FreeMaterialRequestsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\HakedisRecordDetailPage.xaml.cs">
+      <DependentUpon>HakedisRecordDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\HakedisRecordsOperationPage.xaml.cs">
+      <DependentUpon>HakedisRecordsOperationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\HakedisRecordsPage.xaml.cs">
+      <DependentUpon>HakedisRecordsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\IndividualCustomerCardsPage.xaml.cs">
       <DependentUpon>IndividualCustomerCardsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\IndividualCustomerOperationPage.xaml.cs">
+      <DependentUpon>IndividualCustomerOperationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\MagazinePage.xaml.cs">
       <DependentUpon>MagazinePage.xaml</DependentUpon>
@@ -193,11 +231,44 @@
     <Compile Include="Pages\NotificationsPage.xaml.cs">
       <DependentUpon>NotificationsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PaidOrdersPage.xaml.cs">
+      <DependentUpon>PaidOrdersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ProductDefinitionOperationPage.xaml.cs">
+      <DependentUpon>ProductDefinitionOperationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ProductDefinitionsPage.xaml.cs">
+      <DependentUpon>ProductDefinitionsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ReportsPage.xaml.cs">
       <DependentUpon>ReportsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SparePartPage.xaml.cs">
-      <DependentUpon>SparePartPage.xaml</DependentUpon>
+    <Compile Include="Pages\ReturnSetItemsPage.xaml.cs">
+      <DependentUpon>ReturnSetItemsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ReturnSetPage.xaml.cs">
+      <DependentUpon>ReturnSetPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ServiceLocationPage.xaml.cs">
+      <DependentUpon>ServiceLocationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ServiceTeamDefinitionsDetailPage.xaml.cs">
+      <DependentUpon>ServiceTeamDefinitionsDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ServiceTeamDefinitionsOperationPage.xaml.cs">
+      <DependentUpon>ServiceTeamDefinitionsOperationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SparePartDefinitionOperationPage.xaml.cs">
+      <DependentUpon>SparePartDefinitionOperationPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SparePartDefinitionsPage.xaml.cs">
+      <DependentUpon>SparePartDefinitionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\StockActionDetailPage.xaml.cs">
+      <DependentUpon>StockActionDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\TeamDefinitionsPage.xaml.cs">
+      <DependentUpon>TeamDefinitionsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\WorkflowPage.xaml.cs">
       <DependentUpon>WorkflowPage.xaml</DependentUpon>
@@ -217,7 +288,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\CorporateCustomerCardsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\CustomerAddPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DeviceCardOperationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -225,7 +304,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\DutyDefinitionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\EMessagePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\FreeMaterialRequestsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\HakedisRecordDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\HakedisRecordsOperationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\HakedisRecordsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -266,6 +365,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\IndividualCustomerOperationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\MagazinePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -274,11 +377,55 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\PaidOrdersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ProductDefinitionOperationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ProductDefinitionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\ReportsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SparePartPage.xaml">
+    <Page Include="Pages\ReturnSetItemsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ReturnSetPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ServiceLocationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ServiceTeamDefinitionsDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ServiceTeamDefinitionsOperationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SparePartDefinitionOperationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SparePartDefinitionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\StockActionDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\TeamDefinitionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

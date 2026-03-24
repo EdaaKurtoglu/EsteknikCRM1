@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using EsteknikCRM1.Models;
+using EsteknikCRM1.Pages;
 
 namespace EsteknikCRM1
 {
@@ -23,13 +25,28 @@ namespace EsteknikCRM1
         public StockActionPage()
         {
             InitializeComponent();
+            LoadData();
         }
+
+        private void LoadData()
+        {
+            StockDataGrid.ItemsSource = new List<StockActionItem>
+            {
+                new StockActionItem
+                {
+                    Id = 687,
+                    ServiceTitle = "ES İKLİMLENDİRME VE OTOMASYON SİSTEMLERİ OTOMOTİV TAAHHÜT HAYVANCILIK SAN. TİC. LTD. ŞTİ.",
+                    ServiceType = "Yetkili Servis",
+                    City = "Kayseri",
+                    District = "Melikgazi"
+                }
+            };
+        }
+
         private void Select_Click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            var data = button.DataContext;
+            NavigationService?.Navigate(new StockActionDetailPage());
 
-            MessageBox.Show("Selected: " + data?.ToString());
         }
 
     }

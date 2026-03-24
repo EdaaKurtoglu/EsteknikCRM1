@@ -1,17 +1,15 @@
-﻿<Page x:Class="EsteknikCRM1.Pages.IndividualCustomerCardsPage"
+﻿<Page x:Class="EsteknikCRM1.Pages.ProductDefinitionsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:EsteknikCRM1.Pages"
       mc:Ignorable="d"
-      d:DesignWidth="1600"
-      d:DesignHeight="900"
-      Title="IndividualCustomerCardsPage"
-      Background="#F3F3F3">
+      Background="#F3F3F3"
+      Title="ProductDefinitionsPage">
 
     <Page.Resources>
-        <Style x:Key="ExportButtonStyle" TargetType="Button">
+
+        <Style x:Key="ToolbarButtonStyle" TargetType="Button">
             <Setter Property="Height" Value="40"/>
             <Setter Property="MinWidth" Value="64"/>
             <Setter Property="Padding" Value="14,0"/>
@@ -33,7 +31,7 @@
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
 
-        <Style x:Key="PagerTextButtonStyle" TargetType="Button">
+        <Style x:Key="PagerButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Foreground" Value="#C7C7C7"/>
@@ -42,12 +40,13 @@
             <Setter Property="Width" Value="34"/>
             <Setter Property="Height" Value="34"/>
         </Style>
+
     </Page.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Auto">
 
-        <Grid Margin="18,14,18,10" MinWidth="1500">
+        <Grid Margin="12,10,12,10" MinWidth="1550">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="4"/>
@@ -58,41 +57,33 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- BREADCRUMB -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,14">
-                <TextBlock Text="⌂ Anasayfa"
-                           Foreground="#9AA8B6"
-                           FontSize="14"/>
-                <TextBlock Text="  >  "
-                           Foreground="#9AA8B6"
-                           FontSize="14"/>
-                <TextBlock Text="Kartlar"
-                           Foreground="#9AA8B6"
-                           FontSize="14"/>
-                <TextBlock Text="  >  "
-                           Foreground="#9AA8B6"
-                           FontSize="14"/>
-                <TextBlock Text="Bireysel Müşteri Kartları"
+            <!-- Breadcrumb -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,6,0,14">
+                <TextBlock Text="⌂ Anasayfa" Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="Tanımlar" Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="Ürün Tanımları"
                            Foreground="#0A67B2"
                            FontSize="14"
                            FontWeight="SemiBold"/>
             </StackPanel>
 
-            <!-- MAVİ ÇİZGİ -->
+            <!-- Blue line -->
             <Border Grid.Row="1"
                     Background="#0A67B2"
                     Height="2"
                     Margin="0,0,0,22"/>
 
-            <!-- BAŞLIK -->
+            <!-- Title -->
             <TextBlock Grid.Row="2"
-                       Text="Bireysel Müşteri Kartları"
+                       Text="Ürün Tanımları"
                        FontSize="22"
                        Foreground="Black"
-                       Margin="0,0,0,26"/>
+                       Margin="0,0,0,22"/>
 
-            <!-- ARAMA + BUTON -->
-            <Grid Grid.Row="3" Margin="0,0,0,22">
+            <!-- Search + add -->
+            <Grid Grid.Row="3" Margin="0,0,0,20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="760"/>
@@ -102,11 +93,10 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Search top -->
-                    <Grid Grid.Row="0" Margin="0,0,0,16">
+                    <!-- Search -->
+                    <Grid Grid.Row="0" Margin="0,0,0,18">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="40"/>
@@ -118,11 +108,11 @@
                                        FontSize="18"
                                        Margin="14,0,0,8"/>
                             <TextBox x:Name="SearchTextBox"
-                                     TextChanged="SearchTextBox_TextChanged"
                                      Background="Transparent"
                                      BorderThickness="0"
                                      FontSize="18"
-                                     Padding="14,0,0,0"/>
+                                     Padding="14,0,0,0"
+                                     TextChanged="SearchTextBox_TextChanged"/>
                             <Border BorderBrush="#BFC5CC"
                                     BorderThickness="0,0,0,1"/>
                         </StackPanel>
@@ -142,15 +132,15 @@
 
                     <!-- Add button -->
                     <Button Grid.Row="1"
-                            Content="+ Yeni Müşteri Ekle"
-                            Width="176"
+                            Content="+ Yeni Ürün Ekle"
+                            Width="155"
                             HorizontalAlignment="Right"
                             Style="{StaticResource BlueButtonStyle}"
-                            Click="AddNewCustomer_Click"/>
+                            Click="AddNewProduct_Click"/>
                 </Grid>
             </Grid>
 
-            <!-- TOOLBAR -->
+            <!-- Toolbar -->
             <Grid Grid.Row="4" Margin="0,0,0,12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -158,11 +148,11 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="Kopyala" Style="{StaticResource ExportButtonStyle}"/>
-                    <Button Content="CSV" Style="{StaticResource ExportButtonStyle}"/>
-                    <Button Content="Excel" Style="{StaticResource ExportButtonStyle}"/>
-                    <Button Content="PDF" Style="{StaticResource ExportButtonStyle}"/>
-                    <Button Content="Yazdır" Style="{StaticResource ExportButtonStyle}"/>
+                    <Button Content="Kopyala" Style="{StaticResource ToolbarButtonStyle}"/>
+                    <Button Content="CSV" Style="{StaticResource ToolbarButtonStyle}"/>
+                    <Button Content="Excel" Style="{StaticResource ToolbarButtonStyle}"/>
+                    <Button Content="PDF" Style="{StaticResource ToolbarButtonStyle}"/>
+                    <Button Content="Yazdır" Style="{StaticResource ToolbarButtonStyle}"/>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1"
@@ -186,9 +176,9 @@
                 </StackPanel>
             </Grid>
 
-            <!-- DATAGRID -->
+            <!-- DataGrid -->
             <DataGrid Grid.Row="5"
-                      x:Name="CustomerGrid"
+                      x:Name="ProductGrid"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
                       HeadersVisibility="Column"
@@ -201,8 +191,8 @@
                       RowBackground="White"
                       AlternatingRowBackground="White"
                       RowHeaderWidth="0"
-                      ColumnHeaderHeight="78"
-                      RowHeight="74"
+                      ColumnHeaderHeight="110"
+                      RowHeight="78"
                       FontSize="16"
                       SelectionMode="Single"
                       SelectionUnit="FullRow"
@@ -238,41 +228,24 @@
                     <Style TargetType="DataGridRow">
                         <Setter Property="Background" Value="White"/>
                         <Setter Property="Foreground" Value="Black"/>
-                        <Setter Property="Cursor" Value="Hand"/>
                     </Style>
                 </DataGrid.Resources>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Id"
-                                        Binding="{Binding Id}"
-                                        Width="85"/>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="70"/>
+                    <DataGridTextColumn Header="Ürün&#x0a;Kodu" Binding="{Binding ProductCode}" Width="125"/>
+                    <DataGridTextColumn Header="Ürün Adı" Binding="{Binding ProductName}" Width="205"/>
+                    <DataGridTextColumn Header="Marka" Binding="{Binding Brand}" Width="100"/>
+                    <DataGridTextColumn Header="Üst Ürün&#x0a;Grubu" Binding="{Binding TopGroup}" Width="140"/>
+                    <DataGridTextColumn Header="Alt Ürün&#x0a;Grubu" Binding="{Binding SubGroup}" Width="130"/>
+                    <DataGridTextColumn Header="Ürün&#x0a;Grubu&#x0a;Özel" Binding="{Binding SpecialGroup}" Width="125"/>
+                    <DataGridTextColumn Header="Masraf&#x0a;Merkezi" Binding="{Binding CostCenter}" Width="125"/>
+                    <DataGridTextColumn Header="Garanti(Ay)" Binding="{Binding WarrantyMonth}" Width="145"/>
+                    <DataGridTextColumn Header="Fiyat" Binding="{Binding Price}" Width="90"/>
+                    <DataGridTextColumn Header="Durum" Binding="{Binding Status}" Width="105"/>
+                    <DataGridTextColumn Header="Ülke&#x0a;Adı" Binding="{Binding Country}" Width="95"/>
 
-                    <DataGridTextColumn Header="Müşteri Adı/Soyadı"
-                                        Binding="{Binding Name}"
-                                        Width="320"/>
-
-                    <DataGridTextColumn Header="Sabit Telefon&#x0a;Numarası"
-                                        Binding="{Binding FixedPhone}"
-                                        Width="150"/>
-
-                    <DataGridTextColumn Header="Cep Telefonu&#x0a;Numarası"
-                                        Binding="{Binding Phone}"
-                                        Width="150"/>
-
-                    <DataGridTextColumn Header="Email"
-                                        Binding="{Binding Email}"
-                                        Width="260"/>
-
-                    <DataGridTextColumn Header="Birincil Adres"
-                                        Binding="{Binding Address}"
-                                        Width="420"/>
-
-                    <DataGridTextColumn Header="Durum"
-                                        Binding="{Binding Status}"
-                                        Width="85"/>
-
-                    <DataGridTemplateColumn Header=""
-                                            Width="100">
+                    <DataGridTemplateColumn Header="" Width="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="İşlem"
@@ -283,14 +256,14 @@
                                         BorderBrush="#005A9E"
                                         BorderThickness="0"
                                         Cursor="Hand"
-                                        Click="SelectButton_Click"/>
+                                        Click="OperationButton_Click"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
-            <!-- PAGINATION -->
+            <!-- Pagination -->
             <Grid Grid.Row="6" Margin="0,18,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -302,7 +275,7 @@
                             Orientation="Horizontal"
                             HorizontalAlignment="Center">
                     <Button Content="‹"
-                            Style="{StaticResource PagerTextButtonStyle}"/>
+                            Style="{StaticResource PagerButtonStyle}"/>
 
                     <Border Width="38"
                             Height="38"
@@ -334,7 +307,7 @@
                                VerticalAlignment="Center"
                                Margin="12,0"/>
 
-                    <Button Content="87"
+                    <Button Content="327"
                             Background="Transparent"
                             BorderThickness="0"
                             FontSize="18"

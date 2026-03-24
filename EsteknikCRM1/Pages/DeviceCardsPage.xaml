@@ -87,12 +87,13 @@
 
             <!-- ADD DEVICE BUTTON -->
             <Button Grid.Column="2"
-                    Content="+ Add New Device"
-                    Background="#1E40AF"
-                    Foreground="White"
-                    BorderThickness="0"
-                    Height="35"
-                    Cursor="Hand"/>
+                Content="+ Add New Device"
+                Background="#1E40AF"
+                Foreground="White"
+                BorderThickness="0"
+                Height="35"
+                Cursor="Hand"
+                Click="AddNewDevice_Click"/>
         </Grid>
 
         <!-- 🔹 TABLE AREA -->

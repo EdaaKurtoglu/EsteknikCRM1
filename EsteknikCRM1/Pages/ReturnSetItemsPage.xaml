@@ -1,0 +1,370 @@
+﻿<Page x:Class="EsteknikCRM1.Pages.ReturnSetItemsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignWidth="1600"
+      d:DesignHeight="900"
+      Title="ReturnSetItemsPage"
+      Background="#F3F3F3">
+
+    <Page.Resources>
+
+        <Style x:Key="BlueButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Background" Value="#005A9E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#005A9E"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="OutlineBlueButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#0A67B2"/>
+            <Setter Property="BorderBrush" Value="#0A67B2"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="ToolbarButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="MinWidth" Value="64"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="Background" Value="#F8F8F8"/>
+            <Setter Property="BorderBrush" Value="#D5D8DC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="PagerButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#C7C7C7"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+        </Style>
+
+        <Style x:Key="IncludeButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="126"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="#005A9E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#005A9E"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto">
+
+        <Grid Margin="14,10,14,8" MinWidth="1500">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Breadcrumb -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="8,8,8,14">
+                <TextBlock Text="⌂ Anasayfa" Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="İşlemler" Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="İade İşlemleri" Foreground="#0A67B2" FontSize="14"/>
+                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="İade Kalemleri" Foreground="#0A67B2" FontSize="14" FontWeight="SemiBold"/>
+            </StackPanel>
+
+            <!-- Blue line -->
+            <Border Grid.Row="1"
+                    Background="#0A67B2"
+                    Height="2"
+                    Margin="8,0,8,20"/>
+
+            <!-- Title -->
+            <TextBlock Grid.Row="2"
+                       Text="İade Set Kalemleri"
+                       FontSize="22"
+                       Margin="8,0,8,22"
+                       Foreground="Black"/>
+
+            <!-- Tabs -->
+            <StackPanel Grid.Row="3" Margin="8,0,8,18">
+                <Grid Margin="0,4,0,18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="240"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="30,0,0,0">
+                        <TextBlock Text="⌂  İade Set Kalemleri"
+                                   FontSize="16"
+                                   Foreground="#1F2D3D"/>
+                        <Border Height="4"
+                                Background="#14A0DB"
+                                Margin="0,16,0,0"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="1"
+                               Text="⌂  İşlem Geçmişi"
+                               FontSize="16"
+                               Foreground="#1F2D3D"
+                               VerticalAlignment="Center"/>
+
+                </Grid>
+
+                <Border BorderBrush="#E0E0E0"
+                        BorderThickness="0,0,0,1"/>
+            </StackPanel>
+
+            <!-- Toolbar -->
+            <Grid Grid.Row="4" Margin="8,0,8,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Kopyala" Style="{StaticResource ToolbarButtonStyle}"/>
+                    <Button Content="CSV" Style="{StaticResource ToolbarButtonStyle}"/>
+                    <Button Content="Excel" Style="{StaticResource ToolbarButtonStyle}"/>
+                    <Button Content="PDF" Style="{StaticResource ToolbarButtonStyle}"/>
+                    <Button Content="Yazdır" Style="{StaticResource ToolbarButtonStyle}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Bottom"
+                            Margin="0,0,0,4">
+                    <TextBlock Text="Hızlı Arama"
+                               FontSize="16"
+                               Foreground="Black"
+                               Margin="0,0,28,0"
+                               VerticalAlignment="Center"/>
+                    <StackPanel>
+                        <TextBlock Text="Kayıt Ara"
+                                   FontSize="16"
+                                   Foreground="#9E9E9E"
+                                   Margin="0,0,0,8"/>
+                        <Border Width="160"
+                                BorderBrush="#C9CDD2"
+                                BorderThickness="0,0,0,1"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <!-- Table + footer -->
+            <Grid Grid.Row="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid Grid.Row="0"
+                          x:Name="ReturnSetItemsGrid"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="All"
+                          HorizontalGridLinesBrush="#AEB6BF"
+                          VerticalGridLinesBrush="#AEB6BF"
+                          BorderBrush="#AEB6BF"
+                          BorderThickness="1"
+                          Background="White"
+                          RowBackground="#FF0A0A"
+                          AlternatingRowBackground="#FF0A0A"
+                          RowHeaderWidth="0"
+                          ColumnHeaderHeight="72"
+                          RowHeight="230"
+                          FontSize="16"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow"
+                          CanUserResizeRows="False"
+                          CanUserReorderColumns="False"
+                          HorizontalScrollBarVisibility="Auto"
+                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                          MinHeight="620">
+
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="Foreground" Value="#1E1E1E"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="BorderBrush" Value="#AEB6BF"/>
+                            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                            <Setter Property="Padding" Value="10,0,10,0"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        </Style>
+
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderBrush" Value="#AEB6BF"/>
+                            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                            <Setter Property="Padding" Value="8,10,8,10"/>
+                            <Setter Property="VerticalContentAlignment" Value="Top"/>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Style>
+
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="#FF0A0A"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="" Width="66">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="0,88,0,0">
+                                        <TextBlock Text="▶"
+                                                   Foreground="Black"
+                                                   Margin="0,0,8,0"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Id}"
+                                                   Foreground="Black"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="" Width="62">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="⇄"
+                                               Foreground="#005A9E"
+                                               FontSize="32"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,80,0,0"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="İade&#x0a;Süreç&#x0a;Set&#x0a;Id" Binding="{Binding ReturnProcessSetId}" Width="110"/>
+                        <DataGridTextColumn Header="Servis Adı" Binding="{Binding ServiceName}" Width="190"/>
+                        <DataGridTextColumn Header="Yedek&#x0a;Parça&#x0a;İsmi" Binding="{Binding SparePartName}" Width="130"/>
+                        <DataGridTextColumn Header="Yedek&#x0a;Parça&#x0a;SAP&#x0a;Kodu" Binding="{Binding SparePartSapCode}" Width="130"/>
+                        <DataGridTextColumn Header="TTSM&#x0a;Sipariş&#x0a;Numarası" Binding="{Binding TtsmOrderNumber}" Width="130"/>
+                        <DataGridTextColumn Header="SAP&#x0a;Sipariş&#x0a;Numarası" Binding="{Binding SapOrderNumber}" Width="130"/>
+
+                        <DataGridTemplateColumn Header="Teslimat&#x0a;Numarası" Width="130">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,78,0,0">
+                                        <Border BorderBrush="White" BorderThickness="0,0,0,1" Margin="0,0,0,6"/>
+                                        <TextBlock Text="{Binding DeliveryNumber}"
+                                                   FontSize="18"
+                                                   HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Fiş&#x0a;Numarası" Width="130">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,78,0,0">
+                                        <Border BorderBrush="White" BorderThickness="0,0,0,1" Margin="0,0,0,6"/>
+                                        <TextBlock Text="{Binding ReceiptNumber}"
+                                                   FontSize="18"
+                                                   HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="Cevap Türü" Width="220">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Sete Dahil Et"
+                                            Style="{StaticResource IncludeButtonStyle}"
+                                            Margin="0,74,0,0"
+                                            Click="IncludeButton_Click"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="Servis&#x0a;Fiş&#x0a;Numarası" Binding="{Binding ServiceReceiptNumber}" Width="130"/>
+                        <DataGridTextColumn Header="Fiş&#x0a;Geliş&#x0a;Tarihi" Binding="{Binding ReceiptArrivalDate}" Width="130"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Footer -->
+                <Grid Grid.Row="1" Margin="0,18,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        <Button Content="‹" Style="{StaticResource PagerButtonStyle}"/>
+
+                        <Border Width="38"
+                                Height="38"
+                                CornerRadius="19"
+                                Background="#005A9E"
+                                Margin="10,0">
+                            <TextBlock Text="1"
+                                       Foreground="White"
+                                       FontSize="18"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <Button Content="›" Style="{StaticResource PagerButtonStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2"
+                                HorizontalAlignment="Right">
+                        <TextBlock Text="1/1"
+                                   HorizontalAlignment="Right"
+                                   FontSize="16"
+                                   Margin="0,0,0,18"/>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="⊘ Vazgeç"
+                                    Width="112"
+                                    Margin="0,0,12,0"
+                                    Style="{StaticResource OutlineBlueButtonStyle}"
+                                    Click="CancelButton_Click"/>
+
+                            <Button Content="■ İade Seti Oluştur"
+                                    Width="190"
+                                    Margin="0,0,0,0"
+                                    Style="{StaticResource BlueButtonStyle}"
+                                    Click="CreateReturnSetButton_Click"/>
+                        </StackPanel>
+
+                        <Button Content="+ Arıza Etiketi Yazdır"
+                                Width="185"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right"
+                                Style="{StaticResource BlueButtonStyle}"
+                                Click="PrintFaultLabelButton_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</Page>

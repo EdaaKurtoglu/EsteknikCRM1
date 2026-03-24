@@ -29,6 +29,11 @@ namespace EsteknikCRM1.Pages
             ApplyFilter();
         }
 
+        private void AddNewDevice_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new DeviceCardOperationPage());
+        }
+
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             // canlı arama istersen:

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace EsteknikCRM1.Pages
 {
     /// <summary>
-    /// Interaction logic for SparePartPage.xaml
+    /// Interaction logic for IndividualCustomerOperationPage.xaml
     /// </summary>
-    public partial class SparePartPage : Page
+    public partial class IndividualCustomerOperationPage : Page
     {
-        public SparePartPage()
+        public IndividualCustomerOperationPage()
         {
             InitializeComponent();
         }

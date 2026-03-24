@@ -260,19 +260,19 @@
                                 <Button Content="   📦 Hakediş Kayıtları"
                                     Style="{StaticResource SidebarButtonStyle}"
                                     Background="#FAFAFA"
-                                    Click="StockAction_Click"/>
+                                    Click="HakedisAction_Click"/>
                                 <Button Content="   📦 İade İşlemleri"
                                     Style="{StaticResource SidebarButtonStyle}"
                                     Background="#FAFAFA"
-                                    Click="StockAction_Click"/>
+                                    Click="ReturnOperation_Click"/>
                                 <Button Content="   📦 Bedelsiz Malzeme Talepleri"
                                     Style="{StaticResource SidebarButtonStyle}"
                                     Background="#FAFAFA"
-                                    Click="StockAction_Click"/>
+                                    Click="FreeMaterial_Click"/>
                                 <Button Content="   📦 Servis Lokasyon"
                                     Style="{StaticResource SidebarButtonStyle}"
                                     Background="#FAFAFA"
-                                    Click="StockAction_Click"/>
+                                    Click="ServiceLocation_Click"/>
 
                                 <Button Content="   📅 Randevu"
                                     Style="{StaticResource SidebarButtonStyle}"
@@ -296,7 +296,7 @@
                                     Padding="20,0"
                                     VerticalAlignment="Center"
                                     Background="White">
-                                    <TextBlock Text="💳 Cards"
+                                    <TextBlock Text="💳 Kartlar"
                                        VerticalAlignment="Center"
                                        Foreground="#444"/>
                                 </Border>
@@ -305,12 +305,16 @@
                             <!-- SUB MENU -->
                             <StackPanel Background="#FAFAFA">
 
-                                <Button Content="   👤 Individual Customer Cards"
+                                <Button Content="   👤 Bireysel Müşteri Kartı"
                                     Style="{StaticResource SidebarButtonStyle}"
                                     Background="#FAFAFA"
                                     Click="IndividualCustomerCards_Click"/>
-
-                                <Button Content="   💻 Device Cards"
+                                <Button Content="   👤 Kurumsal Müşteri Kartı"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="CorporateCustomerCards_Click"/>
+                                
+                                <Button Content="   💻 Cihaz Kartı"
                                     Style="{StaticResource SidebarButtonStyle}"
                                     Background="#FAFAFA"
                                     Click="DeviceCards_Click"/>
@@ -330,7 +334,7 @@
                                     Padding="20,0"
                                     VerticalAlignment="Center"
                                     Background="White">
-                                    <TextBlock Text="🗂 Definitions"
+                                    <TextBlock Text="🗂 Tanımlar"
                                        VerticalAlignment="Center"
                                        Foreground="#444"/>
                                 </Border>
@@ -339,10 +343,22 @@
                             <!-- SUB MENU -->
                             <StackPanel Background="#FAFAFA">
 
-                                <Button Content="   Spare Part Definitons"
+                                <Button Content="   Ekip Tanımları"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="TeamDefinitions_Click"/>
+                                    <Button Content="   Nöbet Tanımları"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="DutyDefinitions_Click"/>
+                                   <Button Content="   Yedek Parça Tanımları"
                                     Style="{StaticResource SidebarButtonStyle}"
                                     Background="#FAFAFA"
                                     Click="SparePartDefinitions_Click"/>
+                                   <Button Content="   Ürün Tanımları"
+                                    Style="{StaticResource SidebarButtonStyle}"
+                                    Background="#FAFAFA"
+                                    Click="ProductDefinitions_Click"/>
 
 
 

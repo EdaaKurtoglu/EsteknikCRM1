@@ -1,4 +1,5 @@
 ﻿using EsteknikCRM1.Models;
+using EsteknikCRM1.Pages;
 using Firebase.Auth;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,8 +40,21 @@ namespace EsteknikCRM1
 
             else if (clicked == ReportsBtn)
                 MainFrame.Navigate(new ReportsPage());
+           
+        }
+        private void ServiceLocation_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new ServiceLocationPage());
+        }
+        private void FreeMaterial_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new FreeMaterialRequestsPage());
         }
 
+        private void ReturnOperation_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new ReturnSetPage());
+        }
         private void StockAction_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new StockActionPage());
@@ -53,28 +67,47 @@ namespace EsteknikCRM1
 
         private void IndividualCustomerCards_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Pages.IndividualCustomerCardsPage());
+            MainFrame.Navigate(new IndividualCustomerCardsPage());
         }
-
+        private void CorporateCustomerCards_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new CorporateCustomerCardsPage());
+        }
+        private void TeamDefinitions_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate (new TeamDefinitionsPage());
+        }
+        private void DutyDefinitions_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new DutyDefinitionsPage());
+        }
+        private void ProductyDefinitions_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new ProductDefinitionsPage());
+        }
         private void DeviceCards_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new Pages.DeviceCardsPage());
         }
         private void SparePartDefinitions_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Pages.SparePartPage());
+            MainFrame.Navigate(new SparePartDefinitionsPage());
         }
         private void EMessage_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Pages.EMessagePage());
+            MainFrame.Navigate(new EMessagePage());
         }
         private void Notifications_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Pages.NotificationsPage());
+            MainFrame.Navigate(new NotificationsPage());
         }
         private void Magazine_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Pages.MagazinePage());
+            MainFrame.Navigate(new MagazinePage());
+        }
+        private void HakedisAction_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new HakedisRecordsPage());
         }
 
         private void ResetMenu()

@@ -16,17 +16,17 @@ using System.Windows.Shapes;
 namespace EsteknikCRM1.Pages
 {
     /// <summary>
-    /// Interaction logic for AppointmentPage.xaml
+    /// Interaction logic for ServiceLocationPage.xaml
     /// </summary>
-    public partial class AppointmentPage : Page
+    public partial class ServiceLocationPage : Page
     {
-        public AppointmentPage()
+        public ServiceLocationPage()
         {
             InitializeComponent();
         }
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Randevu verileri yenilendi.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Veriler yenilendi.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }
