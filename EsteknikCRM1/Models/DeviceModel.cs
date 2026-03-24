@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace EsteknikCRM1.Models
 {
-    internal class DeviceModel
+    public class DeviceModel
     {
-        private int _id;
+        private string _id;
         private string _serialNumber;
         private string _deviceCode;
         private string _deviceName;
@@ -19,7 +19,7 @@ namespace EsteknikCRM1.Models
         private string _subGroup;
         private string _specialGroup;
 
-        public int Id
+        public string Id
         {
             get => _id;
             set { _id = value; OnPropertyChanged(nameof(Id)); }

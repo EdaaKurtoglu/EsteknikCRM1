@@ -28,41 +28,42 @@
                            Foreground="#2C3E50"
                            Margin="0,0,0,25"/>
 
-                <!-- COMBOBOX -->
-                <TextBlock Text="İş Akışı Başlangıç Tipi"
+                <StackPanel x:Name="StartPanel">
+                    <!-- COMBOBOX -->
+                    <TextBlock Text="İş Akışı Başlangıç Tipi"
                            FontWeight="SemiBold"
                            Foreground="#555"/>
 
-                <ComboBox x:Name="StartTypeBox"
+                    <ComboBox x:Name="StartTypeBox"
                           Height="38"
                           Margin="0,8,0,0"
                           SelectionChanged="StartTypeBox_SelectionChanged">
 
-                    <ComboBoxItem Content="Bireysel Müşteri"/>
-                    <ComboBoxItem Content="Kurumsal Müşteri"/>
+                        <ComboBoxItem Content="Bireysel Müşteri"/>
+                        <ComboBoxItem Content="Kurumsal Müşteri"/>
 
-                </ComboBox>
+                    </ComboBox>
 
 
-                <!-- CUSTOMER AREA -->
-                <StackPanel x:Name="CustomerSelectionPanel"
+                    <!-- CUSTOMER AREA -->
+                    <StackPanel x:Name="CustomerSelectionPanel"
                             Visibility="Collapsed"
                             Margin="0,25,0,0">
 
-                    <TextBlock Text="Müşteri"
+                        <TextBlock Text="Müşteri"
                                FontWeight="SemiBold"
                                Foreground="#555"/>
 
-                    <TextBox x:Name="CustomerNameBox"
+                        <TextBox x:Name="CustomerNameBox"
                              Height="38"
                              Margin="0,8,0,0"
                              IsReadOnly="True"
                              Background="#F7F7F7"/>
 
-                    <StackPanel Orientation="Horizontal"
+                        <StackPanel Orientation="Horizontal"
                                 Margin="0,12,0,0">
 
-                        <Button Content="Müşteri Ara"
+                            <Button Content="Müşteri Ara"
                                 Width="120"
                                 Height="36"
                                 Background="#1565C0"
@@ -71,7 +72,7 @@
                                 Margin="0,0,10,0"
                                 Click="SearchCustomer_Click"/>
 
-                        <Button Content="Müşteri Ekle"
+                            <Button Content="Müşteri Ekle"
                                 Width="120"
                                 Height="36"
                                 Background="#2E7D32"
@@ -79,24 +80,332 @@
                                 BorderThickness="0"
                                 Click="AddCustomer_Click"/>
 
-                    </StackPanel>
-                    <!-- ADDRESS AREA -->
-                    <StackPanel x:Name="AddressSelectionPanel"
+                        </StackPanel>
+                        <!-- ADDRESS AREA -->
+                        <StackPanel x:Name="AddressSelectionPanel"
                         Visibility="Collapsed"
                         Margin="0,25,0,0">
 
-                        <TextBlock Text="Müşteri Adresi"
+                            <TextBlock Text="Müşteri Adresi"
                            FontWeight="SemiBold"
                            Foreground="#555"/>
 
-                        <ComboBox x:Name="AddressComboBox"
+                            <ComboBox x:Name="AddressComboBox"
                           Height="38"
                           Margin="0,8,0,0"
                           DisplayMemberPath="AddressLine"
                           SelectionChanged="AddressComboBox_SelectionChanged"/>
 
+                        </StackPanel>
+                        <Button Name="NextButton"
+                            Content="İleri"
+                        Width="120"
+                        Height="38"
+                        Margin="0,30,0,0"
+                        HorizontalAlignment="Right"
+                        Background="#1565C0"
+                        Foreground="White"
+                        Visibility="Collapsed"
+                        Click="NextButton_Click"/>
+
                     </StackPanel>
 
+                </StackPanel>
+                
+                <StackPanel x:Name="WorkflowPanel"
+                    Visibility="Collapsed"
+                    Margin="0,25,0,0">
+                    <StackPanel x:Name="CategoryPanel">
+                        <TextBlock Text="Kategori"
+                           FontWeight="SemiBold"
+                           Foreground="#555"/>
+
+                        <ComboBox x:Name="CategoryBox"
+                          Height="38"
+                          Margin="0,8,0,0"
+                          DisplayMemberPath="Category"
+                          SelectionChanged="CategoryBox_SelectionChanged"/>
+                    </StackPanel>
+                    <StackPanel x:Name="NotificationsPanel"
+                                Visibility="Collapsed">
+                        <TextBlock Text="Bildirim Tipi"
+                           Margin="0,15,0,0"
+                           FontWeight="SemiBold"
+                           Foreground="#555"/>
+
+                    <ComboBox x:Name="NotificationTypeBox"
+                          Height="38"
+                          Margin="0,8,0,0"
+                              DisplayMemberPath="NotificationType"
+                          SelectionChanged="NotificationTypeBox_SelectionChanged"
+                          />
+                      </StackPanel>
+                    <StackPanel x:Name="SubCategoryPanel"
+                                Visibility="Collapsed">
+                        <TextBlock Text="Alt Kategori"
+                               Margin="0,15,0,0"
+                               FontWeight="SemiBold"
+                               Foreground="#555"/>
+
+                        <ComboBox x:Name="SubCategoryBox"
+                              Height="38"
+                              Margin="0,8,0,0"
+                                  DisplayMemberPath="Name"
+                              SelectionChanged="SubCategoryBox_SelectionChanged"
+                              />
+                    </StackPanel>
+                    <StackPanel x:Name="DevicePanel"
+                                Visibility="Collapsed">
+                        <TextBlock Text="Cihaz"
+                           Margin="0,15,0,0"
+                           FontWeight="SemiBold"
+                           Foreground="#555"/>
+
+                        <ComboBox x:Name="DeviceBox"
+                          Height="38"
+                          Margin="0,8,0,0"
+                                  DisplayMemberPath="DeviceName"
+                          SelectionChanged="DeviceBox_SelectionChanged"
+                          />
+                    </StackPanel>
+                    <!-- NEXT BUTTON -->
+                    <Button x:Name="WorkflowNextButton"
+                        Visibility="Collapsed"
+                        Content="İleri"
+                        Width="120"
+                        Height="38"
+                        Margin="0,25,0,0"
+                        HorizontalAlignment="Right"
+                        Background="#1565C0"
+                        Foreground="White"
+                        Click="WorkflowNextButton_Click"
+                        IsEnabled="False"/>
+
+                </StackPanel>
+                
+                <StackPanel x:Name="FinalReportPanel"
+                            Visibility="Collapsed">
+                    <Grid Margin="30">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- SOL TARAF -->
+                        <StackPanel Grid.Column="0">
+
+                            <TextBlock Text="Yetkili Servis Formu"
+                               FontSize="22"
+                               FontWeight="Bold"
+                               Margin="0,0,0,20"/>
+
+                            <!-- SERVİS BİLGİLERİ -->
+                            <Border Background="White"
+                                Padding="20"
+                                Margin="0,0,0,20"
+                                CornerRadius="6">
+
+                                <StackPanel>
+
+                                    <TextBlock Text="Yetkili Servis Bilgileri"
+           FontWeight="Bold"
+           FontSize="16"
+           Margin="0,0,0,10"/>
+
+                                    <TextBlock Text="Kategori: Yetkili Servis Hizmeti"/>
+                                    <TextBlock Text="Bildirim Tipi: Bilgi Talebi"/>
+                                    <TextBlock Text="Alt Kategori: Çalışma Saatleri"/>
+
+                                </StackPanel>
+
+                            </Border>
+
+                            <!-- MÜŞTERİ -->
+                            <Border Background="White"
+                                Padding="20"
+                                Margin="0,0,0,20"
+                                CornerRadius="6">
+
+                                <StackPanel>
+
+                                    <TextBlock Text="Müşteri Bilgileri"
+                                       FontWeight="Bold"
+                                       FontSize="16"
+                                       Margin="0,0,0,10"/>
+
+                                    <TextBlock Text="Adı Soyadı"/>
+                                    <TextBlock Text="Adres"/>
+                                    <TextBlock Text="Telefon"/>
+                                    <TextBlock Text="Email"/>
+
+                                </StackPanel>
+
+                            </Border>
+
+                            <!-- CİHAZ -->
+                            <Border Background="White"
+                                Padding="20"
+                                Margin="0,0,0,20"
+                                CornerRadius="6">
+
+                                <StackPanel>
+
+                                    <TextBlock Text="Cihaz Bilgileri"
+                                       FontWeight="Bold"
+                                       FontSize="16"
+                                       Margin="0,0,0,10"/>
+
+                                    <TextBlock Text="Seri Numarası"/>
+                                    <TextBlock Text="Ürün Grubu"/>
+                                    <TextBlock Text="Marka"/>
+                                    <TextBlock Text="Devreye Alma Tarihi"/>
+
+                                </StackPanel>
+
+                            </Border>
+
+                            <!-- BİLDİRİM -->
+                            <Border Background="White"
+                                Padding="20"
+                                CornerRadius="6">
+
+                                <StackPanel>
+
+                                    <TextBlock Text="Bildirim Açıklaması"
+                                       FontWeight="Bold"
+                                       FontSize="16"
+                                       Margin="0,0,0,10"/>
+
+                                    <TextBox Height="120"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"/>
+
+                                </StackPanel>
+
+                            </Border>
+
+                        </StackPanel>
+
+                        <!-- SAĞ TARAF -->
+                        <StackPanel Grid.Column="2">
+
+                            <!-- DOSYA -->
+                            <Border Background="White"
+                                Padding="20"
+                                Margin="0,0,0,20"
+                                CornerRadius="6">
+
+                                <StackPanel>
+
+                                    <TextBlock Text="Dosya Bilgileri"
+                                       FontWeight="Bold"
+                                       FontSize="16"
+                                       Margin="0,0,0,10"/>
+
+                                    <Border BorderBrush="#CCCCCC"
+                                        BorderThickness="2"
+                                        Height="150"
+                                        CornerRadius="4">
+
+                                        <Grid>
+
+                                            <TextBlock Text="Dosyaları sürükleyip bırakın"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                    <Button Content="Dosya Seç"
+                                        Width="120"
+                                        Margin="0,10,0,0"
+                                        HorizontalAlignment="Center"/>
+
+                                </StackPanel>
+
+                            </Border>
+
+                            <!-- EK AÇIKLAMA -->
+                            <Border Background="White"
+                                Padding="20"
+                                Margin="0,0,0,20"
+                                CornerRadius="6">
+
+                                <StackPanel>
+
+                                    <TextBlock Text="Ek Açıklama"
+                                           FontWeight="Bold"
+                                           Margin="0,0,0,10"/>
+
+                                    <TextBox Height="80"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"/>
+
+                                </StackPanel>
+
+                            </Border>
+
+                            <!-- GELİŞ KANALI -->
+                            <Border Background="White"
+                                Padding="20"
+                                CornerRadius="6">
+
+                                <StackPanel>
+
+                                    <TextBlock Text="Geliş Kanalı"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,10"/>
+
+                                    <ComboBox Height="35">
+                                        <ComboBoxItem Content="Telefon"/>
+                                        <ComboBoxItem Content="WhatsApp"/>
+                                        <ComboBoxItem Content="Web"/>
+                                        <ComboBoxItem Content="Email"/>
+                                    </ComboBox>
+
+                                </StackPanel>
+
+                            </Border>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                    <!-- ALT BUTONLAR -->
+                    <Grid VerticalAlignment="Bottom"
+                            Margin="30">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Content="← Geri"
+                            Width="120"
+                            Height="40"
+                            HorizontalAlignment="Left"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                Grid.Column="1"
+                                HorizontalAlignment="Right">
+
+                            <Button Content="Vazgeç"
+                                Width="120"
+                                Height="40"
+                                Margin="0,0,10,0"/>
+
+                            <Button Content="Talep Oluştur"
+                                Width="200"
+                                Height="40"
+                                Background="#1565C0"
+                                Foreground="White"/>
+
+                        </StackPanel>
+
+                    </Grid>
                 </StackPanel>
 
             </StackPanel>

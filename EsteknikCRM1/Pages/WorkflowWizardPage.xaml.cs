@@ -72,17 +72,79 @@ namespace EsteknikCRM1.Pages
             if (selectedAddress != null)
             {
                 // Seçilen adresi kullan
-                MessageBox.Show("Seçilen adres: " + selectedAddress.AddressLine);
+                NextButton.IsEnabled = true;
+                NextButton.Visibility = Visibility.Visible;
             }
         }
-
+        
         private void AddCustomer_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Müşteri ekleme sayfası açılacak.");
+            HomePage home = (HomePage)Window.GetWindow(this);
+            home.MainFrame.Navigate(new CustomerAddPage());
+        }
+        private async void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            //CustomerSelectionPanel.Visibility = Visibility.Collapsed;
+            StartPanel.Visibility = Visibility.Collapsed;
+            WorkflowPanel.Visibility = Visibility.Visible;
+
+            var categories =  await FirebaseService.Instance.GetCategoriesAsync();
+            CategoryBox.ItemsSource = categories;
+
+            var notifytype = await FirebaseService.Instance.GetNotificationTypeAsync();
+            NotificationTypeBox.ItemsSource = notifytype;
+
+            var subcategory = await FirebaseService.Instance.GetSubCategoriesAsync();
+            SubCategoryBox.ItemsSource = subcategory;
+
+            var device = await FirebaseService.Instance.GetDevicesAsync();
+            DeviceBox.ItemsSource = device;
         }
 
+        private void CategoryBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            NotificationsPanel.Visibility = Visibility.Visible;
+        }
 
+        private void NotificationTypeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SubCategoryPanel.Visibility = Visibility.Visible;
+        }
 
+        private void SubCategoryBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DevicePanel.Visibility = Visibility.Visible;
+        }
+        private void DeviceBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            WorkflowNextButton.Visibility = Visibility.Visible;
+            WorkflowNextButton.IsEnabled = true;
+        }
+        private void WorkflowNextButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (NotificationsPanel.Visibility == Visibility.Collapsed)
+            {
+                NotificationsPanel.Visibility = Visibility.Visible;
+                WorkflowNextButton.IsEnabled = false;
+                return;
+            }
+
+            if (SubCategoryPanel.Visibility == Visibility.Collapsed)
+            {
+                SubCategoryPanel.Visibility = Visibility.Visible;
+                WorkflowNextButton.IsEnabled = false;
+                return;
+            }
+
+            if (DevicePanel.Visibility == Visibility.Collapsed)
+            {
+                DevicePanel.Visibility = Visibility.Visible;
+                WorkflowNextButton.IsEnabled = false;
+                return;
+            }
+            FinalReportPanel.Visibility = Visibility.Visible;
+            WorkflowPanel.Visibility = Visibility.Collapsed;
+        }
 
     }
 
