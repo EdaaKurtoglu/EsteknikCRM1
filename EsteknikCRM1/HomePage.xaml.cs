@@ -81,7 +81,7 @@ namespace EsteknikCRM1
         {
             MainFrame.Navigate(new DutyDefinitionsPage());
         }
-        private void ProductyDefinitions_Click(object sender, RoutedEventArgs e)
+        private void ProductDefinitions_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new ProductDefinitionsPage());
         }
