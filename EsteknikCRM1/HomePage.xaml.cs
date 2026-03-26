@@ -1,6 +1,5 @@
 ﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Pages;
-using Firebase.Auth;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,18 +10,65 @@ namespace EsteknikCRM1
     {
         private UserModel _loggedUser;
 
+        public UserModel CurrentUser { get; private set; }
+
         public HomePage(UserModel user)
         {
             InitializeComponent();
-            MainFrame.Navigate(new HomeContentPage()); // default page
-            _loggedUser = user;
 
-            UserNameText.Text = $"{user.Name} {user.Surname}";
+            _loggedUser = user;
+            CurrentUser = user;
+
+            SetLoggedUserInfo();
+            MainFrame.Navigate(new HomeContentPage());
         }
+
+        private void SetLoggedUserInfo()
+        {
+            if (_loggedUser == null)
+            {
+                UserNameText.Text = "Kullanıcı";
+                UserRoleText.Text = "Rol Tanımsız";
+                PopupUserNameText.Text = "Kullanıcı";
+                PopupUserRoleText.Text = "Rol Tanımsız";
+                UserInitialText.Text = "?";
+                return;
+            }
+
+            string fullName = string.Format("{0} {1}",
+                _loggedUser.Name ?? "",
+                _loggedUser.Surname ?? "").Trim();
+
+            if (string.IsNullOrWhiteSpace(fullName))
+                fullName = "Kullanıcı";
+
+            string role = string.IsNullOrWhiteSpace(_loggedUser.UserRole)
+                ? "Rol Tanımsız"
+                : _loggedUser.UserRole;
+
+            UserNameText.Text = fullName;
+            UserRoleText.Text = role;
+
+            PopupUserNameText.Text = fullName;
+            PopupUserRoleText.Text = role;
+
+            if (!string.IsNullOrWhiteSpace(_loggedUser.Name))
+                UserInitialText.Text = _loggedUser.Name.Substring(0, 1).ToUpper();
+            else if (!string.IsNullOrWhiteSpace(_loggedUser.Surname))
+                UserInitialText.Text = _loggedUser.Surname.Substring(0, 1).ToUpper();
+            else
+                UserInitialText.Text = "K";
+        }
+
+        public void OpenWorkflowWizardPage()
+        {
+            MainFrame.Navigate(new WorkflowWizardPage(CurrentUser));
+        }
+
         private void TopBar_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
-                this.DragMove();
+                DragMove();
         }
 
         private void Menu_Click(object sender, RoutedEventArgs e)
@@ -30,22 +76,28 @@ namespace EsteknikCRM1
             ResetMenu();
 
             Button clicked = sender as Button;
-            clicked.Tag = "Active"; // aktif yap
+            if (clicked != null)
+                clicked.Tag = "Active";
 
             if (clicked == HomeBtn)
+            {
                 MainFrame.Navigate(new HomeContentPage());
-
+            }
             else if (clicked == WorkflowBtn)
+            {
                 MainFrame.Navigate(new WorkflowPage());
-
+            }
             else if (clicked == ReportsBtn)
+            {
                 MainFrame.Navigate(new ReportsPage());
-           
+            }
         }
+
         private void ServiceLocation_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new ServiceLocationPage());
         }
+
         private void FreeMaterial_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new FreeMaterialRequestsPage());
@@ -55,6 +107,7 @@ namespace EsteknikCRM1
         {
             MainFrame.Navigate(new ReturnSetPage());
         }
+
         private void StockAction_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new StockActionPage());
@@ -69,42 +122,52 @@ namespace EsteknikCRM1
         {
             MainFrame.Navigate(new IndividualCustomerCardsPage());
         }
+
         private void CorporateCustomerCards_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new CorporateCustomerCardsPage());
         }
+
         private void TeamDefinitions_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate (new TeamDefinitionsPage());
+            MainFrame.Navigate(new TeamDefinitionsPage());
         }
+
         private void DutyDefinitions_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new DutyDefinitionsPage());
         }
+
         private void ProductDefinitions_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new ProductDefinitionsPage());
         }
+
         private void DeviceCards_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Pages.DeviceCardsPage());
+            MainFrame.Navigate(new DeviceCardsPage());
         }
+
         private void SparePartDefinitions_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new SparePartDefinitionsPage());
         }
+
         private void EMessage_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new EMessagePage());
         }
+
         private void Notifications_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new NotificationsPage());
         }
+
         private void Magazine_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new MagazinePage());
         }
+
         private void HakedisAction_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new HakedisRecordsPage());
@@ -119,7 +182,7 @@ namespace EsteknikCRM1
 
         private void Minimize_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
@@ -131,7 +194,7 @@ namespace EsteknikCRM1
         {
             AdminLogin login = new AdminLogin();
             login.Show();
-            this.Close();
+            Close();
         }
     }
 }

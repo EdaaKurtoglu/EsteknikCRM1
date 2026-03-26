@@ -6,200 +6,211 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace EsteknikCRM1
 {
     public partial class HomeContentPage : Page
     {
-        private List<RecordModel> _allRecords;
+        private List<RecordModel> _allRecords = new List<RecordModel>();
         private int _currentPage = 1;
-        private int _itemsPerPage = 5;
+        private const int _itemsPerPage = 5;
+        private bool _isLoadingPage = false;
 
         public HomeContentPage()
         {
             InitializeComponent();
-            _ = LoadDataAsync();
+            Loaded += HomeContentPage_Loaded;
+        }
+
+        private async void HomeContentPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            Loaded -= HomeContentPage_Loaded;
+            await LoadDataAsync();
         }
 
         private async Task LoadDataAsync()
         {
-
-            var data = await FirebaseService.Instance.GetHomeTextsAsync();
-
-            _allRecords = data.Select(x => new RecordModel
+            try
             {
-                Subject = x.HomeText
-            }).ToList();
+                var data = await FirebaseService.Instance.GetHomeTextsAsync();
 
-            _currentPage = 1;
-            LoadPage();
+                _allRecords = data.Select(x => new RecordModel
+                {
+                    Subject = x.HomeText
+                }).ToList();
+
+                _currentPage = 1;
+                RefreshGridAndPagination();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Veriler yüklenirken hata oluştu: " + ex.Message);
+            }
         }
 
-        // PAGINATION
-        private void LoadPage()
+        private List<RecordModel> GetFilteredRecords()
         {
-            var filtered = ApplyFilter();
-            var pageData = filtered
-                .Skip((_currentPage - 1) * _itemsPerPage)
-                .Take(_itemsPerPage)
+            string search = SearchBox.Text == null ? "" : SearchBox.Text.Trim().ToLower();
+
+            if (string.IsNullOrWhiteSpace(search))
+                return _allRecords;
+
+            return _allRecords
+                .Where(x => (x.Subject ?? "").ToLower().Contains(search))
                 .ToList();
-
-            RecordsGrid.ItemsSource = pageData;
-
-            GeneratePagination(filtered.Count);
         }
 
-        private void GeneratePagination(int totalItems)
+        private void RefreshGridAndPagination()
+        {
+            if (_isLoadingPage)
+                return;
+
+            _isLoadingPage = true;
+
+            try
+            {
+                var filtered = GetFilteredRecords();
+                int totalItems = filtered.Count;
+                int totalPages = totalItems == 0 ? 1 : (int)Math.Ceiling((double)totalItems / _itemsPerPage);
+
+                if (_currentPage > totalPages)
+                    _currentPage = totalPages;
+
+                if (_currentPage < 1)
+                    _currentPage = 1;
+
+                var pageData = filtered
+                    .Skip((_currentPage - 1) * _itemsPerPage)
+                    .Take(_itemsPerPage)
+                    .ToList();
+
+                RecordsGrid.ItemsSource = pageData;
+                BuildPagination(totalPages);
+            }
+            finally
+            {
+                _isLoadingPage = false;
+            }
+        }
+
+        private void BuildPagination(int totalPages)
         {
             PaginationPanel.Children.Clear();
 
-            int totalPages = (int)Math.Ceiling((double)totalItems / _itemsPerPage);
+            if (totalPages <= 1)
+                return;
 
-            int maxVisiblePages = 5; // Aynı anda kaç sayfa görünsün
+            Button prevButton = new Button
+            {
+                Content = "‹",
+                Style = (Style)FindResource("NavPaginationButtonStyle"),
+                IsEnabled = _currentPage > 1
+            };
+            prevButton.Click += (s, e) =>
+            {
+                if (_currentPage > 1)
+                {
+                    _currentPage--;
+                    RefreshGridAndPagination();
+                }
+            };
+            PaginationPanel.Children.Add(prevButton);
+
+            int maxVisiblePages = 5;
             int startPage = Math.Max(1, _currentPage - 2);
             int endPage = Math.Min(totalPages, startPage + maxVisiblePages - 1);
 
-            // DÜZELTME (son sayfada kaymayı engelle)
             if (endPage - startPage < maxVisiblePages - 1)
                 startPage = Math.Max(1, endPage - maxVisiblePages + 1);
 
-            // SOL OK
-            if (_currentPage > 1)
-            {
-                Button prevBtn = CreateNavButton("‹");
-                prevBtn.Click += (s, e) =>
-                {
-                    _currentPage--;
-                    LoadPage();
-                };
-                PaginationPanel.Children.Add(prevBtn);
-            }
-
-            // İLK SAYFA + ...
             if (startPage > 1)
             {
                 PaginationPanel.Children.Add(CreatePageButton(1));
 
                 if (startPage > 2)
                 {
-                    PaginationPanel.Children.Add(CreateDots());
+                    PaginationPanel.Children.Add(new TextBlock
+                    {
+                        Text = "...",
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Margin = new Thickness(8, 0, 8, 0),
+                        FontSize = 15
+                    });
                 }
             }
 
-            // ORTA SAYFALAR
             for (int i = startPage; i <= endPage; i++)
             {
                 PaginationPanel.Children.Add(CreatePageButton(i));
             }
 
-            // SON SAYFA + ...
             if (endPage < totalPages)
             {
                 if (endPage < totalPages - 1)
                 {
-                    PaginationPanel.Children.Add(CreateDots());
+                    PaginationPanel.Children.Add(new TextBlock
+                    {
+                        Text = "...",
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Margin = new Thickness(8, 0, 8, 0),
+                        FontSize = 15
+                    });
                 }
 
                 PaginationPanel.Children.Add(CreatePageButton(totalPages));
             }
 
-            // SAĞ OK
-            if (_currentPage < totalPages)
+            Button nextButton = new Button
             {
-                Button nextBtn = CreateNavButton("›");
-                nextBtn.Click += (s, e) =>
+                Content = "›",
+                Style = (Style)FindResource("NavPaginationButtonStyle"),
+                IsEnabled = _currentPage < totalPages
+            };
+            nextButton.Click += (s, e) =>
+            {
+                if (_currentPage < totalPages)
                 {
                     _currentPage++;
-                    LoadPage();
-                };
-                PaginationPanel.Children.Add(nextBtn);
-            }
+                    RefreshGridAndPagination();
+                }
+            };
+            PaginationPanel.Children.Add(nextButton);
         }
+
         private Button CreatePageButton(int pageNumber)
         {
-            Button btn = new Button
+            Button button = new Button
             {
                 Content = pageNumber.ToString(),
-                Width = 35,
-                Height = 35,
-                Margin = new Thickness(4),
-                BorderThickness = new Thickness(0),
-                Cursor = Cursors.Hand
+                Style = pageNumber == _currentPage
+                    ? (Style)FindResource("ActivePaginationButtonStyle")
+                    : (Style)FindResource("PaginationButtonStyle")
             };
 
-            if (pageNumber == _currentPage)
+            button.Click += (s, e) =>
             {
-                btn.Background = Brushes.Blue;
-                btn.Foreground = Brushes.White;
-            }
-            else
-            {
-                btn.Background = Brushes.White;
-            }
-
-            btn.Click += (s, e) =>
-            {
-                _currentPage = pageNumber;
-                LoadPage();
+                if (_currentPage != pageNumber)
+                {
+                    _currentPage = pageNumber;
+                    RefreshGridAndPagination();
+                }
             };
 
-            return btn;
+            return button;
         }
-
-        private Button CreateNavButton(string symbol)
-        {
-            return new Button
-            {
-                Content = symbol,
-                Width = 35,
-                Height = 35,
-                Margin = new Thickness(4),
-                BorderThickness = new Thickness(0),
-                Background = Brushes.White,
-                Cursor = Cursors.Hand
-            };
-        }
-
-        private TextBlock CreateDots()
-        {
-            return new TextBlock
-            {
-                Text = "...",
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(8, 0, 8, 0),
-                FontSize = 14
-            };
-        }
-
-
-        // SEARCH
-        private List<RecordModel> ApplyFilter()
-        {
-            if (_allRecords == null)
-                return new List<RecordModel>();
-
-            string search = SearchBox.Text?.ToLower() ?? "";
-
-            if (string.IsNullOrWhiteSpace(search))
-                return _allRecords;
-
-            return _allRecords
-                .Where(x => x.Subject.ToLower().Contains(search))
-                .ToList();
-        }
-
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             _currentPage = 1;
-            LoadPage();
+            RefreshGridAndPagination();
         }
 
         private void Select_Click(object sender, RoutedEventArgs e)
         {
-            if (RecordsGrid.SelectedItem is RecordModel selected)
+            Button btn = sender as Button;
+            RecordModel selected = btn != null ? btn.DataContext as RecordModel : null;
+
+            if (selected != null)
             {
                 MessageBox.Show(selected.Subject);
             }

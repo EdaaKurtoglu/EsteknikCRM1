@@ -1,12 +1,9 @@
-﻿using EsteknikCRM1.Models;
-using Google.Cloud.Firestore;
+﻿using Google.Cloud.Firestore;
+using EsteknikCRM1.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace EsteknikCRM1.DatabaseCon
 {
@@ -117,35 +114,92 @@ namespace EsteknikCRM1.DatabaseCon
             return list;
         }
 
-        public async Task<List<CustomerModel>> GetCustomersAsync()
+        /*public async Task<List<CustomerModel>> GetCustomersAsync()
         {
-            Query query = db.Collection("Customers");
-
-            QuerySnapshot snapshot = await query.GetSnapshotAsync();
-
+            QuerySnapshot snapshot = await db.Collection("Customers").GetSnapshotAsync();
             List<CustomerModel> customers = new List<CustomerModel>();
 
             foreach (DocumentSnapshot doc in snapshot.Documents)
             {
-                if (doc.Exists)
+                var data = doc.ToDictionary();
+
+                customers.Add(new CustomerModel
                 {
-                    customers.Add(new CustomerModel
-                    {
-                        Id = doc.Id,
-                        Name = doc.ContainsField("CustomerName") ? doc.GetValue<string>("CustomerName") : "",
-                        Surname = doc.ContainsField("CustomerSurname") ? doc.GetValue<string>("CustomerSurname") : "",
-                        Phone = doc.ContainsField("MobilPhone") ? doc.GetValue<string>("MobilPhone") : "",
-                        Adress = doc.ContainsField("Adress") ? doc.GetValue<string>("Adress") : ""
-                    });
-                }
+                    Id = doc.Id,
+                    Name = data.ContainsKey("Name") ? data["Name"]?.ToString() : "",
+                    Surname = data.ContainsKey("Surname") ? data["Surname"]?.ToString() : "",
+                    Phone = data.ContainsKey("Phone") ? data["Phone"]?.ToString() : "",
+                    MobilePhone = data.ContainsKey("MobilePhone") ? data["MobilePhone"]?.ToString() : "",
+                    City = data.ContainsKey("City") ? data["City"]?.ToString() : "",
+                    Address = data.ContainsKey("Address") ? data["Address"]?.ToString() : ""
+                });
+            }
+
+            return customers;
+        }*/
+
+        public async Task<List<CustomerModel>> GetCustomersAsync()
+        {
+            QuerySnapshot snapshot = await db.Collection("Customers").GetSnapshotAsync();
+            List<CustomerModel> customers = new List<CustomerModel>();
+
+            foreach (DocumentSnapshot doc in snapshot.Documents)
+            {
+                Dictionary<string, object> data = doc.ToDictionary();
+
+                customers.Add(new CustomerModel
+                {
+                    Id = doc.Id,
+                    CustomerNo = data.ContainsKey("CustomerNo") ? data["CustomerNo"]?.ToString() : "",
+                    Name = data.ContainsKey("Name") ? data["Name"]?.ToString() : "",
+                    MiddleName = data.ContainsKey("MiddleName") ? data["MiddleName"]?.ToString() : "",
+                    Surname = data.ContainsKey("Surname") ? data["Surname"]?.ToString() : "",
+
+                    Phone = data.ContainsKey("Phone") ? data["Phone"]?.ToString() : "",
+                    MobilePhone = data.ContainsKey("MobilePhone") ? data["MobilePhone"]?.ToString() : "",
+
+                    Email = data.ContainsKey("Email") ? data["Email"]?.ToString() : "",
+                    Address = data.ContainsKey("Address") ? data["Address"]?.ToString() : "",
+
+                    Status = data.ContainsKey("Status") ? data["Status"]?.ToString() : "Aktif"
+                });
             }
 
             return customers;
         }
 
+        public async Task<string> AddCustomerAddressAsync(AddressModel address)
+        {
+            CollectionReference addressRef = db.Collection("Addresses");
+
+            Dictionary<string, object> data = new Dictionary<string, object>
+                {
+                    { "CustomerId", address.CustomerId ?? "" },
+                    { "AddressLine", address.AddressLine ?? "" },
+
+                    { "Country", address.Country ?? "" },
+                    { "City", address.City ?? "" },
+                    { "District", address.District ?? "" },
+                    { "Neighborhood", address.Neighborhood ?? "" },
+                    { "Street", address.Street ?? "" },
+                    { "PostCode", address.PostCode ?? "" },
+                    { "BuildingNo", address.BuildingNo ?? "" },
+                    { "FlatNo", address.FlatNo ?? "" },
+
+                    { "IsActive", address.IsActive },
+                    { "IsResidence", address.IsResidence },
+                    { "OwnershipType", address.OwnershipType ?? "" },
+                    { "Status", address.Status ?? "Aktif" },
+                    { "CreatedDate", address.CreatedDate.HasValue ? address.CreatedDate.Value : (object)"" },
+                    { "PassiveDate", address.PassiveDate.HasValue ? address.PassiveDate.Value : (object)"" }
+                };
+
+            DocumentReference addedDoc = await addressRef.AddAsync(data);
+            return addedDoc.Id;
+        }
         public async Task<List<AddressModel>> GetCustomerAddressesAsync(string customerId)
         {
-            Query query = db.Collection("Adresses")
+            Query query = db.Collection("Addresses")
                             .WhereEqualTo("CustomerId", customerId);
 
             QuerySnapshot snapshot = await query.GetSnapshotAsync();
@@ -156,18 +210,34 @@ namespace EsteknikCRM1.DatabaseCon
             {
                 if (doc.Exists)
                 {
+                    var data = doc.ToDictionary();
+
                     addresses.Add(new AddressModel
                     {
                         Id = doc.Id,
-                        CustomerId = doc.GetValue<string>("CustomerId"),
-                        AddressLine = doc.GetValue<string>("AdressLine")
+                        CustomerId = data.ContainsKey("CustomerId") ? data["CustomerId"]?.ToString() : "",
+                        AddressLine = data.ContainsKey("AddressLine") ? data["AddressLine"]?.ToString() : "",
+
+                        Country = data.ContainsKey("Country") ? data["Country"]?.ToString() : "",
+                        City = data.ContainsKey("City") ? data["City"]?.ToString() : "",
+                        District = data.ContainsKey("District") ? data["District"]?.ToString() : "",
+                        Neighborhood = data.ContainsKey("Neighborhood") ? data["Neighborhood"]?.ToString() : "",
+                        Street = data.ContainsKey("Street") ? data["Street"]?.ToString() : "",
+                        PostCode = data.ContainsKey("PostCode") ? data["PostCode"]?.ToString() : "",
+                        BuildingNo = data.ContainsKey("BuildingNo") ? data["BuildingNo"]?.ToString() : "",
+                        FlatNo = data.ContainsKey("FlatNo") ? data["FlatNo"]?.ToString() : "",
+
+                        OwnershipType = data.ContainsKey("OwnershipType") ? data["OwnershipType"]?.ToString() : "",
+                        Status = data.ContainsKey("Status") ? data["Status"]?.ToString() : "Aktif",
+                        IsActive = data.ContainsKey("IsActive") && data["IsActive"] is bool active && active,
+                        IsResidence = data.ContainsKey("IsResidence") && data["IsResidence"] is bool residence && residence
                     });
                 }
             }
 
             return addresses;
         }
-
+        
         public async Task<List<CategoriesModel>> GetCategoriesAsync()
         {
             Query query = db.Collection("Categories");
@@ -257,6 +327,159 @@ namespace EsteknikCRM1.DatabaseCon
 
             return devices;
         }
+
+        public async Task<string> AddWorkflowAsync(WorkflowModel workflow)
+        {
+            CollectionReference workflowsRef = db.Collection("Workflows");
+
+            Dictionary<string, object> data = new Dictionary<string, object>
+                {
+                    { "StartType", workflow.StartType ?? "" },
+
+                    { "CustomerId", workflow.CustomerId ?? "" },
+                    { "CustomerName", workflow.CustomerName ?? "" },
+                    { "CustomerSurname", workflow.CustomerSurname ?? "" },
+                    { "CustomerFullName", workflow.CustomerFullName ?? "" },
+
+                    { "AddressId", workflow.AddressId ?? "" },
+                    { "AddressLine", workflow.AddressLine ?? "" },
+
+                    { "CategoryId", workflow.CategoryId ?? "" },
+                    { "CategoryName", workflow.CategoryName ?? "" },
+
+                    { "NotificationTypeId", workflow.NotificationTypeId ?? "" },
+                    { "NotificationTypeName", workflow.NotificationTypeName ?? "" },
+
+                    { "SubCategoryId", workflow.SubCategoryId ?? "" },
+                    { "SubCategoryName", workflow.SubCategoryName ?? "" },
+
+                    { "DeviceId", workflow.DeviceId ?? "" },
+                    { "DeviceName", workflow.DeviceName ?? "" },
+
+                    { "Description", workflow.Description ?? "" },
+                    { "ExtraDescription", workflow.ExtraDescription ?? "" },
+                    { "ArrivalChannel", workflow.ArrivalChannel ?? "" },
+
+                    { "WorkflowStatus", workflow.WorkflowStatus ?? "Devam Ediyor" },
+                    { "FlowType", workflow.FlowType ?? "" },
+                    { "Subject", workflow.Subject ?? "" },
+
+                    { "CreatedByUserMail", workflow.CreatedByUserMail ?? "" },
+                    { "CreatedByName", workflow.CreatedByName ?? "" },
+                    { "CreatedBySurname", workflow.CreatedBySurname ?? "" },
+                    { "CreatedByRole", workflow.CreatedByRole ?? "" },
+
+                    // Firestore için UTC güvenli
+                    { "CreatedDate", Timestamp.FromDateTime(workflow.CreatedDate.ToUniversalTime()) }
+                };
+
+            DocumentReference addedDoc = await workflowsRef.AddAsync(data);
+            return addedDoc.Id;
+        }
+
+        public async Task<List<WorkflowModel>> GetWorkflowsAsync()
+        {
+            QuerySnapshot snapshot = await db.Collection("Workflows")
+                                             .OrderByDescending("CreatedDate")
+                                             .GetSnapshotAsync();
+
+            List<WorkflowModel> workflows = new List<WorkflowModel>();
+
+            foreach (DocumentSnapshot doc in snapshot.Documents)
+            {
+                Dictionary<string, object> data = doc.ToDictionary();
+
+                DateTime createdDate = DateTime.MinValue;
+                if (data.ContainsKey("CreatedDate") && data["CreatedDate"] is Timestamp ts)
+                {
+                    createdDate = ts.ToDateTime().ToLocalTime();
+                }
+
+                workflows.Add(new WorkflowModel
+                {
+                    Id = doc.Id,
+                    StartType = data.ContainsKey("StartType") ? data["StartType"]?.ToString() : "",
+
+                    CustomerId = data.ContainsKey("CustomerId") ? data["CustomerId"]?.ToString() : "",
+                    CustomerName = data.ContainsKey("CustomerName") ? data["CustomerName"]?.ToString() : "",
+                    CustomerSurname = data.ContainsKey("CustomerSurname") ? data["CustomerSurname"]?.ToString() : "",
+                    CustomerFullName = data.ContainsKey("CustomerFullName") ? data["CustomerFullName"]?.ToString() : "",
+
+                    AddressId = data.ContainsKey("AddressId") ? data["AddressId"]?.ToString() : "",
+                    AddressLine = data.ContainsKey("AddressLine") ? data["AddressLine"]?.ToString() : "",
+
+                    CategoryId = data.ContainsKey("CategoryId") ? data["CategoryId"]?.ToString() : "",
+                    CategoryName = data.ContainsKey("CategoryName") ? data["CategoryName"]?.ToString() : "",
+
+                    NotificationTypeId = data.ContainsKey("NotificationTypeId") ? data["NotificationTypeId"]?.ToString() : "",
+                    NotificationTypeName = data.ContainsKey("NotificationTypeName") ? data["NotificationTypeName"]?.ToString() : "",
+
+                    SubCategoryId = data.ContainsKey("SubCategoryId") ? data["SubCategoryId"]?.ToString() : "",
+                    SubCategoryName = data.ContainsKey("SubCategoryName") ? data["SubCategoryName"]?.ToString() : "",
+
+                    DeviceId = data.ContainsKey("DeviceId") ? data["DeviceId"]?.ToString() : "",
+                    DeviceName = data.ContainsKey("DeviceName") ? data["DeviceName"]?.ToString() : "",
+
+                    Description = data.ContainsKey("Description") ? data["Description"]?.ToString() : "",
+                    ExtraDescription = data.ContainsKey("ExtraDescription") ? data["ExtraDescription"]?.ToString() : "",
+                    ArrivalChannel = data.ContainsKey("ArrivalChannel") ? data["ArrivalChannel"]?.ToString() : "",
+
+                    WorkflowStatus = data.ContainsKey("WorkflowStatus") ? data["WorkflowStatus"]?.ToString() : "",
+                    FlowType = data.ContainsKey("FlowType") ? data["FlowType"]?.ToString() : "",
+                    Subject = data.ContainsKey("Subject") ? data["Subject"]?.ToString() : "",
+
+                    CreatedByUserMail = data.ContainsKey("CreatedByUserMail") ? data["CreatedByUserMail"]?.ToString() : "",
+                    CreatedByName = data.ContainsKey("CreatedByName") ? data["CreatedByName"]?.ToString() : "",
+                    CreatedBySurname = data.ContainsKey("CreatedBySurname") ? data["CreatedBySurname"]?.ToString() : "",
+                    CreatedByRole = data.ContainsKey("CreatedByRole") ? data["CreatedByRole"]?.ToString() : "",
+
+                    CreatedDate = createdDate
+                });
+            }
+
+            return workflows;
+        }
+
+        public async Task<string> AddCustomerAsync(CustomerModel customer)
+        {
+            CollectionReference customersRef = db.Collection("Customers");
+
+            Dictionary<string, object> data = new Dictionary<string, object>
+            {
+                { "IsVip", customer.IsVip },
+                { "CustomerNo", customer.CustomerNo ?? "" },
+                { "Name", customer.Name ?? "" },
+                { "MiddleName", customer.MiddleName ?? "" },
+                { "Surname", customer.Surname ?? "" },
+
+                { "Phone", customer.Phone ?? "" },
+                { "MobilePhone", customer.MobilePhone ?? "" },
+                { "Phone2", customer.Phone2 ?? "" },
+                { "MobilePhone2", customer.MobilePhone2 ?? "" },
+
+                { "UnknownEmail", customer.UnknownEmail },
+                { "Email", customer.Email ?? "" },
+                { "Email2", customer.Email2 ?? "" },
+
+                { "Description", customer.Description ?? "" },
+
+                { "Country", customer.Country ?? "" },
+                { "City", customer.City ?? "" },
+                { "District", customer.District ?? "" },
+                { "Neighborhood", customer.Neighborhood ?? "" },
+                { "Address", customer.Address ?? "" },
+
+                { "SpecialProjectInfo", customer.SpecialProjectInfo ?? "" },
+                { "BuildingInfo", customer.BuildingInfo ?? "" },
+
+                { "Status", customer.Status ?? "Aktif" }
+            };
+
+                    DocumentReference addedDoc = await customersRef.AddAsync(data);
+                    return addedDoc.Id;
+        }
+
+        
     }
 
 

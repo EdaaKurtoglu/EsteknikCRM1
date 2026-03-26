@@ -219,6 +219,9 @@
     <Compile Include="Pages\HakedisRecordsPage.xaml.cs">
       <DependentUpon>HakedisRecordsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\IndividualCustomerAddressesPage.xaml.cs">
+      <DependentUpon>IndividualCustomerAddressesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\IndividualCustomerCardsPage.xaml.cs">
       <DependentUpon>IndividualCustomerCardsPage.xaml</DependentUpon>
     </Compile>
@@ -361,6 +364,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\IndividualCustomerAddressesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\IndividualCustomerCardsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -441,6 +448,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Popups\CustomerAddressAddPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Popups\CustomerSearchWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -449,6 +460,9 @@
   <ItemGroup>
     <Compile Include="Pages\WorkflowWizardPage.xaml.cs">
       <DependentUpon>WorkflowWizardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Popups\CustomerAddressAddPage.xaml.cs">
+      <DependentUpon>CustomerAddressAddPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Popups\CustomerSearchWindow.xaml.cs">
       <DependentUpon>CustomerSearchWindow.xaml</DependentUpon>

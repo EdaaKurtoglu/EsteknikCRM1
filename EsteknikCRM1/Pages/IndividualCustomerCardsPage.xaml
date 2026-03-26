@@ -244,18 +244,18 @@
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id"
-                                        Binding="{Binding Id}"
+                                        Binding="{Binding CustomerNo}"
                                         Width="85"/>
 
                     <DataGridTextColumn Header="Müşteri Adı/Soyadı"
-                                        Binding="{Binding Name}"
+                                        Binding="{Binding FullName}"
                                         Width="320"/>
 
-                    <DataGridTextColumn Header="Sabit Telefon&#x0a;Numarası"
-                                        Binding="{Binding FixedPhone}"
+                    <DataGridTextColumn Header="Cep Telefonu&#x0a;Numarası"
+                                        Binding="{Binding MobilePhone}"
                                         Width="150"/>
 
-                    <DataGridTextColumn Header="Cep Telefonu&#x0a;Numarası"
+                    <DataGridTextColumn Header="Sabit Telefon&#x0a;Numarası"
                                         Binding="{Binding Phone}"
                                         Width="150"/>
 

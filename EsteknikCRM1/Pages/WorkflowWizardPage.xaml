@@ -305,7 +305,8 @@
                                     Content="+ Yeni Adres Ekle"
                                     Width="160"
                                     Margin="0,0,0,10"
-                                    Style="{StaticResource GrayButtonStyle}"/>
+                                    Style="{StaticResource GrayButtonStyle}"
+                                    Click="AddCustomerAddresses_Click"/>
                         </StackPanel>
                     </Grid>
 
@@ -526,7 +527,8 @@
                                 <StackPanel Margin="0,0,0,10">
                                     <TextBlock Text="Bildirim Açıklaması"
                                                Margin="0,0,0,8"/>
-                                    <TextBox Height="130"
+                                    <TextBox x:Name="DescriptionTextBox"
+                                             Height="130"
                                              Background="Transparent"
                                              BorderThickness="0,0,0,1"
                                              BorderBrush="#BFBFBF"
@@ -570,7 +572,8 @@
                                 <StackPanel Margin="0,30,0,30">
                                     <TextBlock Text="Ek Açıklama"
                                                Margin="0,0,0,12"/>
-                                    <TextBox Height="90"
+                                    <TextBox x:Name="ExtraDescriptionTextBox"
+                                             Height="90"
                                              Background="Transparent"
                                              BorderThickness="0,0,0,1"
                                              BorderBrush="#BFBFBF"
@@ -581,7 +584,8 @@
                                 <StackPanel Margin="0,10,0,0">
                                     <TextBlock Text="Geliş Kanalı"
                                                Margin="0,0,0,8"/>
-                                    <ComboBox Height="34"
+                                    <ComboBox x:Name="ArrivalChannelComboBox"
+                                              Height="34"
                                               BorderThickness="0,0,0,1"
                                               BorderBrush="#BFBFBF"
                                               Background="Transparent">
@@ -631,7 +635,8 @@
                         Padding="18,0"
                         Background="White"
                         Foreground="#005A9E"
-                        BorderBrush="#7FAED6"/>
+                        BorderBrush="#7FAED6"
+                        Click="SaveWorkflowButton_Click"/>
             </Grid>
         </Grid>
     </Grid>

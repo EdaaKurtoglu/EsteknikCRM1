@@ -1,274 +1,478 @@
 ﻿<Page x:Class="EsteknikCRM1.Pages.CustomerAddPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:EsteknikCRM1.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="CustomerAddPage">
+      mc:Ignorable="d"
+      d:DesignHeight="900"
+      d:DesignWidth="1600"
+      Title="CustomerAddPage"
+      Background="#F3F3F3">
 
-    <!-- STYLE BURAYA EKLENİR -->
     <Page.Resources>
 
-        <Style x:Key="PlaceholderTextBox" TargetType="TextBox">
+        <Style x:Key="SectionHeaderTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="#1F2D3D"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="FlatTextBoxStyle" TargetType="TextBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#1F2D3D"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#BFBFBF"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="FlatMultiLineTextBoxStyle" TargetType="TextBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#1F2D3D"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#BFBFBF"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="0,0,0,6"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+        </Style>
+
+        <Style x:Key="OutlineBlueButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#0A67B2"/>
+            <Setter Property="BorderBrush" Value="#0A67B2"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+
+        <Style x:Key="BlueButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="Background" Value="#005A9E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#005A9E"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+
+        <Style x:Key="SquareCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="#1F2D3D"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Grid>
-                            <ScrollViewer x:Name="PART_ContentHost"/>
-
-                            <TextBlock Text="{TemplateBinding Tag}"
-                                       Foreground="Gray"
-                                       Margin="5,0,0,0"
-                                       VerticalAlignment="Center"
-                                       IsHitTestVisible="False"
-                                       Visibility="Collapsed"
-                                       x:Name="placeholder"/>
-                        </Grid>
-
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal">
+                            <Border x:Name="Box"
+                                    Width="28"
+                                    Height="28"
+                                    Background="#D9D9D9"
+                                    BorderBrush="#D9D9D9"
+                                    BorderThickness="1"
+                                    Margin="0,0,14,0"/>
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </StackPanel>
                         <ControlTemplate.Triggers>
-
-                            <Trigger Property="Text" Value="">
-                                <Setter TargetName="placeholder"
-                                        Property="Visibility"
-                                        Value="Visible"/>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Box" Property="Background" Value="#005A9E"/>
+                                <Setter TargetName="Box" Property="BorderBrush" Value="#005A9E"/>
                             </Trigger>
-
-                            <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="placeholder"
-                                        Property="Visibility"
-                                        Value="Collapsed"/>
-                            </Trigger>
-
                         </ControlTemplate.Triggers>
-
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
+        <Style x:Key="SearchFieldTextBoxStyle" TargetType="TextBox">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#1F2D3D"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#BFBFBF"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="0,0,0,6"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
     </Page.Resources>
 
-    <Grid Margin="30">
+    <Grid Margin="16,10,16,10">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer  Grid.Row="0"
-                       VerticalScrollBarVisibility="Auto">
+        <!-- Breadcrumb -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,8,0,14">
+            <TextBlock Text="⌂ Anasayfa" Foreground="#9AA8B6" FontSize="14"/>
+            <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+            <TextBlock Text="Kartlar" Foreground="#9AA8B6" FontSize="14"/>
+            <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+            <TextBlock Text="Bireysel Müşteri Kartları" Foreground="#0A67B2" FontSize="14"/>
+            <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+            <TextBlock Text="Bireysel Müşteri Kart İşlem"
+                       Foreground="#0A67B2"
+                       FontSize="14"
+                       FontWeight="SemiBold"/>
+        </StackPanel>
 
-            <Grid Margin="30">
+        <!-- Blue line -->
+        <Border Grid.Row="1"
+                Background="#0A67B2"
+                Height="2"
+                Margin="0,0,0,22"/>
 
+        <!-- Title -->
+        <TextBlock Grid.Row="2"
+                   Text="Bireysel Müşteri İşlemleri"
+                   FontSize="22"
+                   Foreground="Black"
+                   Margin="0,0,0,24"/>
+
+        <!-- Tabs -->
+        <StackPanel Grid.Row="3" Margin="0,0,0,26">
+            <Grid Margin="0,0,0,18">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="42"/>
+                    <ColumnDefinition Width="260"/>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="340"/>
+                    <ColumnDefinition Width="42"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- SOL TARAF -->
+                <TextBlock Grid.Column="0"
+                           Text="❮"
+                           FontSize="34"
+                           Foreground="Black"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
 
-                <StackPanel Grid.Column="0">
-
-                    <!-- Müşteri Bilgileri -->
-
-                    <Border Background="#E5E5E5" Padding="10">
-                        <TextBlock Text="Müşteri Bilgileri"
-                               FontSize="16"
-                               FontWeight="SemiBold"/>
-                    </Border>
-
-                    <StackPanel Margin="0,15,0,20">
-
-                        <CheckBox Content="VIP"/>
-
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,15,0,0"
-                             Height="35"
-                             x:Name="CustomerIdBox"
-                             Tag="Müşteri Id"/>
-
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="Ad"/>
-
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="İkinci Ad"/>
-
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="Soyad"/>
-
+                <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="⌂"
+                                   FontSize="22"
+                                   Margin="0,0,12,0"/>
+                        <TextBlock Text="Bireysel Müşteri Bilgileri"
+                                   FontSize="16"
+                                   Foreground="#1F2D3D"/>
                     </StackPanel>
-
-
-                    <!-- İletişim -->
-
-                    <Border Background="#E5E5E5" Padding="10">
-                        <TextBlock Text="Müşteri İletişim Bilgileri"
-                               FontSize="16"
-                               FontWeight="SemiBold"/>
-                    </Border>
-
-                    <StackPanel Margin="0,15,0,20">
-
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Height="35"
-                             Tag="Tel Numarası"/>
-
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="Cep Telefon"/>
-
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="Tel Numarası (2)"/>
-
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="Cep Telefon (2)"/>
-
-                        <CheckBox Margin="0,15,0,0"
-                              Content="E-posta adresi bilinmiyor"/>
-
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="Email"/>
-
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="Email (2)"/>
-
-                    </StackPanel>
-
-
-                    <!-- Diğer -->
-
-                    <Border Background="#E5E5E5" Padding="10">
-                        <TextBlock Text="Diğer Bilgiler"
-                               FontSize="16"
-                               FontWeight="SemiBold"/>
-                    </Border>
-
-                    <TextBox Style="{StaticResource PlaceholderTextBox}"
-                         Margin="0,15,0,0"
-                         Height="80"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         Tag="Açıklama"/>
-
+                    <Border Height="4"
+                            Background="#14A0DB"
+                            Margin="0,16,0,0"/>
                 </StackPanel>
 
+                <StackPanel Grid.Column="2" Margin="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="▤"
+                                   FontSize="22"
+                                   Margin="0,0,12,0"/>
+                        <TextBlock Text="Müşteri Adresleri"
+                                   FontSize="16"
+                                   Foreground="#1F2D3D"/>
+                    </StackPanel>
+                </StackPanel>
 
-                <!-- SAĞ TARAF -->
+                <StackPanel Grid.Column="3" Margin="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🗎"
+                                   FontSize="22"
+                                   Margin="0,0,12,0"/>
+                        <TextBlock Text="Açık Rıza Metinleri"
+                                   FontSize="16"
+                                   Foreground="#1F2D3D"/>
+                    </StackPanel>
+                </StackPanel>
 
+                <StackPanel Grid.Column="4" Margin="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="⇄"
+                                   FontSize="22"
+                                   Margin="0,0,12,0"/>
+                        <TextBlock Text="MI4Biz Tarihçesi - Talep Formlari"
+                                   FontSize="16"
+                                   Foreground="#1F2D3D"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="5" Margin="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="⇄"
+                                   FontSize="22"
+                                   Margin="0,0,12,0"/>
+                        <TextBlock Text="Devreye Alma Solution Form Alnet Tari"
+                                   FontSize="16"
+                                   Foreground="#1F2D3D"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBlock Grid.Column="6"
+                           Text="❯"
+                           FontSize="34"
+                           Foreground="#A9A9A9"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+            </Grid>
+
+            <Border BorderBrush="#E0E0E0"
+                    BorderThickness="0,0,0,1"/>
+        </StackPanel>
+
+        <!-- Main -->
+        <ScrollViewer Grid.Row="4"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="38"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT -->
+                <StackPanel Grid.Column="0" Margin="18,0,0,0">
+
+                    <Border Background="#D9D9D9"
+                            Height="46"
+                            Padding="20,0,0,0"
+                            Margin="0,0,0,22">
+                        <TextBlock Text="Müşteri Bilgileri"
+                                   Style="{StaticResource SectionHeaderTextStyle}"/>
+                    </Border>
+
+                    <CheckBox x:Name="VipCheckBox"
+                              Content="VIP"
+                              Style="{StaticResource SquareCheckBoxStyle}"
+                              Margin="0,0,0,22"/>
+
+                    <TextBlock Text="Müşteri Id" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBox x:Name="CustomerIdBox"
+                             Style="{StaticResource FlatTextBoxStyle}"
+                             Margin="0,0,0,26"/>
+
+                    <TextBlock Text="Adi" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBox x:Name="NameBox"
+                             Style="{StaticResource FlatTextBoxStyle}"
+                             Margin="0,0,0,26"/>
+
+                    <TextBlock Text="İkinci Adı" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBox x:Name="MiddleNameBox"
+                             Style="{StaticResource FlatTextBoxStyle}"
+                             Margin="0,0,0,26"/>
+
+                    <TextBlock Text="Soyadı" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBox x:Name="SurnameBox"
+                             Style="{StaticResource FlatTextBoxStyle}"
+                             Margin="0,0,0,34"/>
+
+                    <Border Background="#D9D9D9"
+                            Height="46"
+                            Padding="20,0,0,0"
+                            Margin="0,0,0,22">
+                        <TextBlock Text="Müşteri İletişim Bilgileri"
+                                   Style="{StaticResource SectionHeaderTextStyle}"/>
+                    </Border>
+
+                    <TextBlock Text="Tel Numarası" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBox x:Name="PhoneBox"
+                             Style="{StaticResource FlatTextBoxStyle}"
+                             Margin="0,0,0,26"/>
+
+                    <TextBlock Text="Cep Telefon Numarası" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBox x:Name="MobilePhoneBox"
+                             Style="{StaticResource FlatTextBoxStyle}"
+                             Margin="0,0,0,26"/>
+
+                    <TextBlock Text="Tel Numarası(2)" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBox x:Name="Phone2Box"
+                             Style="{StaticResource FlatTextBoxStyle}"
+                             Margin="0,0,0,26"/>
+
+                    <TextBlock Text="Cep Telefon Numarası(2)" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBox x:Name="MobilePhone2Box"
+                             Style="{StaticResource FlatTextBoxStyle}"
+                             Margin="0,0,0,26"/>
+
+                    <CheckBox x:Name="UnknownEmailCheckBox"
+                              Content="E-posta adresi bilinmiyor"
+                              Style="{StaticResource SquareCheckBoxStyle}"
+                              Margin="0,0,0,22"/>
+
+                    <TextBlock Text="Email Adresi" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBox x:Name="EmailBox"
+                             Style="{StaticResource FlatTextBoxStyle}"
+                             Margin="0,0,0,26"/>
+
+                    <TextBlock Text="Email Adresi(2)" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBox x:Name="Email2Box"
+                             Style="{StaticResource FlatTextBoxStyle}"
+                             Margin="0,0,0,34"/>
+
+                    <Border Background="#D9D9D9"
+                            Height="46"
+                            Padding="20,0,0,0"
+                            Margin="0,0,0,22">
+                        <TextBlock Text="Diğer Bilgiler"
+                                   Style="{StaticResource SectionHeaderTextStyle}"/>
+                    </Border>
+
+                    <TextBlock Text="Açıklama" Style="{StaticResource FieldLabelStyle}"/>
+                    <TextBox x:Name="DescriptionBox"
+                             Height="100"
+                             Style="{StaticResource FlatMultiLineTextBoxStyle}"
+                             Margin="0,0,0,30"/>
+                </StackPanel>
+
+                <!-- RIGHT -->
                 <StackPanel Grid.Column="2">
 
-                    <!-- Adres -->
-
-                    <Border Background="#E5E5E5" Padding="10">
+                    <Border Background="#D9D9D9"
+                            Height="46"
+                            Padding="20,0,0,0"
+                            Margin="0,0,0,22">
                         <TextBlock Text="Adres Bilgileri"
-                               FontSize="16"
-                               FontWeight="SemiBold"/>
+                                   Style="{StaticResource SectionHeaderTextStyle}"/>
                     </Border>
 
-                    <StackPanel Margin="0,15,0,20">
+                    <TextBlock Text="Ülke" Style="{StaticResource FieldLabelStyle}" Foreground="#B5B5B5"/>
+                    <Grid Margin="0,0,0,26">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="34"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="CountryBox"
+                                 Grid.Column="0"
+                                 Style="{StaticResource SearchFieldTextBoxStyle}"/>
+                        <Button Grid.Column="1"
+                                Background="Transparent"
+                                BorderThickness="0">
+                            <TextBlock Text="⌕" FontSize="28" Foreground="#B5B5B5"/>
+                        </Button>
+                    </Grid>
 
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Height="35"
-                             Tag="Ülke"/>
+                    <TextBlock Text="İl" Style="{StaticResource FieldLabelStyle}" Foreground="#B5B5B5"/>
+                    <Grid Margin="0,0,0,26">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="34"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="CityBox"
+                                 Grid.Column="0"
+                                 Style="{StaticResource SearchFieldTextBoxStyle}"/>
+                        <Button Grid.Column="1"
+                                Background="Transparent"
+                                BorderThickness="0">
+                            <TextBlock Text="⌕" FontSize="28" Foreground="#B5B5B5"/>
+                        </Button>
+                    </Grid>
 
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="İl"/>
+                    <TextBlock Text="İlçe" Style="{StaticResource FieldLabelStyle}" Foreground="#B5B5B5"/>
+                    <Grid Margin="0,0,0,26">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="34"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="DistrictBox"
+                                 Grid.Column="0"
+                                 Style="{StaticResource SearchFieldTextBoxStyle}"/>
+                        <Button Grid.Column="1"
+                                Background="Transparent"
+                                BorderThickness="0">
+                            <TextBlock Text="⌕" FontSize="28" Foreground="#B5B5B5"/>
+                        </Button>
+                    </Grid>
 
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="İlçe"/>
+                    <TextBlock Text="Semt" Style="{StaticResource FieldLabelStyle}" Foreground="#B5B5B5"/>
+                    <TextBox x:Name="NeighborhoodBox"
+                             Style="{StaticResource FlatTextBoxStyle}"
+                             Margin="0,0,0,26"
+                             Foreground="#B5B5B5"/>
 
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="Semt"/>
+                    <TextBlock Text="Adres" Style="{StaticResource FieldLabelStyle}" Foreground="#B5B5B5"/>
+                    <TextBox x:Name="AddressBox"
+                             Height="88"
+                             Style="{StaticResource FlatMultiLineTextBoxStyle}"
+                             Margin="0,0,0,46"
+                             Foreground="#B5B5B5"/>
 
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="80"
-                             TextWrapping="Wrap"
-                             AcceptsReturn="True"
-                             Tag="Adres"/>
-
-                    </StackPanel>
-
-
-                    <!-- Detay -->
-
-                    <Border Background="#E5E5E5" Padding="10">
+                    <Border Background="#D9D9D9"
+                            Height="46"
+                            Padding="20,0,0,0"
+                            Margin="0,0,0,22">
                         <TextBlock Text="Müşteri Detay Bilgileri"
-                               FontSize="16"
-                               FontWeight="SemiBold"/>
+                                   Style="{StaticResource SectionHeaderTextStyle}"/>
                     </Border>
 
-                    <StackPanel Margin="0,15,0,20">
+                    <TextBlock Text="Özel Proje Bilgisi" Style="{StaticResource FieldLabelStyle}"/>
+                    <Grid Margin="0,0,0,26">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="34"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="SpecialProjectBox"
+                                 Grid.Column="0"
+                                 Style="{StaticResource SearchFieldTextBoxStyle}"/>
+                        <Button Grid.Column="1"
+                                Background="Transparent"
+                                BorderThickness="0">
+                            <TextBlock Text="⌕" FontSize="28" Foreground="#2D3A4A"/>
+                        </Button>
+                    </Grid>
 
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Height="35"
-                             Tag="Özel Proje Bilgisi"/>
-
-                        <TextBox Style="{StaticResource PlaceholderTextBox}"
-                             Margin="0,10,0,0"
-                             Height="35"
-                             Tag="Yapı Bilgisi"/>
-
-                    </StackPanel>
-
+                    <TextBlock Text="Yapı Bilgisi" Style="{StaticResource FieldLabelStyle}"/>
+                    <Grid Margin="0,0,0,26">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="34"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="BuildingInfoBox"
+                                 Grid.Column="0"
+                                 Style="{StaticResource SearchFieldTextBoxStyle}"/>
+                        <Button Grid.Column="1"
+                                Background="Transparent"
+                                BorderThickness="0">
+                            <TextBlock Text="⌕" FontSize="28" Foreground="#2D3A4A"/>
+                        </Button>
+                    </Grid>
                 </StackPanel>
             </Grid>
         </ScrollViewer>
 
+        <!-- Footer buttons -->
+        <StackPanel Grid.Row="5"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,18,0,0">
+            <Button Content="⊘ Vazgeç"
+                    Width="112"
+                    Margin="0,0,12,0"
+                    Style="{StaticResource OutlineBlueButtonStyle}"
+                    Click="CancelButton_Click"/>
 
-        <!-- BUTONLAR -->
-
-                <StackPanel Grid.Row="1"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        Margin="0,40,0,20"
-                        Grid.ColumnSpan="3">
-
-                    <Button Content="Vazgeç"
-                        Width="120"
-                        Height="40"
-                        Margin="0,0,10,0"/>
-
-                    <Button Content="Kaydet"
-                        Width="120"
-                        Height="40"
-                        Background="#0F5EA8"
-                        Foreground="White"
-                        Margin="0,0,10,0"/>
-
-                    <!--<Button Content="Yeni İş Akışı Oluştur"
-                        Width="200"
-                        Height="40"
-                        Background="#0F5EA8"
-                        Foreground="White"/>
-                    -->
-
-                </StackPanel>
-
-
+            <Button Content="🗎 Kaydet"
+                    Width="112"
+                    Style="{StaticResource BlueButtonStyle}"
+                    Click="SaveButton_Click"/>
+        </StackPanel>
     </Grid>
 </Page>

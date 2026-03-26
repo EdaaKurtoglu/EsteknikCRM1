@@ -3,39 +3,85 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:EsteknikCRM1"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Background="White"
       Title="HomeContentPage">
+
+    <Page.Resources>
+        <Style x:Key="PaginationButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="38"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D9D9D9"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ActivePaginationButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource PaginationButtonStyle}">
+            <Setter Property="Background" Value="#1565C0"/>
+            <Setter Property="BorderBrush" Value="#1565C0"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style x:Key="NavPaginationButtonStyle"
+               TargetType="Button"
+               BasedOn="{StaticResource PaginationButtonStyle}">
+            <Setter Property="Foreground" Value="#888"/>
+        </Style>
+    </Page.Resources>
 
     <Grid Margin="40" Background="White">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
 
         <!-- SEARCH -->
         <TextBox x:Name="SearchBox"
-         Width="250"
-         Height="30"
-         HorizontalAlignment="Right"
-         VerticalContentAlignment="Center"
-         Padding="10,0"
-         Background="#F3F6F9"
-         BorderBrush="#DADADA"
-         TextChanged="SearchBox_TextChanged"/>
-
+                 Width="250"
+                 Height="34"
+                 HorizontalAlignment="Right"
+                 VerticalContentAlignment="Center"
+                 Padding="10,0"
+                 Background="#F3F6F9"
+                 BorderBrush="#DADADA"
+                 TextChanged="SearchBox_TextChanged"/>
 
         <!-- TABLE -->
         <Border Grid.Row="1"
                 Background="White"
-                Width="600"
+                Width="700"
+                HorizontalAlignment="Center"
                 CornerRadius="8"
                 BorderBrush="#E0E0E0"
-                BorderThickness="1">
+                BorderThickness="1"
+                Margin="0,15,0,15">
 
             <DataGrid x:Name="RecordsGrid"
                       AutoGenerateColumns="False"
@@ -52,35 +98,25 @@
                         <Setter Property="Padding" Value="10,0"/>
                     </Style>
                 </DataGrid.Resources>
-                <!-- ROW STYLE -->
+
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
-
-                        <!-- Alternating Row Colors -->
                         <Setter Property="Background" Value="White"/>
-
                         <Style.Triggers>
-
                             <Trigger Property="AlternationIndex" Value="1">
                                 <Setter Property="Background" Value="#F8FAFC"/>
                             </Trigger>
-
-                            <!-- Hover Effect -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#E3F2FD"/>
                             </Trigger>
-
-                            <!-- Selected Row -->
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="Background" Value="#BBDEFB"/>
                             </Trigger>
-
                         </Style.Triggers>
                     </Style>
                 </DataGrid.RowStyle>
 
                 <DataGrid.Columns>
-
                     <DataGridTextColumn Header="Başlık"
                                         Binding="{Binding Subject}"
                                         Width="*"/>
@@ -99,7 +135,6 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

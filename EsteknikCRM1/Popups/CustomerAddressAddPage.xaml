@@ -1,0 +1,619 @@
+﻿<Window x:Class="EsteknikCRM1.Popups.CustomerAddressAddPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="CustomerAddressAddPage"
+        Height="790"
+        Width="760"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="PrimaryBlue" Color="#005A9E"/>
+        <SolidColorBrush x:Key="LineBrush" Color="#C7CDD4"/>
+        <SolidColorBrush x:Key="LightGrayBrush" Color="#D9D9D9"/>
+        <SolidColorBrush x:Key="SoftTextBrush" Color="#8A8F96"/>
+        <SolidColorBrush x:Key="PanelHeaderBrush" Color="#DCDCDC"/>
+        <SolidColorBrush x:Key="PopupBackgroundBrush" Color="White"/>
+
+        <Style x:Key="SectionHeaderStyle" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource PanelHeaderBrush}"/>
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="Margin" Value="0,0,0,14"/>
+        </Style>
+
+        <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="InputLineStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="{StaticResource LineBrush}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Height" Value="44"/>
+        </Style>
+
+        <Style x:Key="FlatTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="0,2,0,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="SearchIconButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="Foreground" Value="#2D3A4A"/>
+        </Style>
+
+        <Style x:Key="BlueButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryBlue}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBlue}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="24,0"/>
+        </Style>
+
+        <Style x:Key="OutlineButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryBlue}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBlue}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="24,0"/>
+        </Style>
+
+        <Style x:Key="CheckBoxStyleLarge" TargetType="CheckBox">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal">
+                            <Border x:Name="Box"
+                                    Width="30"
+                                    Height="30"
+                                    Background="#D9D9D9"
+                                    BorderBrush="#D9D9D9"
+                                    BorderThickness="1"
+                                    Margin="0,0,12,0">
+                                <TextBlock x:Name="Tick"
+                                           Text="✓"
+                                           Visibility="Collapsed"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="White"
+                                           FontSize="20"
+                                           FontWeight="Bold"/>
+                            </Border>
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Box" Property="Background" Value="{StaticResource PrimaryBlue}"/>
+                                <Setter TargetName="Box" Property="BorderBrush" Value="{StaticResource PrimaryBlue}"/>
+                                <Setter TargetName="Tick" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="RadioCircleStyle" TargetType="RadioButton">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="Margin" Value="0,0,32,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <StackPanel Orientation="Horizontal">
+                            <Grid Width="30" Height="30" Margin="0,0,12,0">
+                                <Ellipse Stroke="#D3D3D3"
+                                         StrokeThickness="7"
+                                         Fill="Transparent"/>
+                                <Ellipse x:Name="InnerCircle"
+                                         Width="14"
+                                         Height="14"
+                                         Fill="{StaticResource PrimaryBlue}"
+                                         Visibility="Collapsed"/>
+                            </Grid>
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="InnerCircle" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <Border Background="#66000000">
+        <Grid>
+            <Border Width="748"
+                    Height="756"
+                    Background="{StaticResource PopupBackgroundBrush}"
+                    CornerRadius="10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="82"/>
+                        <RowDefinition Height="2"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="86"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <Grid Grid.Row="0" Margin="18,0,18,0">
+                        <TextBlock Text="Bireysel Müşteri Adres Bilgileri"
+                                   FontSize="21"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   Foreground="#222"/>
+
+                        <Button Content="✕"
+                                Width="36"
+                                Height="36"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                FontSize="24"
+                                Foreground="#333"
+                                Cursor="Hand"
+                                Click="CloseButton_Click"/>
+                    </Grid>
+
+                    <Border Grid.Row="1" Background="{StaticResource PrimaryBlue}"/>
+
+                    <!-- Content -->
+                    <ScrollViewer Grid.Row="2"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <Grid Margin="18,18,18,20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Top checkbox -->
+                            <CheckBox x:Name="IsActiveCheckBox"
+                                      Grid.Row="0"
+                                      Content="Aktif"
+                                      IsChecked="True"
+                                      Style="{StaticResource CheckBoxStyleLarge}"
+                                      Margin="0,0,0,34"
+                                      IsEnabled="False"/>
+
+                            <!-- Dates -->
+                            <Grid Grid.Row="1" Margin="0,0,0,34">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="36"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Oluşturulma Tarihi"
+                                               Style="{StaticResource FieldLabelStyle}"
+                                               Foreground="{StaticResource SoftTextBrush}"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="40"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Column="0" Style="{StaticResource InputLineStyle}">
+                                            <DatePicker x:Name="CreatedDatePicker"
+                                                        SelectedDateFormat="Short"
+                                                        BorderThickness="0"
+                                                        Background="Transparent"
+                                                        FontSize="15"
+                                                        IsEnabled="False"/>
+                                        </Border>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="🗓"
+                                                   FontSize="22"
+                                                   Foreground="#B4B7BB"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"/>
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Pasifleştirme Tarihi"
+                                               Style="{StaticResource FieldLabelStyle}"
+                                               Foreground="{StaticResource SoftTextBrush}"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="40"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Column="0" Style="{StaticResource InputLineStyle}">
+                                            <DatePicker x:Name="PassiveDatePicker"
+                                                        SelectedDateFormat="Short"
+                                                        BorderThickness="0"
+                                                        Background="Transparent"
+                                                        FontSize="15"
+                                                        IsEnabled="False"/>
+                                        </Border>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="🗓"
+                                                   FontSize="22"
+                                                   Foreground="#B4B7BB"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Residence -->
+                            <CheckBox x:Name="IsResidenceCheckBox"
+                                      Grid.Row="2"
+                                      Content="İkametgah Adresi Mi?"
+                                      Style="{StaticResource CheckBoxStyleLarge}"
+                                      Margin="0,0,0,30"/>
+
+                            <!-- Ownership -->
+                            <Grid Grid.Row="3" Margin="0,0,0,26">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <RadioButton x:Name="OwnerRadio"
+                                                 Content="Ev Sahibi"
+                                                 IsChecked="True"
+                                                 GroupName="OwnershipType"
+                                                 Style="{StaticResource RadioCircleStyle}"
+                                                 Margin="0,0,0,14"/>
+                                    <RadioButton x:Name="OtherRadio"
+                                                 Content="Diğer"
+                                                 GroupName="OwnershipType"
+                                                 Style="{StaticResource RadioCircleStyle}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1">
+                                    <RadioButton x:Name="TenantRadio"
+                                                 Content="Kiracı"
+                                                 GroupName="OwnershipType"
+                                                 Style="{StaticResource RadioCircleStyle}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Smart address search -->
+                            <StackPanel Grid.Row="4" Margin="0,0,0,18">
+                                <TextBlock Text="Akıllı Adres Arama Çubuğu"
+                                           Style="{StaticResource FieldLabelStyle}"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="40"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Style="{StaticResource InputLineStyle}">
+                                        <TextBox x:Name="SmartAddressSearchBox"
+                                                 Style="{StaticResource FlatTextBoxStyle}"
+                                                 TextChanged="SmartAddressSearchBox_TextChanged"/>
+                                    </Border>
+
+                                    <Button Grid.Column="1"
+                                            Content="⌕"
+                                            Style="{StaticResource SearchIconButtonStyle}"
+                                            Click="SearchSmartAddress_Click"/>
+                                </Grid>
+                            </StackPanel>
+
+                            <!-- Map -->
+                            <Border Grid.Row="5"
+                                    Height="228"
+                                    Background="#F4F4F4"
+                                    BorderBrush="#E1E1E1"
+                                    BorderThickness="1"
+                                    Margin="0,0,0,30">
+                                <Grid>
+                                    <Border Background="#EFEFEF" Margin="0">
+                                        <Grid>
+                                            <Canvas>
+                                                <TextBlock Text="Google"
+                                                           FontSize="28"
+                                                           FontWeight="Bold"
+                                                           Foreground="#FFFFFF"
+                                                           Opacity="0.85"
+                                                           Canvas.Left="14"
+                                                           Canvas.Bottom="8"/>
+                                            </Canvas>
+
+                                            <!-- basit sahte harita görünümü -->
+                                            <Canvas>
+                                                <Line X1="40" Y1="30" X2="710" Y2="160" Stroke="#D8D8D8" StrokeThickness="1"/>
+                                                <Line X1="120" Y1="0" X2="260" Y2="228" Stroke="#E3E3E3" StrokeThickness="1"/>
+                                                <Line X1="330" Y1="0" X2="470" Y2="228" Stroke="#E3E3E3" StrokeThickness="1"/>
+                                                <Line X1="580" Y1="0" X2="680" Y2="228" Stroke="#E3E3E3" StrokeThickness="1"/>
+
+                                                <Line X1="0" Y1="190" X2="720" Y2="40" Stroke="#D6D6D6" StrokeThickness="1"/>
+                                                <Line X1="0" Y1="120" X2="730" Y2="120" Stroke="#E4E4E4" StrokeThickness="1"/>
+
+                                                <TextBlock Text="Cihadiye Cad." Canvas.Left="74" Canvas.Top="86" Foreground="#A8A8A8" RenderTransformOrigin="0.5,0.5">
+                                                    <TextBlock.RenderTransform>
+                                                        <RotateTransform Angle="-32"/>
+                                                    </TextBlock.RenderTransform>
+                                                </TextBlock>
+                                                <TextBlock Text="Zübidoğlu Sk." Canvas.Left="244" Canvas.Top="66" Foreground="#B0B0B0" RenderTransformOrigin="0.5,0.5">
+                                                    <TextBlock.RenderTransform>
+                                                        <RotateTransform Angle="-78"/>
+                                                    </TextBlock.RenderTransform>
+                                                </TextBlock>
+                                                <TextBlock Text="Bağcılar Sok." Canvas.Left="510" Canvas.Top="34" Foreground="#B0B0B0" RenderTransformOrigin="0.5,0.5">
+                                                    <TextBlock.RenderTransform>
+                                                        <RotateTransform Angle="60"/>
+                                                    </TextBlock.RenderTransform>
+                                                </TextBlock>
+                                            </Canvas>
+
+                                            <!-- sol ikon -->
+                                            <Border Width="52"
+                                                    Height="52"
+                                                    Background="White"
+                                                    CornerRadius="4"
+                                                    BorderBrush="#D0D0D0"
+                                                    BorderThickness="1"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Top"
+                                                    Margin="14,14,0,0">
+                                                <TextBlock Text="🚶"
+                                                           FontSize="28"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <!-- fullscreen -->
+                                            <Border Width="52"
+                                                    Height="52"
+                                                    Background="White"
+                                                    CornerRadius="4"
+                                                    BorderBrush="#D0D0D0"
+                                                    BorderThickness="1"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Top"
+                                                    Margin="0,14,14,0">
+                                                <TextBlock Text="⛶"
+                                                           FontSize="24"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <!-- move -->
+                                            <Border Width="52"
+                                                    Height="52"
+                                                    Background="White"
+                                                    CornerRadius="26"
+                                                    BorderBrush="#D0D0D0"
+                                                    BorderThickness="1"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Bottom"
+                                                    Margin="0,0,14,14">
+                                                <TextBlock Text="✥"
+                                                           FontSize="24"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <DockPanel VerticalAlignment="Bottom"
+                                                       Background="#F6F6F6"
+                                                       Height="28">
+                                                <TextBlock Text="Klavye kısayolları   Harita verileri ©2026   Şartlar   Harita hatası bildirin"
+                                                           FontSize="11"
+                                                           Foreground="#444"
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Center"
+                                                           Margin="12,0"/>
+                                            </DockPanel>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- Country/City -->
+                            <Grid Grid.Row="6" Margin="0,0,0,24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="36"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Ülke" Style="{StaticResource FieldLabelStyle}"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="40"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Column="0" Style="{StaticResource InputLineStyle}">
+                                            <TextBox x:Name="CountryBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                        </Border>
+                                        <Button Grid.Column="1"
+                                                Content="⌕"
+                                                Style="{StaticResource SearchIconButtonStyle}"/>
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="İl" Style="{StaticResource FieldLabelStyle}"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="40"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Column="0" Style="{StaticResource InputLineStyle}">
+                                            <TextBox x:Name="CityBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                        </Border>
+                                        <Button Grid.Column="1"
+                                                Content="⌕"
+                                                Style="{StaticResource SearchIconButtonStyle}"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- District/Neighborhood -->
+                            <Grid Grid.Row="7">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Margin="0,0,0,24">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="36"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="İlçe" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="40"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" Style="{StaticResource InputLineStyle}">
+                                                <TextBox x:Name="DistrictBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                            </Border>
+                                            <Button Grid.Column="1"
+                                                    Content="⌕"
+                                                    Style="{StaticResource SearchIconButtonStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Semt" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="40"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" Style="{StaticResource InputLineStyle}">
+                                                <TextBox x:Name="NeighborhoodBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                            </Border>
+                                            <Button Grid.Column="1"
+                                                    Content="⌕"
+                                                    Style="{StaticResource SearchIconButtonStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="1" Margin="0,0,0,24">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="36"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Sokak/Cadde" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Border Style="{StaticResource InputLineStyle}">
+                                            <TextBox x:Name="StreetBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                        </Border>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Posta Kodu" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Border Style="{StaticResource InputLineStyle}">
+                                            <TextBox x:Name="PostCodeBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="2" Margin="0,0,0,24">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="36"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Apartman No" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Border Style="{StaticResource InputLineStyle}">
+                                            <TextBox x:Name="BuildingNoBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                        </Border>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Daire" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Border Style="{StaticResource InputLineStyle}">
+                                            <TextBox x:Name="FlatNoBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+
+                                <StackPanel Grid.Row="3" Margin="0,0,0,24">
+                                    <TextBlock Text="Adres" Style="{StaticResource FieldLabelStyle}"/>
+                                    <Border BorderBrush="{StaticResource LineBrush}"
+                                            BorderThickness="0,0,0,1"
+                                            Padding="0,0,0,8">
+                                        <TextBox x:Name="AddressBox"
+                                                 TextWrapping="Wrap"
+                                                 AcceptsReturn="True"
+                                                 FontSize="16"
+                                                 BorderThickness="0"
+                                                 Background="Transparent"
+                                                 MinHeight="88"/>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
+
+                    <!-- Footer -->
+                    <Grid Grid.Row="3" Margin="0,0,18,0">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center">
+                            <Button Content="Vazgeç"
+                                    Width="90"
+                                    Margin="0,0,12,0"
+                                    Style="{StaticResource OutlineButtonStyle}"
+                                    Click="CancelButton_Click"/>
+
+                            <Button Content="Kaydet"
+                                    Width="96"
+                                    Style="{StaticResource BlueButtonStyle}"
+                                    Click="SaveButton_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
