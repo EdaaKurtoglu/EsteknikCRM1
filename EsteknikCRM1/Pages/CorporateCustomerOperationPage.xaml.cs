@@ -3,9 +3,9 @@ using System.Windows.Controls;
 
 namespace EsteknikCRM1.Pages
 {
-    public partial class ServiceTeamDefinitionsOperationPage : Page
+    public partial class CorporateCustomerOperationPage : Page
     {
-        public ServiceTeamDefinitionsOperationPage()
+        public CorporateCustomerOperationPage()
         {
             InitializeComponent();
         }
@@ -17,7 +17,12 @@ namespace EsteknikCRM1.Pages
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Takım kaydedildi.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Kaydet işlemi çalışacak.");
+        }
+
+        private void SelectFilesButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Dosya seçme işlemi çalışacak.");
         }
     }
 }

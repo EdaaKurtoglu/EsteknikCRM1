@@ -126,8 +126,8 @@
             <!-- Search + add -->
             <Grid Grid.Row="3" Margin="0,0,0,20">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="760"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="1010"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="1">
@@ -138,15 +138,15 @@
 
                     <Grid Grid.Row="0" Margin="0,0,0,18">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="645"/>
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Ara"
                                        Foreground="#9E9E9E"
                                        FontSize="18"
-                                       Margin="14,0,0,8"/>
+                                       Width="84"/>
                             <TextBox x:Name="SearchTextBox"
                                      Background="Transparent"
                                      BorderThickness="0"
@@ -159,7 +159,7 @@
                         <Button Grid.Column="1"
                                 Background="Transparent"
                                 BorderThickness="0"
-                                Cursor="Hand">
+                                Cursor="Hand" Margin="0,8,578,9">
                             <TextBlock Text="⌕"
                                        FontSize="28"
                                        Foreground="#2D3A4A"
@@ -444,41 +444,44 @@
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="95"/>
-                    <DataGridTextColumn Header="İş Akışı&#x0a;Durumu" Binding="{Binding Status}" Width="120"/>
+                    <DataGridTextColumn Header="İş Akışı&#x0a;Durumu" Binding="{Binding WorkflowStatus}" Width="120"/>
                     <DataGridTextColumn Header="Akış&#x0a;Tipi" Binding="{Binding FlowType}" Width="90"/>
                     <DataGridTextColumn Header="Son Yapılan&#x0a;İşlem" Binding="{Binding LastAction}" Width="155"/>
                     <DataGridTextColumn Header="Konu" Binding="{Binding Subject}" Width="310"/>
-                    <DataGridTextColumn Header="Müşteri" Binding="{Binding Customer}" Width="165"/>
-                    <DataGridTextColumn Header="Müşteri&#x0a;Telefon" Binding="{Binding Phone}" Width="130"/>
+                    <DataGridTextColumn Header="Müşteri" Binding="{Binding CustomerFullName}" Width="165"/>
+                    <DataGridTextColumn Header="Müşteri&#x0a;Telefon" Binding="{Binding CustomerPhone}" Width="130"/>
                     <DataGridTextColumn Header="Oluşturulma&#x0a;Tarihi" Binding="{Binding CreatedDate}" Width="160"/>
+
                     <DataGridTemplateColumn Header="Oluşturan&#x0a;Kişi" Width="140">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding CreatedBy}"
-                                               Foreground="#005A9E"
-                                               FontWeight="SemiBold"
-                                               TextWrapping="Wrap"/>
-                                    <TextBlock Text="{Binding CreatedRole}"
-                                               FontWeight="SemiBold"
-                                               FontSize="13"/>
+                                    <TextBlock Text="{Binding CreatedByFullName}"
+                               Foreground="#005A9E"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding CreatedByRole}"
+                               FontWeight="SemiBold"
+                               FontSize="13"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+
                     <DataGridTextColumn Header="Başlangıç&#x0a;Tipi" Binding="{Binding StartType}" Width="130"/>
 
                     <DataGridTemplateColumn Header="" Width="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="İşlem"
-                                        Width="72"
-                                        Height="40"
-                                        Background="#005A9E"
-                                        Foreground="White"
-                                        BorderBrush="#005A9E"
-                                        BorderThickness="0"
-                                        Cursor="Hand"/>
+                        Width="72"
+                        Height="40"
+                        Background="#005A9E"
+                        Foreground="White"
+                        BorderBrush="#005A9E"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Click="Operation_Click"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

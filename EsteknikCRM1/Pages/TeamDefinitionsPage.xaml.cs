@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
 
 namespace EsteknikCRM1.Pages
@@ -10,39 +13,33 @@ namespace EsteknikCRM1.Pages
         public TeamDefinitionsPage()
         {
             InitializeComponent();
-            LoadData();
+            Loaded += TeamDefinitionsPage_Loaded;
         }
 
-        private void LoadData()
+        private async void TeamDefinitionsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            TeamGrid.ItemsSource = new List<TeamItem>
+            await LoadDataAsync();
+        }
+
+        private async Task LoadDataAsync()
+        {
+            try
             {
-                new TeamItem
-                {
-                    Id = 959,
-                    ServiceName = "ES İKLİMLENDİRME VE OTOMASYON...",
-                    TeamName = "BEKİR ÖZKESEK",
-                    MemberCount = 0,
-                    MemberName = "",
-                    Role = "",
-                    Status = "Active"
-                },
-                new TeamItem
-                {
-                    Id = 958,
-                    ServiceName = "ES İKLİMLENDİRME VE OTOMASYON...",
-                    TeamName = "İNANIR İLHAN",
-                    MemberCount = 1,
-                    MemberName = "İnanır İLHAN",
-                    Role = "Technician",
-                    Status = "Active"
-                }
-            };
+                var teams = await FirebaseService.Instance.GetTeamsAsync();
+                TeamGrid.ItemsSource = teams;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Takımlar yüklenirken hata oluştu:\n" + ex.Message,
+                                "Hata",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+            }
         }
 
         private void AddTeam_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new ServiceTeamDefinitionsOperationPage());
+            NavigationService?.Navigate(new TeamDefinitionsOperationPage());
         }
 
         private void Select_Click(object sender, RoutedEventArgs e)

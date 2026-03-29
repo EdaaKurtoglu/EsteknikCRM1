@@ -1,0 +1,707 @@
+﻿<Page x:Class="EsteknikCRM1.Pages.CorporateCustomerOperationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      Background="#F3F3F3"
+      Title="CorporateCustomerOperationPage">
+
+    <Page.Resources>
+
+        <Style x:Key="SectionHeaderStyle" TargetType="Border">
+            <Setter Property="Background" Value="#D9D9D9"/>
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+
+        <Style x:Key="FieldLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style x:Key="MutedFieldLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource FieldLabelStyle}">
+            <Setter Property="Foreground" Value="#B7B7B7"/>
+        </Style>
+
+        <Style x:Key="LineBoxStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#BCC3CA"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="0,0,0,10"/>
+            <Setter Property="Margin" Value="0,0,0,22"/>
+        </Style>
+
+        <Style x:Key="FlatTextBoxStyle" TargetType="TextBox">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+        </Style>
+
+        <Style x:Key="TabButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#1F2D3D"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="10,6"/>
+        </Style>
+
+        <Style x:Key="BlueButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Background" Value="#005A9E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#005A9E"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style x:Key="OutlineButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#005A9E"/>
+            <Setter Property="BorderBrush" Value="#7FAED6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto">
+
+        <Grid Margin="18,10,18,16" MinWidth="1540">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Breadcrumb -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,8,0,14">
+                <TextBlock Text="⌂ Anasayfa" Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="Kartlar" Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="Kurumsal Müşteri Kartları" Foreground="#0A67B2" FontSize="14"/>
+                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
+                <TextBlock Text="Kurumsal Müşteri Kartları İşlem"
+                           Foreground="#0A67B2"
+                           FontSize="14"
+                           FontWeight="SemiBold"/>
+            </StackPanel>
+
+            <!-- Blue line -->
+            <Border Grid.Row="1"
+                    Background="#0A67B2"
+                    Height="2"
+                    Margin="0,0,0,20"/>
+
+            <!-- Title + Tabs -->
+            <StackPanel Grid.Row="2" Margin="0,0,0,20">
+                <TextBlock Text="Kurumsal Müşteri Kartları"
+                           FontSize="22"
+                           Foreground="Black"
+                           Margin="0,0,0,22"/>
+
+                <Grid Margin="0,0,0,18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="260"/>
+                        <ColumnDefinition Width="260"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="❮"
+                               FontSize="34"
+                               Foreground="#B4B4B4"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Margin="0,0,20,0">
+                        <Button Content="Kurumsal Müşteri Bilgileri"
+                                Style="{StaticResource TabButtonStyle}"
+                                HorizontalAlignment="Left"/>
+                        <Border Height="4"
+                                Background="#14A0DB"
+                                Margin="10,8,0,0"
+                                Width="230"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="2"
+                            Content="Merkez Cihaz Listesi"
+                            Style="{StaticResource TabButtonStyle}"
+                            HorizontalAlignment="Left"/>
+
+                    <TextBlock Grid.Column="4"
+                               Text="❯"
+                               FontSize="34"
+                               Foreground="Black"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"/>
+                </Grid>
+
+                <Border BorderBrush="#E1E1E1"
+                        BorderThickness="0,0,0,1"/>
+            </StackPanel>
+
+            <!-- Main Form -->
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="36"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT -->
+                <StackPanel Grid.Column="0">
+
+                    <!-- Kurumsal Müşteri Bilgileri -->
+                    <Border Style="{StaticResource SectionHeaderStyle}">
+                        <TextBlock Text="Kurumsal Müşteri Bilgileri"
+                                   VerticalAlignment="Center"
+                                   Margin="16,0,0,0"
+                                   FontSize="16"/>
+                    </Border>
+
+                    <StackPanel Margin="0,0,0,6">
+                        <TextBlock Text="Müşteri Ünvanı" Style="{StaticResource FieldLabelStyle}"/>
+                        <Border Style="{StaticResource LineBoxStyle}">
+                            <TextBox x:Name="CompanyTitleBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                        </Border>
+                    </StackPanel>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Vergi Dairesi" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="TaxOfficeBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Vergi Numarası" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="TaxNumberBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- İletişim Bilgileri -->
+                    <Border Style="{StaticResource SectionHeaderStyle}">
+                        <TextBlock Text="İletişim Bilgileri"
+                                   VerticalAlignment="Center"
+                                   Margin="16,0,0,0"
+                                   FontSize="16"/>
+                    </Border>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Kurumsal Müşteri Sorumlusu Adı" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="ContactNameBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Kurumsal Müşteri Sorumlusu Soyadı" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="ContactSurnameBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Telefon Numarası" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="PhoneBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Telefon Numarası 2" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="Phone2Box" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Cep Telefonu Numarası" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="MobilePhoneBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Cep Telefonu Numarası 2" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="MobilePhone2Box" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Eposta" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="EmailBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Eposta 2" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="Email2Box" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Sözleşme Bilgileri -->
+                    <Border Style="{StaticResource SectionHeaderStyle}">
+                        <TextBlock Text="Sözleşme Bilgileri"
+                                   VerticalAlignment="Center"
+                                   Margin="16,0,0,0"
+                                   FontSize="16"/>
+                    </Border>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Sözleşme Başlangıç Tarihi" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="32"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <DatePicker x:Name="ContractStartDatePicker"
+                                                BorderThickness="0"
+                                                Background="Transparent"
+                                                FontSize="15"/>
+
+                                    <TextBlock Grid.Column="1"
+                                               Text="🗓"
+                                               FontSize="22"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Sözleşme Bitiş Tarihi" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="32"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <DatePicker x:Name="ContractEndDatePicker"
+                                                BorderThickness="0"
+                                                Background="Transparent"
+                                                FontSize="15"/>
+
+                                    <TextBlock Grid.Column="1"
+                                               Text="🗓"
+                                               FontSize="22"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Diğer Bilgiler -->
+                    <Border Style="{StaticResource SectionHeaderStyle}">
+                        <TextBlock Text="Diğer Bilgiler"
+                                   VerticalAlignment="Center"
+                                   Margin="16,0,0,0"
+                                   FontSize="16"/>
+                    </Border>
+
+                    <Border BorderBrush="#CFCFCF"
+                            BorderThickness="2"
+                            
+                            Height="190"
+                            Padding="20"
+                            Margin="0,0,0,24">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Yüklenecek dosyaları sürükleyip buraya bırakın."
+                                       HorizontalAlignment="Center"
+                                       FontSize="16"
+                                       Margin="0,22,0,24"/>
+                            <Button Content="Dosyaları seçin"
+                                    Width="140"
+                                    Height="40"
+                                    HorizontalAlignment="Center"
+                                    Background="White"
+                                    BorderBrush="#1990E6"
+                                    Foreground="#1990E6"
+                                    Click="SelectFilesButton_Click"/>
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Margin="0,0,0,18">
+                        <TextBlock Text="Açıklama" Style="{StaticResource FieldLabelStyle}"/>
+                        <Border Style="{StaticResource LineBoxStyle}" MinHeight="90">
+                            <TextBox x:Name="DescriptionBox"
+                                     Style="{StaticResource FlatTextBoxStyle}"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     MinHeight="70"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,12">
+                        <TextBlock Text="Potansiyel Müşteri" Style="{StaticResource FieldLabelStyle}"/>
+                        <Border Style="{StaticResource LineBoxStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox x:Name="PotentialCustomerBox"
+                                         Style="{StaticResource FlatTextBoxStyle}"/>
+
+                                <Button Grid.Column="1"
+                                        Content="⌕"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        FontSize="24"
+                                        Foreground="#2D3A4A"
+                                        Cursor="Hand"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <!-- RIGHT -->
+                <StackPanel Grid.Column="2">
+
+                    <!-- Adres Bilgileri -->
+                    <Border Style="{StaticResource SectionHeaderStyle}">
+                        <TextBlock Text="Adres Bilgileri"
+                                   VerticalAlignment="Center"
+                                   Margin="16,0,0,0"
+                                   FontSize="16"/>
+                    </Border>
+
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Akıllı Adres Arama Çubuğu" Style="{StaticResource FieldLabelStyle}"/>
+                        <Border Style="{StaticResource LineBoxStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox x:Name="SmartAddressSearchBox"
+                                         Style="{StaticResource FlatTextBoxStyle}"/>
+
+                                <Button Grid.Column="1"
+                                        Content="⌕"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        FontSize="24"
+                                        Foreground="#2D3A4A"
+                                        Cursor="Hand"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Harita -->
+                    <Border Height="250"
+                            Background="#EFEFEF"
+                            BorderBrush="#E0E0E0"
+                            BorderThickness="1"
+                            Margin="0,4,0,24">
+                        <Grid>
+                            <Canvas>
+                                <Line X1="0" Y1="160" X2="740" Y2="30" Stroke="#DADADA" StrokeThickness="1"/>
+                                <Line X1="160" Y1="0" X2="280" Y2="250" Stroke="#E3E3E3" StrokeThickness="1"/>
+                                <Line X1="430" Y1="0" X2="510" Y2="250" Stroke="#E3E3E3" StrokeThickness="1"/>
+
+                                <TextBlock Text="Cihadiye Cd."
+                                           Canvas.Left="104"
+                                           Canvas.Top="112"
+                                           Foreground="#A5A5A5"
+                                           RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <RotateTransform Angle="-32"/>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+
+                                <TextBlock Text="Özidoğru Sk."
+                                           Canvas.Left="218"
+                                           Canvas.Top="88"
+                                           Foreground="#B0B0B0"
+                                           RenderTransformOrigin="0.5,0.5">
+                                    <TextBlock.RenderTransform>
+                                        <RotateTransform Angle="-72"/>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+
+                                <TextBlock Text="Google"
+                                           Canvas.Left="10"
+                                           Canvas.Bottom="8"
+                                           Foreground="White"
+                                           FontSize="26"
+                                           FontWeight="Bold"
+                                           Opacity="0.85"/>
+                            </Canvas>
+
+                            <Border Width="54"
+                                    Height="54"
+                                    CornerRadius="4"
+                                    Background="White"
+                                    BorderBrush="#D7D7D7"
+                                    BorderThickness="1"
+                                    Margin="12"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top">
+                                <TextBlock Text="🚶"
+                                           FontSize="28"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+
+                            <Border Width="54"
+                                    Height="54"
+                                    CornerRadius="4"
+                                    Background="White"
+                                    BorderBrush="#D7D7D7"
+                                    BorderThickness="1"
+                                    Margin="12"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top">
+                                <TextBlock Text="⛶"
+                                           FontSize="24"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+
+                            <Border Width="54"
+                                    Height="54"
+                                    CornerRadius="27"
+                                    Background="White"
+                                    BorderBrush="#D7D7D7"
+                                    BorderThickness="1"
+                                    Margin="12"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom">
+                                <TextBlock Text="✥"
+                                           FontSize="24"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+
+                            <DockPanel VerticalAlignment="Bottom"
+                                       Height="28"
+                                       Background="#F6F6F6">
+                                <TextBlock Text="Klavye kısayolları   Harita verileri ©2026   Şartlar   Harita hatası bildirin"
+                                           FontSize="11"
+                                           Foreground="#444"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Margin="12,0"/>
+                            </DockPanel>
+                        </Grid>
+                    </Border>
+
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Ülke" Style="{StaticResource FieldLabelStyle}"/>
+                        <Border Style="{StaticResource LineBoxStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="CountryBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                <Button Grid.Column="1"
+                                        Content="⌕"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        FontSize="24"
+                                        Foreground="#2D3A4A"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Şehir" Style="{StaticResource MutedFieldLabelStyle}"/>
+                        <Border Style="{StaticResource LineBoxStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="CityBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                <Button Grid.Column="1"
+                                        Content="⌕"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        FontSize="24"
+                                        Foreground="#C4C4C4"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="İlçe" Style="{StaticResource MutedFieldLabelStyle}"/>
+                        <Border Style="{StaticResource LineBoxStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="DistrictBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                <Button Grid.Column="1"
+                                        Content="⌕"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        FontSize="24"
+                                        Foreground="#C4C4C4"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Semt" Style="{StaticResource MutedFieldLabelStyle}"/>
+                        <Border Style="{StaticResource LineBoxStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="NeighborhoodBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                                <Button Grid.Column="1"
+                                        Content="⌕"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        FontSize="24"
+                                        Foreground="#C4C4C4"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="36"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Cadde / Sokak" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="StreetBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Posta Kodu" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource LineBoxStyle}">
+                                <TextBox x:Name="PostCodeBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Apartman Numarası / Adı" Style="{StaticResource FieldLabelStyle}"/>
+                        <Border Style="{StaticResource LineBoxStyle}">
+                            <TextBox x:Name="BuildingNoBox" Style="{StaticResource FlatTextBoxStyle}"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Adres" Style="{StaticResource FieldLabelStyle}"/>
+                        <Border Style="{StaticResource LineBoxStyle}" MinHeight="104">
+                            <TextBox x:Name="AddressBox"
+                                     Style="{StaticResource FlatTextBoxStyle}"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="True"
+                                     MinHeight="84"/>
+                        </Border>
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+
+            <!-- Footer -->
+            <Grid Grid.Row="4" Margin="0,24,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Content="⊘ Vazgeç"
+                            Width="112"
+                            Margin="0,0,12,0"
+                            Style="{StaticResource OutlineButtonStyle}"
+                            Click="CancelButton_Click"/>
+
+                    <Button Content="🗎 Kaydet"
+                            Width="112"
+                            Style="{StaticResource BlueButtonStyle}"
+                            Click="SaveButton_Click"/>
+                </StackPanel>
+            </Grid>
+
+        </Grid>
+    </ScrollViewer>
+</Page>

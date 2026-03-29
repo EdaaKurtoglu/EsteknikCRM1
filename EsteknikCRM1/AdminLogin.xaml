@@ -32,7 +32,7 @@
                         Foreground ="Black"
                         FontSize="18"
                         Cursor="Hand"/>
-                </StackPanel>
+            </StackPanel>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
 
@@ -102,9 +102,9 @@
                             x:Name="LoginStack">
 
                     <!-- LOGO (BÜYÜTTÜK) -->
-                    <Image Source="/assets/eslogo.png"
-                           Width="320"
-                           Margin="0,0,0,40"/>
+                    <Image Source="/assets/login.png"
+                           Width="312"
+                           Margin="0,0,0,40" Height="130"/>
 
                     <StackPanel x:Name="EmailPanel">
 
@@ -123,16 +123,16 @@
                     <StackPanel x:Name="PasswordPanel"
                     Visibility="Collapsed">
 
-                         <TextBlock Text="Şifre"
+                        <TextBlock Text="Şifre"
                               FontSize="14"
                               Foreground="Gray"/>
 
-                         <PasswordBox x:Name="PasswordTextBox"
+                        <PasswordBox x:Name="PasswordTextBox"
                              Height="45"
                              Margin="0,5,0,20"
                              BorderBrush="#1E6F9F"
                              BorderThickness="0,0,0,2"
-                             Background="Transparent"/> 
+                             Background="Transparent"/>
                     </StackPanel>
 
                     <TextBlock Text="Bunun yerine telefon numarasını kullanın"

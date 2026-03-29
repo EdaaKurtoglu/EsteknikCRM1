@@ -11,5 +11,6 @@ namespace EsteknikCRM1.Models
         public int Id { get; set; }
         public string Personnel { get; set; }
         public string Empty { get; set; }
+        public string TeamId { get; set; }
     }
 }

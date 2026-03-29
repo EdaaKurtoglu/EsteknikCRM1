@@ -5,13 +5,14 @@ namespace EsteknikCRM1.Models
     public class WorkflowModel
     {
         public string Id { get; set; }
+        public string WorkflowId { get; set; }
         public string StartType { get; set; }
 
         public string CustomerId { get; set; }
         public string CustomerName { get; set; }
         public string CustomerSurname { get; set; }
         public string CustomerFullName { get; set; }
-
+        public string CustomerPhone { get; set; }
         public string AddressId { get; set; }
         public string AddressLine { get; set; }
 
@@ -38,8 +39,11 @@ namespace EsteknikCRM1.Models
         public string CreatedByUserMail { get; set; }
         public string CreatedByName { get; set; }
         public string CreatedBySurname { get; set; }
+        public string CreatedByFullName { get; set; }
         public string CreatedByRole { get; set; }
 
+        public string WorkTeam {  get; set; }
         public DateTime CreatedDate { get; set; }
+        public string LastAction { get; internal set; }
     }
 }

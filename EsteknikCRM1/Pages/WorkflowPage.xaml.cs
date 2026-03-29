@@ -40,25 +40,46 @@ namespace EsteknikCRM1
             try
             {
                 var workflows = await FirebaseService.Instance.GetWorkflowsAsync();
-                var gridItems = new List<WorkflowGridItem>();
+                var gridItems = new List<WorkflowModel>();
 
                 foreach (var item in workflows)
                 {
-                    gridItems.Add(new WorkflowGridItem
+                    string fullName = "";
+                    string phone = "";
+
+                    // 🔥 BURASI KRİTİK
+                    if (!string.IsNullOrEmpty(item.CustomerId))
+                    {
+                        var customer = await FirebaseService.Instance.GetCustomerByIdAsync(item.CustomerId);
+
+                        if (customer != null)
+                        {
+                            fullName = (customer.Name + " " + customer.Surname).Trim();
+                            phone = customer.Phone;
+                        }
+                    }
+
+                    gridItems.Add(new WorkflowModel
                     {
                         Id = item.Id,
-                        Status = item.WorkflowStatus,
+                        WorkflowStatus = item.WorkflowStatus,
                         FlowType = item.FlowType,
                         LastAction = item.NotificationTypeName,
                         Subject = item.Subject,
-                        Customer = item.CustomerFullName,
-                        Phone = "",
-                        CreatedDate = item.CreatedDate == DateTime.MinValue
-                            ? ""
-                            : item.CreatedDate.ToString("dd/MM/yyyy\nHH:mm"),
-                        CreatedBy = (item.CreatedByName + " " + item.CreatedBySurname).Trim(),
-                        CreatedRole = item.CreatedByRole,
+                        CategoryName = item.CategoryName,
+                        SubCategoryName = item.SubCategoryName,
+                        NotificationTypeName = item.NotificationTypeName,
+                        CustomerFullName = fullName,
+                        CustomerPhone = phone,
+                        AddressLine = item.AddressLine,
+                        DeviceName = item.DeviceName,
+                        DeviceId = item.DeviceId,
+                        CreatedDate = item.CreatedDate,
+                        CreatedByFullName = (item.CreatedByName + " " + item.CreatedBySurname).Trim(),
+                        CreatedByRole = item.CreatedByRole,
                         StartType = item.StartType
+                        
+                        
                     });
                 }
 
@@ -78,13 +99,7 @@ namespace EsteknikCRM1
                 home.MainFrame.Navigate(new WorkflowWizardPage(home.CurrentUser));
             }
         }
-        private void SelectButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            var row = button.DataContext;
-
-            MessageBox.Show("Selected row: " + row?.ToString());
-        }
+        
         private bool _filtersVisible = true;
 
         private void FilterToggleButton_Click(object sender, RoutedEventArgs e)
@@ -123,19 +138,19 @@ namespace EsteknikCRM1
             // burada Firestore'dan tekrar veri çekebilirsin
             MessageBox.Show("Veriler yenilendi.");
         }
+        private void Operation_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            WorkflowModel selectedWorkflow = button?.DataContext as WorkflowModel;
+
+            if (selectedWorkflow == null)
+            {
+                MessageBox.Show("Seçilen iş akışı bulunamadı.");
+                return;
+            }
+
+            NavigationService?.Navigate(new WorkflowOperationDetailPage(selectedWorkflow));
+        }
     }
-    public class WorkflowGridItem
-    {
-        public string Id { get; set; }
-        public string Status { get; set; }
-        public string FlowType { get; set; }
-        public string LastAction { get; set; }
-        public string Subject { get; set; }
-        public string Customer { get; set; }
-        public string Phone { get; set; }
-        public string CreatedDate { get; set; }
-        public string CreatedBy { get; set; }
-        public string CreatedRole { get; set; }
-        public string StartType { get; set; }
-    }
+   
 }

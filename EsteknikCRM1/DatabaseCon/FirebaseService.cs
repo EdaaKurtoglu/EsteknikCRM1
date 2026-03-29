@@ -439,7 +439,42 @@ namespace EsteknikCRM1.DatabaseCon
 
             return workflows;
         }
+        public async Task UpdateWorkflowStatusAsync(string workflowId, string newStatus)
+        {
+            try
+            {
+                DocumentReference docRef = db.Collection("Workflows").Document(workflowId);
 
+                Dictionary<string, object> updates = new Dictionary<string, object>
+        {
+            { "WorkflowStatus", newStatus }
+        };
+
+                await docRef.UpdateAsync(updates);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Workflow durumu güncellenemedi: " + ex.Message);
+            }
+        }
+        public async Task UpdateWorkflowTeamAsync(string workflowId, string team)
+        {
+            try
+            {
+                DocumentReference docRef = db.Collection("Workflows").Document(workflowId);
+
+                Dictionary<string, object> updates = new Dictionary<string, object>
+        {
+            { "Team", team }
+        };
+
+                await docRef.UpdateAsync(updates);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Workflow durumu güncellenemedi: " + ex.Message);
+            }
+        }
         public async Task<string> AddCustomerAsync(CustomerModel customer)
         {
             CollectionReference customersRef = db.Collection("Customers");
@@ -479,7 +514,208 @@ namespace EsteknikCRM1.DatabaseCon
                     return addedDoc.Id;
         }
 
-        
+        public async Task<string> AddTeamAsync(TeamItem team)
+        {
+            try
+            {
+                CollectionReference teamsRef = db.Collection("Teams");
+
+                Dictionary<string, object> data = new Dictionary<string, object>
+                {
+                    { "TeamName", team.TeamName ?? string.Empty },
+                    { "VehiclePlate", team.VehiclePlate ?? string.Empty },
+                    { "IsActive", team.IsActive },
+                    { "Status", team.Status ?? "Aktif" },
+                    { "CreatedDate", team.CreatedDate.ToUniversalTime() },
+                    { "PassiveDate", team.PassiveDate.HasValue ? (object)team.PassiveDate.Value.ToUniversalTime() : null },
+                    { "ServiceName", team.ServiceName ?? string.Empty }
+                };
+
+                DocumentReference addedDoc = await teamsRef.AddAsync(data);
+                return addedDoc.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Takım kaydedilirken hata oluştu: " + ex.Message);
+            }
+
+        }
+
+        public async Task<List<TeamItem>> GetTeamsAsync()
+        {
+            try
+            {
+                QuerySnapshot snapshot = await db.Collection("Teams").GetSnapshotAsync();
+                List<TeamItem> teams = new List<TeamItem>();
+
+                foreach (DocumentSnapshot doc in snapshot.Documents)
+                {
+                    if (!doc.Exists)
+                        continue;
+
+                    string serviceName = "";
+                    string teamName = "";
+                    int memberCount = 0;
+                    string memberName = "";
+                    string role = "";
+                    string status = "";
+                    string teamId = "";
+
+                    if (doc.ContainsField("ServiceName"))
+                        serviceName = doc.GetValue<string>("ServiceName");
+
+                    if (doc.ContainsField("TeamName"))
+                        teamName = doc.GetValue<string>("TeamName");
+
+                    if (doc.ContainsField("MemberCount"))
+                        memberCount = doc.GetValue<int>("MemberCount");
+
+                    if (doc.ContainsField("MemberName"))
+                        memberName = doc.GetValue<string>("MemberName");
+
+                    if (doc.ContainsField("Role"))
+                        role = doc.GetValue<string>("Role");
+
+                    if (doc.ContainsField("Status"))
+                        status = doc.GetValue<string>("Status");
+                    int rowNo = 1;
+
+                      teams.Add(new TeamItem
+                        {
+                            TeamId = teamId,
+                            ServiceName = serviceName,
+                            TeamName = teamName,
+                            MemberCount = memberCount,
+                            MemberName = memberName,
+                            Role = role,
+                            Status = status
+                        });
+                        rowNo++;
+                }
+
+                return teams;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Takımlar alınırken hata oluştu: " + ex.Message);
+            }
+        }
+
+        public async Task<CustomerModel> GetCustomerByIdAsync(string customerId)
+        {
+            try
+            {
+                DocumentReference docRef = db.Collection("Customers").Document(customerId);
+                DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+
+                if (!snapshot.Exists)
+                    return null;
+
+                return new CustomerModel
+                {
+                    Id = docRef.Id,
+                    Name = snapshot.GetValue<string>("Name"),
+                    Surname = snapshot.GetValue<string>("Surname"),
+                    Phone = snapshot.ContainsField("Phone") ? snapshot.GetValue<string>("Phone") : ""
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Müşteri alınamadı: " + ex.Message);
+            }
+        }
+
+        public async Task<List<UserModel>> GetUsersAsync()
+        {
+            try
+            {
+                QuerySnapshot snapshot = await db.Collection("Users").GetSnapshotAsync();
+                List<UserModel> users = new List<UserModel>();
+
+                foreach (DocumentSnapshot doc in snapshot.Documents)
+                {
+                    if (!doc.Exists)
+                        continue;
+
+                    string name = doc.ContainsField("Name") ? doc.GetValue<string>("Name") : "";
+                    string surname = doc.ContainsField("Surname") ? doc.GetValue<string>("Surname") : "";
+                    string role = doc.ContainsField("UserRole") ? doc.GetValue<string>("UserRole") : "";
+                    string department = doc.ContainsField("Department") ? doc.GetValue<string>("Department") : "";
+
+                    users.Add(new UserModel
+                    {
+                        Id = doc.Id,
+                        Name = name,
+                        Surname = surname,
+                        FullName = (name + " " + surname).Trim(),
+                        UserRole = role,
+                        Department = department
+                    });
+                }
+
+                return users;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Kullanıcılar alınırken hata oluştu: " + ex.Message);
+            }
+        }
+
+
+        public async Task<DeviceModel> GetDeviceByIdAsync(string deviceId)
+        {
+            try
+            {
+                DocumentReference docRef = db.Collection("Devices").Document(deviceId);
+                DocumentSnapshot doc = await docRef.GetSnapshotAsync();
+
+                if (!doc.Exists)
+                    return null;
+
+                return new DeviceModel
+                {
+                    Id = doc.Id,
+
+                    SerialNumber = doc.ContainsField("SerialNumber")
+                        ? doc.GetValue<string>("SerialNumber")
+                        : "",
+
+                    DeviceName = doc.ContainsField("DeviceName")
+                        ? doc.GetValue<string>("DeviceName")
+                        : "",
+
+                    Brand = doc.ContainsField("Brand")
+                        ? doc.GetValue<string>("Brand")
+                        : "",
+
+                    TopGroup = doc.ContainsField("TopGroup")
+                        ? doc.GetValue<string>("TopGroup")
+                        : "",
+
+                    CommissionDate = doc.ContainsField("CommissionDate")
+                        ? doc.GetValue<Timestamp>("CommissionDate").ToDateTime()
+                        : (DateTime?)null,
+
+                    DeviceCode = doc.ContainsField("DeviceCode")
+                         ? doc.GetValue<string>("DeviceCode")
+                        : "",
+
+                    SubGroup = doc.ContainsField("SubGroup")
+                        ? doc.GetValue<string>("SubGroup")
+                        : "",
+
+                    SpecialGroup = doc.ContainsField("SpecialGroup")
+                        ? doc.GetValue<string>("SpecialGroup")
+                        : "",
+
+                
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Cihaz bilgisi alınamadı: " + ex.Message);
+            }
+        }
     }
 
 

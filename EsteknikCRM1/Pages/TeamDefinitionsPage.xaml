@@ -45,9 +45,9 @@
 
             <!-- 🔹 Breadcrumb -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                <TextBlock Text="⌂ Home" Foreground="#9AA8B6"/>
-                <TextBlock Text=" > Definitions" Foreground="#9AA8B6"/>
-                <TextBlock Text=" > Team Definitions"
+                <TextBlock Text="⌂ Anasayfa" Foreground="#9AA8B6"/>
+                <TextBlock Text=" > Tanımlar" Foreground="#9AA8B6"/>
+                <TextBlock Text=" > Ekip Tanımları"
                            Foreground="#0A67B2"
                            FontWeight="SemiBold"/>
             </StackPanel>
@@ -62,12 +62,12 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Team Definitions"
+                <TextBlock Text="Ekip Tanımları"
                            FontSize="22"
                            VerticalAlignment="Center"/>
 
                 <Button Grid.Column="1"
-                        Content="+ Add New Team"
+                        Content="+ Yeni Ekip Ekle"
                         Width="160"
                         Style="{StaticResource BlueButtonStyle}"
                         Click="AddTeam_Click"/>
@@ -93,11 +93,11 @@
                             Orientation="Horizontal"
                             VerticalAlignment="Bottom">
 
-                    <TextBlock Text="Filter Records"
+                    <TextBlock Text="Kayıt Filtrele"
                                Margin="0,0,20,0"/>
 
                     <StackPanel>
-                        <TextBlock Text="Search Records"
+                        <TextBlock Text="Kayıt Ara"
                                    Foreground="#9E9E9E"/>
                         <Border Width="180"
                                 BorderBrush="#C9CDD2"
@@ -138,12 +138,12 @@
                 <DataGrid.Columns>
 
                     <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="80"/>
-                    <DataGridTextColumn Header="Service Name" Binding="{Binding ServiceName}" Width="400"/>
-                    <DataGridTextColumn Header="Team Name" Binding="{Binding TeamName}" Width="150"/>
-                    <DataGridTextColumn Header="Member Count" Binding="{Binding MemberCount}" Width="120"/>
+                    <DataGridTextColumn Header="Servis Adı" Binding="{Binding ServiceName}" Width="400"/>
+                    <DataGridTextColumn Header="Ekip Adı" Binding="{Binding TeamName}" Width="150"/>
+                    <DataGridTextColumn Header="Üye Sayısı" Binding="{Binding MemberCount}" Width="120"/>
 
                     <!-- Members -->
-                    <DataGridTemplateColumn Header="Team Members" Width="200">
+                    <DataGridTemplateColumn Header="Ekip Üyeleri" Width="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel>
@@ -157,13 +157,13 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="120"/>
+                    <DataGridTextColumn Header="Durum" Binding="{Binding Status}" Width="120"/>
 
                     <!-- Button -->
                     <DataGridTemplateColumn Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Select"
+                                <Button Content="İşlem"
                                         Width="80"
                                         Height="35"
                                         Background="#005A9E"
