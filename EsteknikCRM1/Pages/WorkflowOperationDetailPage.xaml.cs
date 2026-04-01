@@ -11,12 +11,21 @@ namespace EsteknikCRM1.Pages
     public partial class WorkflowOperationDetailPage : Page
     {
         private readonly WorkflowModel _workflow;
-        public WorkflowOperationDetailPage(WorkflowModel workflow)
+        public UserModel _loggedUser { get; set; }
+        public WorkflowOperationDetailPage(WorkflowModel workflow, UserModel currentUser)
         {
             InitializeComponent();
             _workflow = workflow;
+            _loggedUser = currentUser;
+            userControl();
             LoadWorkflowDetails();
             Loaded += WorkflowOperationDetailPage_Loaded;
+        }
+        private void userControl()
+        {
+            if(_loggedUser.UserRole != "admin"){
+                AssignButton.Visibility = Visibility.Collapsed;
+            }
         }
         private async void LoadWorkflowDetails()
         {

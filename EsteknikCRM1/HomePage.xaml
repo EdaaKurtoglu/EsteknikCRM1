@@ -349,31 +349,38 @@
                             </Expander.Header>
 
                             <StackPanel Background="#FAFAFA">
-                                <Button Content="   📦 Stok Hareketleri"
+                                <Button x:Name="StockActionBtn" 
+                                    Content="   📦 Stok Hareketleri"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="StockAction_Click"/>
-                                <Button Content="   📦 Hakediş Kayıtları"
+                                <Button x:Name="HakedisActionBtn"
+                                    Content="   📦 Hakediş Kayıtları"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="HakedisAction_Click"/>
-                                <Button Content="   📦 İade İşlemleri"
+                                <Button x:Name="ReturnOperationBtn"
+                                    Content="   📦 İade İşlemleri"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="ReturnOperation_Click"/>
-                                <Button Content="   📦 Bedelsiz Malzeme Talepleri"
+                                <Button x:Name="FreeMaterialBtn"
+                                    Content="   📦 Bedelsiz Malzeme Talepleri"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="FreeMaterial_Click"/>
-                                <Button Content="   📦 Servis Lokasyon"
+                                <Button x:Name="ServiceLocationBtn"
+                                    Content="   📦 Servis Lokasyon"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="ServiceLocation_Click"/>
-                                <Button Content="   📅 Randevu"
+                                <Button x:Name="AppointmentBtn" 
+                                    Content="   📅 Randevu"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="Appointment_Click"/>
-                                <Button Content="   📦 Ücretli Siparişler"
+                                <Button x:Name="PriceProductButton" 
+                                    Content="   📦 Ücretli Siparişler"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="StockAction_Click"/>
@@ -396,15 +403,18 @@
                             </Expander.Header>
 
                             <StackPanel Background="#FAFAFA">
-                                <Button Content="   👤 Bireysel Müşteri Kartı"
+                                <Button x:Name="IndividualCustomerCardsBtn" 
+                                    Content="   👤 Bireysel Müşteri Kartı"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="IndividualCustomerCards_Click"/>
-                                <Button Content="   👤 Kurumsal Müşteri Kartı"
+                                <Button x:Name="CorporateCustomerCardsBtn" 
+                                    Content="   👤 Kurumsal Müşteri Kartı"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="CorporateCustomerCards_Click"/>
-                                <Button Content="   💻 Cihaz Kartı"
+                                <Button x:Name="DeviceCardsBtn" 
+                                    Content="   💻 Cihaz Kartı"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="DeviceCards_Click"/>
@@ -427,19 +437,23 @@
                             </Expander.Header>
 
                             <StackPanel Background="#FAFAFA">
-                                <Button Content="   Ekip Tanımları"
+                                <Button x:Name="TeamDefinitionsBtn" 
+                                    Content="   Ekip Tanımları"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="TeamDefinitions_Click"/>
-                                <Button Content="   Nöbet Tanımları"
+                                <Button x:Name="DutyDefinitionsBtn" 
+                                    Content="   Nöbet Tanımları"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="DutyDefinitions_Click"/>
-                                <Button Content="   Yedek Parça Tanımları"
+                                <Button x:Name="SparePartDefinitionsBtn" 
+                                    Content="   Yedek Parça Tanımları"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="SparePartDefinitions_Click"/>
-                                <Button Content="   Ürün Tanımları"
+                                <Button x:Name="ProductDefinitionsBtn" 
+                                    Content="   Ürün Tanımları"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="ProductDefinitions_Click"/>
@@ -477,15 +491,18 @@
                             </Expander.Header>
 
                             <StackPanel Background="#FAFAFA">
-                                <Button Content="   E-Messages"
+                                <Button x:Name="EMessageBtn" 
+                                    Content="   E-Messages"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="EMessage_Click"/>
-                                <Button Content="   Notifications"
+                                <Button x:Name="NotificationsBtn" 
+                                    Content="   Notifications"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="Notifications_Click"/>
-                                <Button Content="   Bosch Corporate Magazine"
+                                <Button x:Name="MagazineBtn"
+                                    Content="   Bosch Corporate Magazine"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="Magazine_Click"/>

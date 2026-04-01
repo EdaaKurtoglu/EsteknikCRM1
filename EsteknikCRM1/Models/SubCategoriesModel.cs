@@ -10,5 +10,6 @@ namespace EsteknikCRM1.Models
     {
         public string ID { get; set; }
         public string Name { get; set; }
+        public string CategoryID { get; set; }
     }
 }

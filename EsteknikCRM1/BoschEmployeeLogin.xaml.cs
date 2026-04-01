@@ -60,20 +60,17 @@ namespace EsteknikCRM1
 
                 try
                 {
-                    bool isValid = await firebaseService.CheckUserAsync(
-                        EmailBox.Text.Trim(),
-                        PasswordBox.Password.Trim(),
-                        "employee"   // userRole burada sabit
-                    );
+                    var user = await FirebaseService.Instance.LoginAsync(EmailBox.Text.Trim(), PasswordBox.Password.Trim(), "team");
+                    
 
-                    if (isValid)
+                    if (user!=null)
                     {
                         MessageBox.Show("Giriş başarılı!");
 
-                        // Ana sayfaya geç
-                        MainWindow main = new MainWindow();
-                        main.Show();
-                        this.Close();
+                        HomePage home = new HomePage(user);
+                        home.Show();
+
+                        this.Close(); //;
                     }
                     else
                     {

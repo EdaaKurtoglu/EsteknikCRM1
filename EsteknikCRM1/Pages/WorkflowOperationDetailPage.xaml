@@ -702,13 +702,15 @@
                             Style="{StaticResource GreenOutlineButtonStyle}"
                             Click="PutOnHoldButton_Click"/>
 
-                    <Button Content="■ Teknik Ekibe Yönlendir"
+                    <Button x:Name="AssignButton" 
+                            Content="■ Teknik Ekibe Yönlendir"
                             Width="238"
                             Margin="0,0,12,0"
                             Style="{StaticResource GreenOutlineButtonStyle}"
                             Click="AssignTechnicalTeamButton_Click"/>
 
-                    <Button Content="■ Reddet"
+                    <Button x:Name="RejectButton" 
+                        Content="■ Reddet"
                             Width="110"
                             Style="{StaticResource RedOutlineButtonStyle}"
                             Click="RejectButton_Click"/>

@@ -13,9 +13,12 @@ namespace EsteknikCRM1.Models
         public string Password { get; set; }
         public string UserRole { get; set; }
         public string Name { get; set; }
+        public string MiddleName { get; set; }
+
         public string Surname { get; set; }
 
-        public string FullName { get; set; }
+        public string FullName => $"{Name} {MiddleName} {Surname}".Trim();
+
         public string Department { get; set; }
 
         public string DisplayRole

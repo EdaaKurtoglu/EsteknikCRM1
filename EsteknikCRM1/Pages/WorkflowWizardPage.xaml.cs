@@ -350,7 +350,7 @@ namespace EsteknikCRM1.Pages
                 var home = Window.GetWindow(this) as HomePage;
                 if (home != null)
                 {
-                    home.MainFrame.Navigate(new WorkflowPage());
+                    home.MainFrame.Navigate(new WorkflowPage(_currentUser));
                 }
                 // istersen liste sayfasına dön
                 // NavigationService.GoBack();

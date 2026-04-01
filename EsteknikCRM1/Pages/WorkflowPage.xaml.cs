@@ -25,10 +25,15 @@ namespace EsteknikCRM1
     /// </summary>
     public partial class WorkflowPage : Page
     {
-        public WorkflowPage()
+        private List<WorkflowModel> _allWorkflowItems = new List<WorkflowModel>();
+        private List<WorkflowModel> _filteredWorkflowItems = new List<WorkflowModel>();
+        private UserModel _loggedUser;
+        
+        public WorkflowPage(UserModel loginUser)
         {
             InitializeComponent();
             Loaded += WorkflowPage_Loaded;
+            _loggedUser = loginUser;
         }
         private async void WorkflowPage_Loaded(object sender, RoutedEventArgs e)
         {
@@ -42,20 +47,38 @@ namespace EsteknikCRM1
                 var workflows = await FirebaseService.Instance.GetWorkflowsAsync();
                 var gridItems = new List<WorkflowModel>();
 
+                bool isAdmin = (_loggedUser?.UserRole ?? "")
+                    .Equals("admin", StringComparison.OrdinalIgnoreCase);
+
+                string userTeam = (_loggedUser?.FullName ?? "").Trim();
+
                 foreach (var item in workflows)
                 {
+                    // Admin değilse ve Team kullanıcısıysa sadece kendi takımına ait olanları al
+                    if (!isAdmin)
+                    {
+                        if (string.IsNullOrWhiteSpace(userTeam))
+                            continue;
+
+                        if (string.Equals(item.WorkTeam ?? "", userTeam, StringComparison.OrdinalIgnoreCase))
+                            continue;
+                    }
+
                     string fullName = "";
                     string phone = "";
+                    string customerName = "";
+                    string customerSurname = "";
 
-                    // 🔥 BURASI KRİTİK
                     if (!string.IsNullOrEmpty(item.CustomerId))
                     {
                         var customer = await FirebaseService.Instance.GetCustomerByIdAsync(item.CustomerId);
 
                         if (customer != null)
                         {
-                            fullName = (customer.Name + " " + customer.Surname).Trim();
-                            phone = customer.Phone;
+                            customerName = customer.Name ?? "";
+                            customerSurname = customer.Surname ?? "";
+                            fullName = (customerName + " " + customerSurname).Trim();
+                            phone = customer.Phone ?? "";
                         }
                     }
 
@@ -69,8 +92,13 @@ namespace EsteknikCRM1
                         CategoryName = item.CategoryName,
                         SubCategoryName = item.SubCategoryName,
                         NotificationTypeName = item.NotificationTypeName,
+
+                        CustomerName = customerName,
+                        CustomerSurname = customerSurname,
                         CustomerFullName = fullName,
                         CustomerPhone = phone,
+
+                        WorkTeam = item.WorkTeam,
                         AddressLine = item.AddressLine,
                         DeviceName = item.DeviceName,
                         DeviceId = item.DeviceId,
@@ -78,18 +106,113 @@ namespace EsteknikCRM1
                         CreatedByFullName = (item.CreatedByName + " " + item.CreatedBySurname).Trim(),
                         CreatedByRole = item.CreatedByRole,
                         StartType = item.StartType
-                        
-                        
                     });
                 }
 
-                WorkflowGrid.ItemsSource = gridItems;
+                _allWorkflowItems = gridItems;
+                _filteredWorkflowItems = gridItems;
+
+                ApplyFilters();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("İş akışları yüklenirken hata oluştu:\n" + ex.Message);
             }
         }
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void FilterRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void ApplyFilters()
+        {
+            if (WorkflowGrid == null ||
+                SearchTextBox == null ||
+                CustomerNameFilterTextBox == null ||
+                CustomerSurnameFilterTextBox == null ||
+                PhoneFilterTextBox == null)
+            {
+                return;
+            }
+
+            IEnumerable<WorkflowModel> query = _allWorkflowItems;
+
+            string generalSearch = SearchTextBox.Text?.Trim().ToLower() ?? "";
+            string customerName = CustomerNameFilterTextBox.Text?.Trim().ToLower() ?? "";
+            string customerSurname = CustomerSurnameFilterTextBox.Text?.Trim().ToLower() ?? "";
+            string phone = PhoneFilterTextBox.Text?.Trim().ToLower() ?? "";
+
+            if (!string.IsNullOrWhiteSpace(generalSearch))
+            {
+                query = query.Where(x =>
+                    (x.Id ?? "").ToLower().Contains(generalSearch) ||
+                    (x.Subject ?? "").ToLower().Contains(generalSearch) ||
+                    (x.FlowType ?? "").ToLower().Contains(generalSearch) ||
+                    (x.LastAction ?? "").ToLower().Contains(generalSearch) ||
+                    (x.CustomerFullName ?? "").ToLower().Contains(generalSearch) ||
+                    (x.CustomerPhone ?? "").ToLower().Contains(generalSearch) ||
+                    (x.CreatedByFullName ?? "").ToLower().Contains(generalSearch) ||
+                    (x.CreatedByRole ?? "").ToLower().Contains(generalSearch) ||
+                    (x.StartType ?? "").ToLower().Contains(generalSearch) ||
+                    (x.WorkflowStatus ?? "").ToLower().Contains(generalSearch));
+            }
+
+            if (!string.IsNullOrWhiteSpace(customerName))
+            {
+                query = query.Where(x =>
+                    (x.CustomerName ?? "").ToLower().Contains(customerName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(customerSurname))
+            {
+                query = query.Where(x =>
+                    (x.CustomerSurname ?? "").ToLower().Contains(customerSurname));
+            }
+
+            if (!string.IsNullOrWhiteSpace(phone))
+            {
+                query = query.Where(x =>
+                    (x.CustomerPhone ?? "").ToLower().Contains(phone));
+            }
+
+            if (CompletedRadioButton.IsChecked == true)
+            {
+                query = query.Where(x => string.Equals(x.WorkflowStatus, "Tamamlandı", StringComparison.OrdinalIgnoreCase));
+            }
+            else if (RejectedRadioButton.IsChecked == true)
+            {
+                query = query.Where(x => string.Equals(x.WorkflowStatus, "Reddedildi", StringComparison.OrdinalIgnoreCase));
+            }
+            else if (LiveFlowRadioButton.IsChecked == true)
+            {
+                query = query.Where(x =>
+                    !string.Equals(x.WorkflowStatus, "Yönlendirildi", StringComparison.OrdinalIgnoreCase));
+            }
+            else if (AssignedToPersonRadioButton.IsChecked == true)
+            {
+                query = query.Where(x => !string.IsNullOrWhiteSpace(x.CreatedByFullName));
+            }
+            else if (WaitingOnMeRadioButton.IsChecked == true)
+            {
+                query = query.Where(x =>
+                    !string.Equals(x.WorkflowStatus, "Devam Ediyor", StringComparison.OrdinalIgnoreCase));
+            }
+
+            _filteredWorkflowItems = query.ToList();
+            WorkflowGrid.ItemsSource = _filteredWorkflowItems;
+        }
+
+
 
         private void NewWorkflow_Click(object sender, RoutedEventArgs e)
         {
@@ -122,6 +245,7 @@ namespace EsteknikCRM1
 
         private void ClearFiltersButton_Click(object sender, RoutedEventArgs e)
         {
+            SearchTextBox.Text = string.Empty;
             CustomerNameFilterTextBox.Text = string.Empty;
             CustomerSurnameFilterTextBox.Text = string.Empty;
             PhoneFilterTextBox.Text = string.Empty;
@@ -131,12 +255,13 @@ namespace EsteknikCRM1
             LiveFlowRadioButton.IsChecked = false;
             CompletedRadioButton.IsChecked = false;
             RejectedRadioButton.IsChecked = false;
+
+            ApplyFilters();
         }
 
-        private void RefreshDataButton_Click(object sender, RoutedEventArgs e)
+        private async void RefreshDataButton_Click(object sender, RoutedEventArgs e)
         {
-            // burada Firestore'dan tekrar veri çekebilirsin
-            MessageBox.Show("Veriler yenilendi.");
+            await LoadWorkflowsAsync();
         }
         private void Operation_Click(object sender, RoutedEventArgs e)
         {
@@ -149,7 +274,7 @@ namespace EsteknikCRM1
                 return;
             }
 
-            NavigationService?.Navigate(new WorkflowOperationDetailPage(selectedWorkflow));
+            NavigationService?.Navigate(new WorkflowOperationDetailPage(selectedWorkflow, _loggedUser));
         }
     }
    

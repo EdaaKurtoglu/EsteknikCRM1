@@ -18,11 +18,41 @@ namespace EsteknikCRM1
 
             _loggedUser = user;
             CurrentUser = user;
-
+            ApplyRolePermissions();
             SetLoggedUserInfo();
             MainFrame.Navigate(new HomeContentPage());
         }
+        private void ApplyRolePermissions()
+        {
+            if (_loggedUser == null)
+                return;
 
+            // admin kontrol (küçük/büyük harf farkını kaldırıyoruz)
+            bool isAdmin = (_loggedUser.UserRole ?? "").ToLower() == "admin";
+
+            if (!isAdmin)
+            {
+                // ilk 2 buton hariç hepsini kapat
+                ReportsBtn.IsEnabled = false;
+                ServiceLocationBtn.IsEnabled = false;
+                FreeMaterialBtn.IsEnabled = false;
+                ReturnOperationBtn.IsEnabled = false;
+                StockActionBtn.IsEnabled = false;
+                AppointmentBtn.IsEnabled = false;
+                IndividualCustomerCardsBtn.IsEnabled = false;
+                CorporateCustomerCardsBtn.IsEnabled = false;
+                TeamDefinitionsBtn.IsEnabled = false;
+                DutyDefinitionsBtn.IsEnabled = false;
+                ProductDefinitionsBtn.IsEnabled = false;
+                DeviceCardsBtn.IsEnabled = false;
+                SparePartDefinitionsBtn.IsEnabled = false;
+                EMessageBtn.IsEnabled = false;
+                NotificationsBtn.IsEnabled = false;
+                MagazineBtn.IsEnabled = false;
+                HakedisActionBtn.IsEnabled = false;
+                PriceProductButton.IsEnabled = false;
+            }
+        }
         private void SetLoggedUserInfo()
         {
             if (_loggedUser == null)
@@ -85,7 +115,7 @@ namespace EsteknikCRM1
             }
             else if (clicked == WorkflowBtn)
             {
-                MainFrame.Navigate(new WorkflowPage());
+                MainFrame.Navigate(new WorkflowPage(CurrentUser));
             }
             else if (clicked == ReportsBtn)
             {

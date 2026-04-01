@@ -151,7 +151,8 @@
                                      Background="Transparent"
                                      BorderThickness="0"
                                      FontSize="18"
-                                     Padding="14,0,0,0"/>
+                                     Padding="14,0,0,0"
+                                     TextChanged="SearchTextBox_TextChanged"/>
                             <Border BorderBrush="#BFC5CC"
                                     BorderThickness="0,0,0,1"/>
                         </StackPanel>
@@ -256,32 +257,37 @@
                              Grid.Column="0"
                              Content="Kişiye Atananlar"
                              Style="{StaticResource WorkflowRadioStyle}"
-                             Margin="16,0,0,0"/>
+                             Margin="16,0,0,0"
+                             Checked="FilterRadioButton_Checked"/>
 
                             <RadioButton x:Name="WaitingOnMeRadioButton"
                              Grid.Column="1"
                              Content="Üstümde bekleyenler"
                              Style="{StaticResource WorkflowRadioStyle}"
                              IsChecked="True"
-                             Margin="16,0,0,0"/>
+                             Margin="16,0,0,0"
+                             Checked="FilterRadioButton_Checked"/>           
 
                             <RadioButton x:Name="LiveFlowRadioButton"
                              Grid.Column="2"
                              Content="Canlı akış"
                              Style="{StaticResource WorkflowRadioStyle}"
-                             Margin="16,0,0,0"/>
+                             Margin="16,0,0,0"
+                             Checked="FilterRadioButton_Checked"/>
 
                             <RadioButton x:Name="CompletedRadioButton"
                              Grid.Column="3"
                              Content="Tamamlanmışlar"
                              Style="{StaticResource WorkflowRadioStyle}"
-                             Margin="16,0,0,0"/>
+                             Margin="16,0,0,0"
+                             Checked="FilterRadioButton_Checked"/>            
 
                             <RadioButton x:Name="RejectedRadioButton"
                              Grid.Column="4"
                              Content="Reddedilenler"
                              Style="{StaticResource WorkflowRadioStyle}"
-                             Margin="16,0,0,0"/>
+                             Margin="16,0,0,0"
+                             Checked="FilterRadioButton_Checked"/>
                         </Grid>
 
                         <!-- Inputs -->
@@ -299,6 +305,7 @@
                                FontSize="13"
                                Margin="0,0,0,8"/>
                                 <TextBox x:Name="CustomerNameFilterTextBox"
+                                TextChanged="FilterTextBox_TextChanged"
                              Style="{StaticResource FlatTextBoxStyle}"/>
                             </StackPanel>
 
@@ -307,7 +314,8 @@
                                FontSize="13"
                                Margin="0,0,0,8"/>
                                 <TextBox x:Name="CustomerSurnameFilterTextBox"
-                             Style="{StaticResource FlatTextBoxStyle}"/>
+                                TextChanged="FilterTextBox_TextChanged"
+                                 Style="{StaticResource FlatTextBoxStyle}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="4">
@@ -315,7 +323,8 @@
                                FontSize="13"
                                Margin="0,0,0,8"/>
                                 <TextBox x:Name="PhoneFilterTextBox"
-                             Style="{StaticResource FlatTextBoxStyle}"/>
+                                 TextChanged="FilterTextBox_TextChanged"
+                                    Style="{StaticResource FlatTextBoxStyle}"/>
                             </StackPanel>
                         </Grid>
 

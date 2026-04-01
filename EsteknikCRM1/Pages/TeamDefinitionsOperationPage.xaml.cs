@@ -1,6 +1,7 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -34,14 +35,33 @@ namespace EsteknikCRM1.Pages
                 {
                     TeamName = TeamNameBox.Text.Trim(),
                     VehiclePlate = VehiclePlateBox.Text?.Trim(),
-
+                    ServiceName = "ES İKLİMLENDİRME SAN.TİC.LTD.ŞTİ.",
                     IsActive = true,
                     Status = "Aktif",
-
-                    // Firestore için gerçek kayıt zamanı
                     CreatedDate = DateTime.Now,
                     PassiveDate = null
                 };
+                var parts = TeamNameBox.Text
+                    .Trim()
+                    .Split(' ', (char)StringSplitOptions.RemoveEmptyEntries);
+
+                string name = parts.FirstOrDefault() ?? "";
+                string surname = parts.LastOrDefault() ?? "";
+                string middleName = parts.Length > 2
+                    ? string.Join(" ", parts.Skip(1).Take(parts.Length - 2))
+                    : "";
+                
+
+                UserModel user = new UserModel
+                {
+                    UserMail = GenerateEmail(TeamNameBox.Text.Trim()),
+                    Password = "123",
+                    UserRole = "team",
+                    Name = name,
+                    Surname = surname
+
+                };
+                await FirebaseService.Instance.AddUserAsync(user.UserMail, user.Password, user.UserRole, user.Name, user.Surname);
 
                 string newTeamId = await FirebaseService.Instance.AddTeamAsync(team);
 
@@ -61,6 +81,24 @@ namespace EsteknikCRM1.Pages
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
+        }
+
+        private string GenerateEmail(string fullName)
+        {
+            if (string.IsNullOrWhiteSpace(fullName))
+                return "";
+
+            string clean = fullName
+                .ToLower()
+                .Replace(" ", "")
+                .Replace("ı", "i")
+                .Replace("ğ", "g")
+                .Replace("ü", "u")
+                .Replace("ş", "s")
+                .Replace("ö", "o")
+                .Replace("ç", "c");
+
+            return clean + "@esiklimlendirme.com";
         }
     }
 }

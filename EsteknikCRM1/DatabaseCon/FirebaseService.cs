@@ -39,14 +39,18 @@ namespace EsteknikCRM1.DatabaseCon
             }
         }
 
-        public async Task AddUserAsync(string usermail, string password)
+        public async Task AddUserAsync(string usermail, string password, string userRole, string name, string surname)
         {
             CollectionReference usersRef = db.Collection("Users");
 
             Dictionary<string, object> user = new Dictionary<string, object>
         {
             { "usermail", usermail},
-            { "password", password }
+            { "password", password },
+            {"userRole" ,userRole},
+            {"name" ,name},
+            {"surname" ,surname},
+
         };
 
             await usersRef.AddAsync(user);
@@ -54,7 +58,7 @@ namespace EsteknikCRM1.DatabaseCon
 
         public async Task<bool> CheckUserAsync(string usermail, string password, string userRole)
         {
-            Query query = db.Collection("Users")
+            Query query = db.Collection("Teams")
                             .WhereEqualTo("usermail", usermail)
                             .WhereEqualTo("password", password)
                             .WhereEqualTo("userRole", userRole);
@@ -82,10 +86,13 @@ namespace EsteknikCRM1.DatabaseCon
             return new UserModel
             {
                 UserMail = doc.GetValue<string>("usermail"),
+                Password = doc.GetValue<string>("password"),
                 Name = doc.GetValue<string>("name"),
                 Surname = doc.GetValue<string>("surname"),
                 UserRole = doc.GetValue<string>("userRole")
+
             };
+        
         }
 
         //HomePage Tablosu
@@ -432,6 +439,8 @@ namespace EsteknikCRM1.DatabaseCon
                     CreatedByName = data.ContainsKey("CreatedByName") ? data["CreatedByName"]?.ToString() : "",
                     CreatedBySurname = data.ContainsKey("CreatedBySurname") ? data["CreatedBySurname"]?.ToString() : "",
                     CreatedByRole = data.ContainsKey("CreatedByRole") ? data["CreatedByRole"]?.ToString() : "",
+                    WorkTeam = data.ContainsKey("Workteam") ? data["Workteam"]?.ToString() : "",
+
 
                     CreatedDate = createdDate
                 });
@@ -465,7 +474,7 @@ namespace EsteknikCRM1.DatabaseCon
 
                 Dictionary<string, object> updates = new Dictionary<string, object>
         {
-            { "Team", team }
+            { "Workteam", team }
         };
 
                 await docRef.UpdateAsync(updates);
@@ -528,7 +537,8 @@ namespace EsteknikCRM1.DatabaseCon
                     { "Status", team.Status ?? "Aktif" },
                     { "CreatedDate", team.CreatedDate.ToUniversalTime() },
                     { "PassiveDate", team.PassiveDate.HasValue ? (object)team.PassiveDate.Value.ToUniversalTime() : null },
-                    { "ServiceName", team.ServiceName ?? string.Empty }
+                    { "ServiceName", team.ServiceName ?? string.Empty
+                    }
                 };
 
                 DocumentReference addedDoc = await teamsRef.AddAsync(data);
@@ -647,7 +657,6 @@ namespace EsteknikCRM1.DatabaseCon
                         Id = doc.Id,
                         Name = name,
                         Surname = surname,
-                        FullName = (name + " " + surname).Trim(),
                         UserRole = role,
                         Department = department
                     });
