@@ -261,12 +261,125 @@ namespace EsteknikCRM1.Pages
             }
         }
 
-        private void WorkflowNextButton_Click(object sender, RoutedEventArgs e)
+        private async void WorkflowNextButton_Click(object sender, RoutedEventArgs e)
         {
             FinalReportPanel.Visibility = Visibility.Visible;
             WorkflowPanel.Visibility = Visibility.Collapsed;
+            await FillFinalReportAsync();
         }
+        private async Task FillFinalReportAsync()
+        {
+            try
+            {
+                FinalCategoryText.Text = CategoryBox.Text;
+                FinalNotificationTypeText.Text = NotificationTypeBox.Text;
+                FinalSubCategoryText.Text = SubCategoryBox.Text;
 
+                DescriptionTextBox.Text = "";
+                ExtraDescriptionTextBox.Text = "";
+                ArrivalChannelComboBox.SelectedIndex = 0;
+
+                if (_selectedCustomer != null)
+                {
+                    FinalCustomerNameText.Text =
+                        $"{_selectedCustomer.Name} {_selectedCustomer.Surname}".Trim();
+
+                    FinalCustomerPhoneText.Text =
+                        string.IsNullOrWhiteSpace(_selectedCustomer.Phone) ? "-" : _selectedCustomer.Phone;
+
+                    FinalCustomerEmailText.Text =
+                        string.IsNullOrWhiteSpace(_selectedCustomer.Email) ? "-" : _selectedCustomer.Email;
+                }
+                else
+                {
+                    FinalCustomerNameText.Text = "-";
+                    FinalCustomerPhoneText.Text = "-";
+                    FinalCustomerEmailText.Text = "-";
+                }
+
+                if (AddressComboBox.SelectedItem is AddressModel selectedAddress)
+                {
+                    FinalCustomerAddressText.Text =
+                        string.IsNullOrWhiteSpace(selectedAddress.AddressLine) ? "-" : selectedAddress.AddressLine;
+                }
+                else
+                {
+                    FinalCustomerAddressText.Text = "-";
+                }
+
+                if (_selectedDevice != null)
+                {
+                    FinalDeviceSerialText.Text =
+                        string.IsNullOrWhiteSpace(_selectedDevice.SerialNumber) ? "-" : _selectedDevice.SerialNumber;
+
+                    FinalProductNameText.Text =
+                        string.IsNullOrWhiteSpace(_selectedDevice.DeviceName) ? "-" : _selectedDevice.DeviceName;
+
+                    FinalBrandText.Text =
+                        string.IsNullOrWhiteSpace(_selectedDevice.Brand) ? "-" : _selectedDevice.Brand;
+
+                    FinalTopGroupText.Text =
+                        string.IsNullOrWhiteSpace(_selectedDevice.TopGroup) ? "-" : _selectedDevice.TopGroup;
+
+                    FinalCommissionDateText.Text =
+                        _selectedDevice.CommissionDate.HasValue
+                            ? _selectedDevice.CommissionDate.Value.ToString("dd/MM/yyyy")
+                            : "-";
+
+                    FinalWarrantyEndText.Text = "-";
+                    FinalLastMaintenanceText.Text = "-";
+                    FinalExtraWarrantyText.Text = "-";
+                    FinalExtraWarrantyStartText.Text = "-";
+                    FinalExtraWarrantyEndText.Text = "-";
+                }
+                else if (!string.IsNullOrWhiteSpace(_selectedDevice.Id))
+                {
+                    var device = await FirebaseService.Instance.GetDeviceByIdAsync(_selectedDevice.Id);
+
+                    if (device != null)
+                    {
+                        FinalDeviceSerialText.Text = string.IsNullOrWhiteSpace(device.SerialNumber) ? "-" : device.SerialNumber;
+                        FinalProductNameText.Text = string.IsNullOrWhiteSpace(device.DeviceName) ? "-" : device.DeviceName;
+                        FinalBrandText.Text = string.IsNullOrWhiteSpace(device.Brand) ? "-" : device.Brand;
+                        FinalTopGroupText.Text = string.IsNullOrWhiteSpace(device.TopGroup) ? "-" : device.TopGroup;
+                        FinalCommissionDateText.Text = device.CommissionDate.HasValue
+                            ? device.CommissionDate.Value.ToString("dd/MM/yyyy")
+                            : "-";
+                    }
+                    else
+                    {
+                        FinalDeviceSerialText.Text = "-";
+                        FinalProductNameText.Text = "-";
+                        FinalBrandText.Text = "-";
+                        FinalTopGroupText.Text = "-";
+                        FinalCommissionDateText.Text = "-";
+                    }
+
+                    FinalWarrantyEndText.Text = "-";
+                    FinalLastMaintenanceText.Text = "-";
+                    FinalExtraWarrantyText.Text = "-";
+                    FinalExtraWarrantyStartText.Text = "-";
+                    FinalExtraWarrantyEndText.Text = "-";
+                }
+                else
+                {
+                    FinalDeviceSerialText.Text = "-";
+                    FinalProductNameText.Text = "-";
+                    FinalBrandText.Text = "-";
+                    FinalTopGroupText.Text = "-";
+                    FinalCommissionDateText.Text = "-";
+                    FinalWarrantyEndText.Text = "-";
+                    FinalLastMaintenanceText.Text = "-";
+                    FinalExtraWarrantyText.Text = "-";
+                    FinalExtraWarrantyStartText.Text = "-";
+                    FinalExtraWarrantyEndText.Text = "-";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Final rapor alanları doldurulurken hata oluştu:\n" + ex.Message);
+            }
+        }
         private async void SaveWorkflowButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -346,6 +459,8 @@ namespace EsteknikCRM1.Pages
                                 "Başarılı",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Information);
+                string newRelation = await FirebaseService.Instance.AddCustomerDeviceRelationAsync(workflow.CustomerId, workflow.DeviceId);
+
 
                 var home = Window.GetWindow(this) as HomePage;
                 if (home != null)

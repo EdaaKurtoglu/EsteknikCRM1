@@ -1,71 +1,72 @@
-﻿using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.DatabaseCon;
+using EsteknikCRM1.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EsteknikCRM1.Pages
 {
-    /// <summary>
-    /// Interaction logic for DeviceCardOperationPage.xaml
-    /// </summary>
     public partial class DeviceCardOperationPage : Page
     {
         public DeviceCardOperationPage()
         {
             InitializeComponent();
         }
-        /*private void LoadDevices()
-        {
-            var devices = new List<DeviceModel>
-            {
-                new DeviceModel
-                {
-                    Id = "1",
-                    SerialNumber = "SN-1001",
-                    DeviceCode = "CMB-01",
-                    DeviceName = "Climate 5000",
-                    CommissionDate = "12.03.2024",
-                    Brand = "Bosch",
-                    TopGroup = "Kombi",
-                    SubGroup = "Yoğuşmalı",
-                    SpecialGroup = "Ev Tipi"
-                },
-                new DeviceModel
-                {
-                    Id = "2",
-                    SerialNumber = "SN-1002",
-                    DeviceCode = "KLM-02",
-                    DeviceName = "Inverter Klima",
-                    CommissionDate = "01.06.2023",
-                    Brand = "Bosch",
-                    TopGroup = "Klima",
-                    SubGroup = "Split",
-                    SpecialGroup = "Duvar Tipi"
-                }
-            };
-
-            DeviceGrid.ItemsSource = devices;
-        }*/
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.GoBack();
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Cihaz kaydedildi.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(SerialNoTextBox.Text))
+                {
+                    MessageBox.Show("Seri numarası zorunludur.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(DeviceNameTextBox.Text))
+                {
+                    MessageBox.Show("Cihaz adı zorunludur.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                string status = "Aktif";
+                if (DeviceStatusComboBox.SelectedItem is ComboBoxItem selectedStatusItem)
+                {
+                    status = selectedStatusItem.Content?.ToString() ?? "Aktif";
+                }
+
+                DeviceModel device = new DeviceModel
+                {
+                    SerialNumber = SerialNoTextBox.Text?.Trim(),
+                    DeviceCode = DeviceCodeTextBox.Text?.Trim(),
+                    DeviceName = DeviceNameTextBox.Text?.Trim(),
+                    CommissionDate = CommissionDatePicker.SelectedDate,
+                    Status = status
+                };
+
+                string newDeviceId = await FirebaseService.Instance.AddDeviceAsync(device);
+
+                MessageBox.Show(
+                    "Cihaz başarıyla kaydedildi.\nKayıt ID: " + newDeviceId,
+                    "Başarılı",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+                NavigationService?.GoBack();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Kayıt sırasında hata oluştu:\n" + ex.Message,
+                    "Hata",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
     }
 }

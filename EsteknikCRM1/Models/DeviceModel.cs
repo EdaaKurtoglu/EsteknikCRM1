@@ -18,6 +18,7 @@ namespace EsteknikCRM1.Models
         private string _topGroup;
         private string _subGroup;
         private string _specialGroup;
+        private string _status;
 
         public string Id
         {
@@ -84,6 +85,11 @@ namespace EsteknikCRM1.Models
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public string Status
+        {
+            get => _status;
+            set { _status = value; OnPropertyChanged(nameof(Status)); }
         }
 
         #endregion

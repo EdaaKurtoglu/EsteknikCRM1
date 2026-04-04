@@ -108,6 +108,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- Export -->
@@ -197,6 +198,11 @@
                     </DataGrid.Columns>
 
                 </DataGrid>
+                <StackPanel Grid.Row="2"
+            x:Name="PaginationPanel"
+            Orientation="Horizontal"
+            HorizontalAlignment="Center"
+            Margin="0,18,0,0"/>
 
             </Grid>
         </Border>

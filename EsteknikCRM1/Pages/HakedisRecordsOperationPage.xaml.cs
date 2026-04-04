@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
 
 namespace EsteknikCRM1.Pages
@@ -23,104 +24,79 @@ namespace EsteknikCRM1.Pages
     {
         public HakedisRecordsOperationPage()
         {
-            InitializeComponent(); LoadData();
+            InitializeComponent(); 
+            Loaded += HakedisRecordsOperationPage_Loaded;
         }
 
-        private void LoadData()
+        private async void HakedisRecordsOperationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            HakedisOperationGrid.ItemsSource = new List<HakedisOperationItem>
+            await LoadCompletedWorkflowsAsync();
+        }
+
+        private async Task LoadCompletedWorkflowsAsync()
+        {
+            try
             {
-                new HakedisOperationItem
+                var workflows = await FirebaseService.Instance.GetCompletedWorkflowsAsync();
+                var rows = new List<HakedisOperationItem>();
+
+                foreach (var item in workflows)
                 {
-                    Id = 3180595,
-                    WorkflowReceiptNo = "2833419",
-                    Customer = "DERYA OFLAZ",
-                    ServiceReceiptType = "Garantili İş",
-                    DeviceSerialNo = "86DM5390030307733703539",
-                    ProductCode = "7733703539",
-                    ProductName = "CL2001 53 E",
-                    LaborName = "MALZEMESİZ İŞÇİLİK BEDELİ",
-                    SubLaborName = "",
-                    Amount = "1.083,33 TRL",
-                    Quantity = ""
-                },
-                new HakedisOperationItem
-                {
-                    Id = 3180105,
-                    WorkflowReceiptNo = "2811439",
-                    Customer = "OSMAN ALİBEYOĞLU OSMAN",
-                    ServiceReceiptType = "İlk Çalıştırma",
-                    DeviceSerialNo = "86DM5390027877733703537",
-                    ProductCode = "7733703537",
-                    ProductName = "CL2001 35 E",
-                    LaborName = "MONTAJ İŞÇİLİĞİ",
-                    SubLaborName = "",
-                    Amount = "2.266,67 TRL",
-                    Quantity = ""
-                },
-                new HakedisOperationItem
-                {
-                    Id = 3178598,
-                    WorkflowReceiptNo = "2819673",
-                    Customer = "GÜLTEPE KONFERANS SALONU :",
-                    ServiceReceiptType = "İlk Çalıştırma",
-                    DeviceSerialNo = "400001234230302621",
-                    ProductCode = "7759009881",
-                    ProductName = "YVGVXH112WAR--GY High static (100-196Pa) duct 11,2kW",
-                    LaborName = "İLK ÇALIŞTIRMA",
-                    SubLaborName = "",
-                    Amount = "312,50 TRL",
-                    Quantity = ""
-                },
-                new HakedisOperationItem
-                {
-                    Id = 3178595,
-                    WorkflowReceiptNo = "2819673",
-                    Customer = "GÜLTEPE KONFERANS SALONU :",
-                    ServiceReceiptType = "İlk Çalıştırma",
-                    DeviceSerialNo = "400001234230302616",
-                    ProductCode = "7759009881",
-                    ProductName = "YVGVXH112WAR--GY High static (100-196Pa) duct 11,2kW",
-                    LaborName = "İLK ÇALIŞTIRMA",
-                    SubLaborName = "",
-                    Amount = "312,50 TRL",
-                    Quantity = ""
-                },
-                new HakedisOperationItem
-                {
-                    Id = 3178605,
-                    WorkflowReceiptNo = "2819673",
-                    Customer = "GÜLTEPE KONFERANS SALONU :",
-                    ServiceReceiptType = "İlk Çalıştırma",
-                    DeviceSerialNo = "400001234230302599",
-                    ProductCode = "7759009881",
-                    ProductName = "YVGVXH112WAR--GY High static (100-196Pa) duct 11,2kW",
-                    LaborName = "İLK ÇALIŞTIRMA",
-                    SubLaborName = "",
-                    Amount = "312,50 TRL",
-                    Quantity = ""
-                },
-                new HakedisOperationItem
-                {
-                    Id = 3178602,
-                    WorkflowReceiptNo = "2819673",
-                    Customer = "GÜLTEPE KONFERANS SALONU :",
-                    ServiceReceiptType = "İlk Çalıştırma",
-                    DeviceSerialNo = "400001234230302598",
-                    ProductCode = "7759009881",
-                    ProductName = "YVGVXH112WAR--GY High static (100-196Pa) duct 11,2kW",
-                    LaborName = "İLK ÇALIŞTIRMA",
-                    SubLaborName = "",
-                    Amount = "312,50 TRL",
-                    Quantity = ""
+                   
+                    string customerName = "";
+                    string serialNo = "";
+                    string productCode = "";
+                    string productName = "";
+
+                    if (!string.IsNullOrWhiteSpace(item.CustomerId))
+                    {
+                        var customer = await FirebaseService.Instance.GetCustomerByIdAsync(item.CustomerId);
+                        if (customer != null)
+                            customerName = (customer.Name + " " + customer.Surname).Trim();
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(item.DeviceId))
+                    {
+                        var device = await FirebaseService.Instance.GetDeviceByIdAsync(item.DeviceId);
+                        if (device != null)
+                        {
+                            serialNo = device.SerialNumber ?? "";
+                            productCode = device.DeviceCode ?? "";
+                            productName = device.DeviceName ?? "";
+                        }
+                    }
+                    int row = 1;
+                    rows.Add(new HakedisOperationItem
+                    {
+                        Id = row,
+                        WorkflowReceiptNo = item.Id, // istersen ayrı fis no alanın varsa onu ver
+                        Customer = customerName,
+                        ServiceReceiptType = item.FlowType ?? "",
+                        DeviceSerialNo = serialNo,
+                        ProductCode = productCode,
+                        ProductName = productName,
+                        LaborName = item.CategoryName ?? "",
+                        SubLaborName = item.SubCategoryName ?? "",
+                        Amount = "0",
+                        Quantity = "1"
+                        
+                    });
+                    row++;
                 }
-            };
+
+                HakedisOperationGrid.ItemsSource = rows;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hakediş gridi yüklenirken hata oluştu:\n" + ex.Message);
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.GoBack();
         }
+
 
         private void CreateSetButton_Click(object sender, RoutedEventArgs e)
         {

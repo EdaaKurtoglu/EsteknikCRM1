@@ -317,7 +317,8 @@
                     Style="{StaticResource OutlineBlueButtonStyle}"
                     Click="CancelButton_Click"/>
 
-            <Button Content="🗎 Kaydet"
+            <Button x:Name="SaveButton"
+                    Content="🗎 Kaydet"
                     Width="110"
                     Style="{StaticResource PrimaryBlueButtonStyle}"
                     Click="SaveButton_Click"/>

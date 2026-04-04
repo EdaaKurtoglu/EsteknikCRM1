@@ -74,7 +74,7 @@ namespace EsteknikCRM1.DatabaseCon
                             .WhereEqualTo("usermail", usermail)
                             .WhereEqualTo("password", password)
                             .WhereEqualTo("userRole", userRole);
-            
+
 
             QuerySnapshot snapshot = await query.GetSnapshotAsync();
 
@@ -92,7 +92,7 @@ namespace EsteknikCRM1.DatabaseCon
                 UserRole = doc.GetValue<string>("userRole")
 
             };
-        
+
         }
 
         //HomePage Tablosu
@@ -244,7 +244,7 @@ namespace EsteknikCRM1.DatabaseCon
 
             return addresses;
         }
-        
+
         public async Task<List<CategoriesModel>> GetCategoriesAsync()
         {
             Query query = db.Collection("Categories");
@@ -312,7 +312,7 @@ namespace EsteknikCRM1.DatabaseCon
             return subcategories;
         }
 
-        public async Task<List<DeviceModel>> GetDevicesAsync()
+        /*public async Task<List<DeviceModel>> GetDevicesAsync()
         {
             Query query = db.Collection("Devices");
 
@@ -334,7 +334,7 @@ namespace EsteknikCRM1.DatabaseCon
 
             return devices;
         }
-
+        */
         public async Task<string> AddWorkflowAsync(WorkflowModel workflow)
         {
             CollectionReference workflowsRef = db.Collection("Workflows");
@@ -519,8 +519,8 @@ namespace EsteknikCRM1.DatabaseCon
                 { "Status", customer.Status ?? "Aktif" }
             };
 
-                    DocumentReference addedDoc = await customersRef.AddAsync(data);
-                    return addedDoc.Id;
+            DocumentReference addedDoc = await customersRef.AddAsync(data);
+            return addedDoc.Id;
         }
 
         public async Task<string> AddTeamAsync(TeamItem team)
@@ -590,17 +590,17 @@ namespace EsteknikCRM1.DatabaseCon
                         status = doc.GetValue<string>("Status");
                     int rowNo = 1;
 
-                      teams.Add(new TeamItem
-                        {
-                            TeamId = teamId,
-                            ServiceName = serviceName,
-                            TeamName = teamName,
-                            MemberCount = memberCount,
-                            MemberName = memberName,
-                            Role = role,
-                            Status = status
-                        });
-                        rowNo++;
+                    teams.Add(new TeamItem
+                    {
+                        TeamId = teamId,
+                        ServiceName = serviceName,
+                        TeamName = teamName,
+                        MemberCount = memberCount,
+                        MemberName = memberName,
+                        Role = role,
+                        Status = status
+                    });
+                    rowNo++;
                 }
 
                 return teams;
@@ -717,12 +717,219 @@ namespace EsteknikCRM1.DatabaseCon
                         ? doc.GetValue<string>("SpecialGroup")
                         : "",
 
-                
+
                 };
             }
             catch (Exception ex)
             {
                 throw new Exception("Cihaz bilgisi alınamadı: " + ex.Message);
+            }
+        }
+
+        public async Task<string> AddDeviceAsync(DeviceModel device)
+        {
+            try
+            {
+                CollectionReference devicesRef = db.Collection("Devices");
+
+                Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            { "SerialNumber", device.SerialNumber ?? "" },
+            { "DeviceCode", device.DeviceCode ?? "" },
+            { "DeviceName", device.DeviceName ?? "" },
+            { "Brand", device.Brand ?? "" },
+            { "TopGroup", device.TopGroup ?? "" },
+            { "SubGroup", device.SubGroup ?? "" },
+            { "SpecialGroup", device.SpecialGroup ?? "" },
+            { "Status", device.Status ?? "Aktif" }
+        };
+
+                if (device.CommissionDate.HasValue)
+                {
+                    data.Add("CommissionDate",
+                        Google.Cloud.Firestore.Timestamp.FromDateTime(
+                            DateTime.SpecifyKind(device.CommissionDate.Value, DateTimeKind.Local).ToUniversalTime()
+                        ));
+                }
+                else
+                {
+                    data.Add("CommissionDate", null);
+                }
+
+                DocumentReference addedDoc = await devicesRef.AddAsync(data);
+                return addedDoc.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Cihaz kaydedilirken hata oluştu: " + ex.Message);
+            }
+        }
+        public async Task<List<DeviceModel>> GetDevicesAsync()
+        {
+            try
+            {
+                QuerySnapshot snapshot = await db.Collection("Devices").GetSnapshotAsync();
+                List<DeviceModel> devices = new List<DeviceModel>();
+
+                foreach (DocumentSnapshot doc in snapshot.Documents)
+                {
+                    if (!doc.Exists)
+                        continue;
+
+                    devices.Add(new DeviceModel
+                    {
+                        Id = doc.Id,
+                        SerialNumber = doc.ContainsField("SerialNumber") ? doc.GetValue<string>("SerialNumber") : "",
+                        DeviceCode = doc.ContainsField("DeviceCode") ? doc.GetValue<string>("DeviceCode") : "",
+                        DeviceName = doc.ContainsField("DeviceName") ? doc.GetValue<string>("DeviceName") : "",
+                        CommissionDate = doc.ContainsField("CommissionDate")? doc.GetValue<Timestamp>("CommissionDate").ToDateTime():(DateTime?)null,
+                        Brand = doc.ContainsField("Brand") ? doc.GetValue<string>("Brand") : "",
+                        TopGroup = doc.ContainsField("TopGroup") ? doc.GetValue<string>("TopGroup") : "",
+                        SubGroup = doc.ContainsField("SubGroup") ? doc.GetValue<string>("SubGroup") : "",
+                        SpecialGroup = doc.ContainsField("SpecialGroup") ? doc.GetValue<string>("SpecialGroup") : ""
+                    });
+                }
+
+                return devices;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Cihazlar alınamadı: " + ex.Message);
+            }
+        }
+
+        public async Task<List<WorkflowModel>> GetCompletedWorkflowsAsync()
+        {
+            try
+            {
+                QuerySnapshot snapshot = await db.Collection("Workflows")
+                    .WhereEqualTo("WorkflowStatus", "Tamamlandı")
+                    .GetSnapshotAsync();
+
+                List<WorkflowModel> workflows = new List<WorkflowModel>();
+
+                foreach (DocumentSnapshot doc in snapshot.Documents)
+                {
+                    if (!doc.Exists)
+                        continue;
+
+                    workflows.Add(new WorkflowModel
+                    {
+                        Id = doc.Id,
+                        WorkflowStatus = doc.ContainsField("WorkflowStatus") ? doc.GetValue<string>("WorkflowStatus") : "",
+                        FlowType = doc.ContainsField("FlowType") ? doc.GetValue<string>("FlowType") : "",
+                        CustomerId = doc.ContainsField("CustomerId") ? doc.GetValue<string>("CustomerId") : "",
+                        DeviceId = doc.ContainsField("DeviceId") ? doc.GetValue<string>("DeviceId") : "",
+                        CategoryName = doc.ContainsField("CategoryName") ? doc.GetValue<string>("CategoryName") : "",
+                        SubCategoryName = doc.ContainsField("SubCategoryName") ? doc.GetValue<string>("SubCategoryName") : ""
+                    });
+                }
+
+                return workflows;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Tamamlanmış workflowlar alınamadı: " + ex.Message);
+            }
+        }
+
+        public async Task<AddressModel> GetAddressByIdAsync(string addressId)
+        {
+            try
+            {
+                DocumentReference docRef = db.Collection("Adresses").Document(addressId);
+                DocumentSnapshot doc = await docRef.GetSnapshotAsync();
+
+                if (!doc.Exists)
+                    return null;
+
+                return new AddressModel
+                {
+                    Id = doc.Id,
+                    CustomerId = doc.ContainsField("CustomerId") ? doc.GetValue<string>("CustomerId") : "",
+                    AddressLine = doc.ContainsField("AdressLine") ? doc.GetValue<string>("AdressLine") : ""
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Adres alınamadı: " + ex.Message);
+            }
+        }
+        public async Task<List<CustomerDeviceRelationModel>> GetCustomerDeviceRelationsAsync(string customerId)
+        {
+            try
+            {
+                QuerySnapshot snapshot = await db.Collection("CustomerDevices")
+                    .WhereEqualTo("CustomerId", customerId)
+                    .GetSnapshotAsync();
+
+                List<CustomerDeviceRelationModel> relations = new List<CustomerDeviceRelationModel>();
+
+                foreach (DocumentSnapshot doc in snapshot.Documents)
+                {
+                    if (!doc.Exists)
+                        continue;
+
+                    relations.Add(new CustomerDeviceRelationModel
+                    {
+                        Id = doc.Id,
+                        CustomerId = doc.ContainsField("CustomerId") ? doc.GetValue<string>("CustomerId") : "",
+                        DeviceId = doc.ContainsField("DeviceId") ? doc.GetValue<string>("DeviceId") : "",
+                        IsActive = doc.ContainsField("IsActive") && doc.GetValue<bool>("IsActive"),
+                        CreatedDate = doc.ContainsField("CreatedDate")
+                            ? doc.GetValue<Google.Cloud.Firestore.Timestamp>("CreatedDate").ToDateTime()
+                            : DateTime.MinValue
+                    });
+                }
+
+                return relations;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Müşteri-cihaz ilişkileri alınamadı: " + ex.Message);
+            }
+        }
+        public async Task<List<DeviceModel>> GetDevicesByCustomerIdAsync(string customerId)
+        {
+            try
+            {
+                var relations = await GetCustomerDeviceRelationsAsync(customerId);
+                var devices = new List<DeviceModel>();
+
+                foreach (var relation in relations)
+                {
+                    if (string.IsNullOrWhiteSpace(relation.DeviceId))
+                        continue;
+
+                    var device = await GetDeviceByIdAsync(relation.DeviceId);
+                    if (device != null)
+                        devices.Add(device);
+                }
+
+                return devices;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Müşteriye ait cihazlar alınamadı: " + ex.Message);
+            }
+        }
+        public async Task<string> AddCustomerDeviceRelationAsync(string customerId, string deviceId)
+        {
+            try
+            {
+                DocumentReference docRef = await db.Collection("CustomerDevices").AddAsync(new
+                {
+                    CustomerId = customerId,
+                    DeviceId = deviceId,
+                    IsActive = true,
+                    CreatedDate = Google.Cloud.Firestore.Timestamp.FromDateTime(DateTime.UtcNow)
+                });
+
+                return docRef.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Müşteri-cihaz ilişkisi eklenemedi: " + ex.Message);
             }
         }
     }

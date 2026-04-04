@@ -164,6 +164,7 @@
     <Compile Include="Models\AddressModel.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CorporateCustomerItem.cs" />
+    <Compile Include="Models\CustomerDeviceRelationModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\DeviceModel.cs" />
     <Compile Include="Models\DutyDefinitionItem.cs" />
@@ -197,6 +198,9 @@
     </Compile>
     <Compile Include="Pages\CustomerAddPage.xaml.cs">
       <DependentUpon>CustomerAddPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CustomerDeviceInfoPage.xaml.cs">
+      <DependentUpon>CustomerDeviceInfoPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\DeviceCardOperationPage.xaml.cs">
       <DependentUpon>DeviceCardOperationPage.xaml</DependentUpon>
@@ -306,6 +310,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\CustomerAddPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\CustomerDeviceInfoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -22,7 +22,6 @@ namespace EsteknikCRM1
     public partial class BoschEmployeeLogin : Window
     {
         private bool isEmailStep = true;
-        private FirebaseService firebaseService;
 
 
         public BoschEmployeeLogin()
