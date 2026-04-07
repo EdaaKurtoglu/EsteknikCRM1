@@ -1,5 +1,6 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
@@ -44,7 +45,8 @@ namespace EsteknikCRM1.Pages
             if (string.IsNullOrWhiteSpace(_workflow.CustomerId))
                 return;
 
-            var customer = await FirebaseService.Instance.GetCustomerByIdAsync(_workflow.CustomerId);
+            var customer = await AppServices.CustomerService.GetCustomerByIdAsync(_workflow.CustomerId);
+            //var customer = await FirebaseService.Instance.GetCustomerByIdAsync(_workflow.CustomerId);
             if (customer != null)
             {
                 CustomerNameText.Text = (customer.Name + " " + customer.Surname).Trim();
@@ -54,7 +56,8 @@ namespace EsteknikCRM1.Pages
 
             if (!string.IsNullOrWhiteSpace(_workflow.AddressId))
             {
-                var address = await FirebaseService.Instance.GetAddressByIdAsync(_workflow.AddressId);
+                var address = await AppServices.AddressService.GetAddressByIdAsync(_workflow.AddressId);
+                //var address = await FirebaseService.Instance.GetAddressByIdAsync(_workflow.AddressId);
                 if (address != null)
                 {
                     CustomerAddressText.Text = address.AddressLine ?? "-";
@@ -69,8 +72,8 @@ namespace EsteknikCRM1.Pages
                 CustomerDeviceGrid.ItemsSource = new List<CustomerDeviceGridItem>();
                 return;
             }
-
-            var devices = await FirebaseService.Instance.GetDevicesByCustomerIdAsync(_workflow.CustomerId);
+            var devices = await AppServices.CustomerDeviceService.GetDevicesByCustomerIdAsync(_workflow.CustomerId);
+            //var devices = await FirebaseService.Instance.GetDevicesByCustomerIdAsync(_workflow.CustomerId);
             var rows = new List<CustomerDeviceGridItem>();
 
             foreach (var device in devices)

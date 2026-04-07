@@ -1,5 +1,6 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,8 @@ namespace EsteknikCRM1.Pages
         {
             try
             {
-                _allCustomers = await FirebaseService.Instance.GetCustomersAsync();
+                _allCustomers = await AppServices.CustomerService.GetCustomersAsync();
+                //_allCustomers = await FirebaseService.Instance.GetCustomersAsync();
                 CustomerGrid.ItemsSource = _allCustomers;
             }
             catch (Exception ex)

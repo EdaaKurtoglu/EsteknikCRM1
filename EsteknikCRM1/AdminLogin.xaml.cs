@@ -16,6 +16,7 @@ using System.Windows.Media.Animation;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using EsteknikCRM1.DatabaseCon;
+using EsteknikCRM1.Services;
 
 
 namespace EsteknikCRM1
@@ -99,8 +100,8 @@ namespace EsteknikCRM1
         {
             try
             {
-
-                var user = await FirebaseService.Instance.LoginAsync(EmailTextBox.Text, PasswordTextBox.Password, "admin");
+                var user = await AppServices.AuthService.LoginAsync(EmailTextBox.Text, PasswordTextBox.Password, "admin");
+                //var user = await FirebaseService.Instance.LoginAsync(EmailTextBox.Text, PasswordTextBox.Password, "admin");
                 /*bool isValid = await firebase.CheckUserAsync(
                     EmailTextBox.Text,
                     PasswordTextBox.Password,

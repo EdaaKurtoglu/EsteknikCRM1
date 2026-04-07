@@ -1,5 +1,6 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 using System;
 using System.Linq;
 using System.Windows;
@@ -61,10 +62,11 @@ namespace EsteknikCRM1.Pages
                     Surname = surname
 
                 };
-                await FirebaseService.Instance.AddUserAsync(user.UserMail, user.Password, user.UserRole, user.Name, user.Surname);
+                await AppServices.AuthService.AddUserAsync(user.UserMail, user.Password, user.UserRole, user.Name, user.Surname);
+                //await FirebaseService.Instance.AddUserAsync(user.UserMail, user.Password, user.UserRole, user.Name, user.Surname);
 
-                string newTeamId = await FirebaseService.Instance.AddTeamAsync(team);
-
+                //string newTeamId = await FirebaseService.Instance.AddTeamAsync(team);
+                string newTeamId = await AppServices.TeamService.AddTeamAsync(team);
                 MessageBox.Show(
                     "Takım başarıyla kaydedildi.\nKayıt ID: " + newTeamId,
                     "Başarılı",

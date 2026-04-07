@@ -1,6 +1,7 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
 using EsteknikCRM1.Popups;
+using EsteknikCRM1.Services;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -130,7 +131,8 @@ namespace EsteknikCRM1.Pages
                     CustomerNameBox.Text = $"{selectedCustomer.Name} {selectedCustomer.Surname}";
                     AddressSelectionPanel.Visibility = Visibility.Visible;
 
-                    var addresses = await FirebaseService.Instance.GetCustomerAddressesAsync(selectedCustomer.Id);
+                    var addresses = await AppServices.AddressService.GetCustomerAddressesAsync(_selectedCustomer.Id);
+                    //var addresses = await FirebaseService.Instance.GetCustomerAddressesAsync(selectedCustomer.Id);
                     AddressComboBox.ItemsSource = addresses;
 
                     AddAddressButton.Background = BlueBrush;
@@ -192,16 +194,20 @@ namespace EsteknikCRM1.Pages
 
         private async Task LoadWorkflowDataAsync()
         {
-            var categories = await FirebaseService.Instance.GetCategoriesAsync();
+            //var categories = await FirebaseService.Instance.GetCategoriesAsync();
+            var categories = await AppServices.LookupService.GetCategoriesAsync();
             CategoryBox.ItemsSource = categories;
 
-            var notifyTypes = await FirebaseService.Instance.GetNotificationTypeAsync();
+            //var notifyTypes = await FirebaseService.Instance.GetNotificationTypeAsync();
+            var notifyTypes = await AppServices.LookupService.GetNotificationTypeAsync();
             NotificationTypeBox.ItemsSource = notifyTypes;
 
-            var subCategories = await FirebaseService.Instance.GetSubCategoriesAsync();
+            //var subCategories = await FirebaseService.Instance.GetSubCategoriesAsync();
+            var subCategories = await AppServices.LookupService.GetSubCategoriesAsync();
             SubCategoryBox.ItemsSource = subCategories;
 
-            var devices = await FirebaseService.Instance.GetDevicesAsync();
+            //var devices = await FirebaseService.Instance.GetDevicesAsync();
+            var devices = await AppServices.DeviceService.GetDevicesAsync();
             DeviceBox.ItemsSource = devices;
         }
 
@@ -334,7 +340,8 @@ namespace EsteknikCRM1.Pages
                 }
                 else if (!string.IsNullOrWhiteSpace(_selectedDevice.Id))
                 {
-                    var device = await FirebaseService.Instance.GetDeviceByIdAsync(_selectedDevice.Id);
+                    //var device = await FirebaseService.Instance.GetDeviceByIdAsync(_selectedDevice.Id);
+                    var device = await AppServices.DeviceService.GetDeviceByIdAsync(_selectedDevice.Id);
 
                     if (device != null)
                     {
@@ -453,14 +460,15 @@ namespace EsteknikCRM1.Pages
                     CreatedDate = DateTime.UtcNow
                 };
 
-                string newId = await FirebaseService.Instance.AddWorkflowAsync(workflow);
+                string newId = await AppServices.WorkflowService.AddWorkflowAsync(workflow);
+                //string newId = await FirebaseService.Instance.AddWorkflowAsync(workflow);
 
                 MessageBox.Show("İş akışı başarıyla kaydedildi. ID: " + newId,
                                 "Başarılı",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Information);
-                string newRelation = await FirebaseService.Instance.AddCustomerDeviceRelationAsync(workflow.CustomerId, workflow.DeviceId);
-
+                //string newRelation = await FirebaseService.Instance.AddCustomerDeviceRelationAsync(workflow.CustomerId, workflow.DeviceId);
+                string newRelation = await AppServices.CustomerDeviceService.AddCustomerDeviceRelationAsync(workflow.CustomerId, workflow.DeviceId);
 
                 var home = Window.GetWindow(this) as HomePage;
                 if (home != null)

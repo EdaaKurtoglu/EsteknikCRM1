@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 
 namespace EsteknikCRM1.Pages
 {
@@ -25,7 +26,8 @@ namespace EsteknikCRM1.Pages
         {
             try
             {
-                var teams = await FirebaseService.Instance.GetTeamsAsync();
+                var teams = await AppServices.TeamService.GetTeamsAsync();
+                //var teams = await FirebaseService.Instance.GetTeamsAsync();
                 TeamGrid.ItemsSource = teams;
             }
             catch (Exception ex)

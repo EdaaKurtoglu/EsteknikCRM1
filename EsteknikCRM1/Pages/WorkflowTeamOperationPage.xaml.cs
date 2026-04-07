@@ -1,6 +1,7 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
 using EsteknikCRM1.Models.EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,7 +43,8 @@ namespace EsteknikCRM1.Pages
                     return;
                 }
 
-                _selectedDevice = await FirebaseService.Instance.GetDeviceBySerialOrStockCodeAsync(serialNo, stockCode);
+                _selectedDevice = await AppServices.DeviceService.GetDeviceBySerialOrStockCodeAsync(serialNo, stockCode);
+                //_selectedDevice = await FirebaseService.Instance.GetDeviceBySerialOrStockCodeAsync(serialNo, stockCode);
 
                 if (_selectedDevice != null)
                 {
@@ -78,9 +80,11 @@ namespace EsteknikCRM1.Pages
 
                 string operationType = selectedOperation.Content.ToString();
 
-                decimal price = await FirebaseService.Instance.GetOperationPriceAsync(
-                    _selectedDevice.DeviceCode,
+                decimal price = await AppServices.OperationService.GetOperationPriceAsync(_selectedDevice.DeviceCode,
                     operationType);
+                //decimal price = await FirebaseService.Instance.GetOperationPriceAsync(
+                 //   _selectedDevice.DeviceCode,
+                 //   operationType);
 
                 _items.Add(new WorkflowTeamOperationItem
                 {
@@ -128,7 +132,7 @@ namespace EsteknikCRM1.Pages
 
                 foreach (var item in _items)
                 {
-                    await FirebaseService.Instance.AddWorkflowTeamOperationAsync(new WorkflowTeamOperationSaveModel
+                   await AppServices.OperationService.AddWorkflowTeamOperationAsync(new WorkflowTeamOperationSaveModel
                     {
                         WorkflowId = _workflow.Id,
                         CustomerId = _workflow.CustomerId,

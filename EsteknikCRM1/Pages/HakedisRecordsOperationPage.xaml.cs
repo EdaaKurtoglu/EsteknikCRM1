@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 
 namespace EsteknikCRM1.Pages
 {
@@ -37,7 +38,8 @@ namespace EsteknikCRM1.Pages
         {
             try
             {
-                var workflows = await FirebaseService.Instance.GetCompletedWorkflowsAsync();
+                var workflows = await AppServices.WorkflowService.GetCompletedWorkflowsAsync();
+                //var workflows = await FirebaseService.Instance.GetCompletedWorkflowsAsync();
                 var rows = new List<HakedisOperationItem>();
 
                 foreach (var item in workflows)
@@ -50,14 +52,17 @@ namespace EsteknikCRM1.Pages
 
                     if (!string.IsNullOrWhiteSpace(item.CustomerId))
                     {
-                        var customer = await FirebaseService.Instance.GetCustomerByIdAsync(item.CustomerId);
+                        var customer = await AppServices.CustomerService.GetCustomerByIdAsync(item.CustomerId);
+
+                        //var customer = await FirebaseService.Instance.GetCustomerByIdAsync(item.CustomerId);
                         if (customer != null)
                             customerName = (customer.Name + " " + customer.Surname).Trim();
                     }
 
                     if (!string.IsNullOrWhiteSpace(item.DeviceId))
                     {
-                        var device = await FirebaseService.Instance.GetDeviceByIdAsync(item.DeviceId);
+                        var device = await AppServices.DeviceService.GetDeviceByIdAsync(item.DeviceId);
+                        //var device = await FirebaseService.Instance.GetDeviceByIdAsync(item.DeviceId);
                         if (device != null)
                         {
                             serialNo = device.SerialNumber ?? "";

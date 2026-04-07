@@ -1,4 +1,4 @@
-﻿using EsteknikCRM1.DatabaseCon;
+﻿using EsteknikCRM1.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,8 +59,9 @@ namespace EsteknikCRM1
 
                 try
                 {
-                    var user = await FirebaseService.Instance.LoginAsync(EmailBox.Text.Trim(), PasswordBox.Password.Trim(), "team");
-                    
+                    var user = await AppServices.AuthService.LoginAsync(EmailBox.Text.Trim(), PasswordBox.Password.Trim(), "team");
+                    //var user = await FirebaseService.Instance.LoginAsync(EmailBox.Text.Trim(), PasswordBox.Password.Trim(), "team");
+
 
                     if (user!=null)
                     {

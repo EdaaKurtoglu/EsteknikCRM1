@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using EsteknikCRM1.DatabaseCon;
+using EsteknikCRM1.Services;
 using EsteknikCRM1.Models;
 
 namespace EsteknikCRM1.Popups
@@ -23,8 +23,8 @@ namespace EsteknikCRM1.Popups
         {
             try
             {
-                _allCustomers = await FirebaseService.Instance.GetCustomersAsync();
-
+                //_allCustomers = await FirebaseService.Instance.GetCustomersAsync();
+                _allCustomers = await AppServices.CustomerService.GetCustomersAsync();
                 ApplyFilters();
 
                 CustomerGrid.Visibility = Visibility.Visible;

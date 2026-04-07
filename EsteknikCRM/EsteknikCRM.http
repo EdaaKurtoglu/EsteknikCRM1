@@ -1,0 +1,6 @@
+@EsteknikCRM_HostAddress = http://localhost:5042
+
+GET {{EsteknikCRM_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

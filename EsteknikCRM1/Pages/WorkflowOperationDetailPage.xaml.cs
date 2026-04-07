@@ -5,6 +5,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 
 namespace EsteknikCRM1.Pages
 {
@@ -31,7 +32,9 @@ namespace EsteknikCRM1.Pages
         {
             if (_workflow == null)
                 return;
-            var device = await FirebaseService.Instance.GetDeviceByIdAsync(_workflow.DeviceId);
+            var device = await AppServices.DeviceService.GetDeviceByIdAsync(_workflow.DeviceId);
+
+            //var device = await FirebaseService.Instance.GetDeviceByIdAsync(_workflow.DeviceId);
 
             if (device != null)
             {
@@ -63,7 +66,8 @@ namespace EsteknikCRM1.Pages
         {
             try
             {
-                var users = await FirebaseService.Instance.GetUsersAsync();
+                var users = await AppServices.AuthService.GetUsersAsync();
+               // var users = await FirebaseService.Instance.GetUsersAsync();
                 UsersItemsControl.ItemsSource = users;
             }
             catch (Exception ex)
@@ -94,8 +98,10 @@ namespace EsteknikCRM1.Pages
             {
                 string selectedTeam = popup.SelectedTeamName;
                 MessageBox.Show("Seçilen takım: " + selectedTeam);
-                await FirebaseService.Instance.UpdateWorkflowTeamAsync(_workflow.Id, selectedTeam);
-                await FirebaseService.Instance.UpdateWorkflowStatusAsync(_workflow.Id, "Yönlendirildi");
+                await AppServices.WorkflowService.UpdateWorkflowTeamAsync(_workflow.Id, selectedTeam);
+                await AppServices.WorkflowService.UpdateWorkflowStatusAsync(_workflow.Id, "Yönlendirildi");
+                //await FirebaseService.Instance.UpdateWorkflowTeamAsync(_workflow.Id, selectedTeam);
+                //await FirebaseService.Instance.UpdateWorkflowStatusAsync(_workflow.Id, "Yönlendirildi");
 
                 // İstersen geri dön
                 NavigationService?.GoBack();
@@ -113,8 +119,8 @@ namespace EsteknikCRM1.Pages
 
             try
             {
-                await FirebaseService.Instance.UpdateWorkflowStatusAsync(_workflow.Id, "Reddedildi");
-
+                //await FirebaseService.Instance.UpdateWorkflowStatusAsync(_workflow.Id, "Reddedildi");
+                await AppServices.WorkflowService.UpdateWorkflowStatusAsync(_workflow.Id, "Reddedildi");
                 MessageBox.Show("İş akışı reddedildi.");
 
                 // UI güncelle

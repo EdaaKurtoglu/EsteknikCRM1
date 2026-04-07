@@ -1,5 +1,6 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 using System;
 using System.Linq;
 using System.Windows;
@@ -104,7 +105,8 @@ namespace EsteknikCRM1.Popups
                     Status = IsActiveCheckBox.IsChecked == true ? "Aktif" : "Pasif"
                 };
 
-                await FirebaseService.Instance.AddCustomerAddressAsync(address);
+                //await FirebaseService.Instance.AddCustomerAddressAsync(address);
+                await AppServices.AddressService.AddCustomerAddressAsync(address);
 
                 MessageBox.Show("Adres başarıyla kaydedildi.");
                 DialogResult = true;

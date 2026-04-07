@@ -1,5 +1,6 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -55,15 +56,15 @@ namespace EsteknikCRM1.Pages
 
                 if (_selectedFilePaths.Count > 0)
                 {
-                    var uploadResult = await FirebaseService.Instance.UploadAnnouncementFilesAsync(_selectedFilePaths);
-
+                    //var uploadResult = await FirebaseService.Instance.UploadAnnouncementFilesAsync(_selectedFilePaths);
+                    var uploadResult = await AppServices.AnnouncementService.UploadAnnouncementFilesAsync(_selectedFilePaths);
                     model.FileNames = uploadResult.fileNames;
                     model.FileUrls = uploadResult.fileUrls;
                     model.FileSizes = uploadResult.fileSizes;
                 }
 
-                await FirebaseService.Instance.AddAnnouncementAsync(model);
-
+                //await FirebaseService.Instance.AddAnnouncementAsync(model);
+                await AppServices.AnnouncementService.AddAnnouncementAsync(model);
                 MessageBox.Show("Duyuru başarıyla kaydedildi.");
                 NavigationService?.GoBack();
             }

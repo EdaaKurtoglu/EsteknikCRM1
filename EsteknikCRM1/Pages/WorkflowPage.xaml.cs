@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using EsteknikCRM1.DatabaseCon;
+using EsteknikCRM1.Services;
 
 
 namespace EsteknikCRM1
@@ -44,7 +45,8 @@ namespace EsteknikCRM1
         {
             try
             {
-                var workflows = await FirebaseService.Instance.GetWorkflowsAsync();
+                var workflows = await AppServices.WorkflowService.GetWorkflowsAsync();
+                //var workflows = await FirebaseService.Instance.GetWorkflowsAsync();
                 var gridItems = new List<WorkflowModel>();
 
                 bool isAdmin = (_loggedUser?.UserRole ?? "")
@@ -71,7 +73,9 @@ namespace EsteknikCRM1
 
                     if (!string.IsNullOrEmpty(item.CustomerId))
                     {
-                        var customer = await FirebaseService.Instance.GetCustomerByIdAsync(item.CustomerId);
+                        var customer = await AppServices.CustomerService.GetCustomerByIdAsync(item.CustomerId);
+
+                       // var customer = await FirebaseService.Instance.GetCustomerByIdAsync(item.CustomerId);
 
                         if (customer != null)
                         {

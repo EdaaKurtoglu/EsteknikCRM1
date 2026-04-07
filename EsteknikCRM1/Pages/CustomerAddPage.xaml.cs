@@ -1,5 +1,6 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -65,8 +66,8 @@ namespace EsteknikCRM1.Pages
 
                     Status = "Aktif"
                 };
-
-                string newCustomerId = await FirebaseService.Instance.AddCustomerAsync(customer);
+                string newCustomerId = await AppServices.CustomerService.AddCustomerAsync(customer);
+                //string newCustomerId = await FirebaseService.Instance.AddCustomerAsync(customer);
                 string fullAddress = string.Format("{0} {1} {2} {3} {4}",
                 AddressBox.Text?.Trim(),
                     NeighborhoodBox.Text?.Trim(),
@@ -81,8 +82,8 @@ namespace EsteknikCRM1.Pages
                         CustomerId = newCustomerId,
                         AddressLine = fullAddress
                     };
-
-                    await FirebaseService.Instance.AddCustomerAddressAsync(address);
+                    await AppServices.AddressService.AddCustomerAddressAsync(address);
+                   // await FirebaseService.Instance.AddCustomerAddressAsync(address);
                 }
 
                 MessageBox.Show(

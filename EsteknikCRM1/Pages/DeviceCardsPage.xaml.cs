@@ -1,5 +1,6 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,8 +41,8 @@ namespace EsteknikCRM1.Pages
         {
             try
             {
-                var devices = await FirebaseService.Instance.GetDevicesAsync();
-
+                //var devices = await FirebaseService.Instance.GetDevicesAsync();
+                var devices = await AppServices.DeviceService.GetDevicesAsync();
                 _allDevices = devices;
                 _filteredDevices = devices;
 

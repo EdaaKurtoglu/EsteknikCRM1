@@ -1,5 +1,6 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -49,7 +50,8 @@ namespace EsteknikCRM1.Pages
                     Status = status
                 };
 
-                string newDeviceId = await FirebaseService.Instance.AddDeviceAsync(device);
+                string newDeviceId = await AppServices.DeviceService.AddDeviceAsync(device);
+                //string newDeviceId = await FirebaseService.Instance.AddDeviceAsync(device);
 
                 MessageBox.Show(
                     "Cihaz başarıyla kaydedildi.\nKayıt ID: " + newDeviceId,

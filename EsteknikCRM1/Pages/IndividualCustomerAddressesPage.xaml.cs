@@ -1,5 +1,6 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +29,8 @@ namespace EsteknikCRM1.Pages
                     MessageBox.Show("Müşteri bilgisi bulunamadı.");
                     return;
                 }
-
-                var addresses = await FirebaseService.Instance.GetCustomerAddressesAsync(_selectedCustomer.Id);
+                var addresses = await AppServices.AddressService.GetCustomerAddressesAsync(_selectedCustomer.Id);
+                //var addresses = await FirebaseService.Instance.GetCustomerAddressesAsync(_selectedCustomer.Id);
 
                 var gridData = addresses.Select(x => new AddressModel
                 {
@@ -73,7 +74,8 @@ namespace EsteknikCRM1.Pages
 
             if (result == true)
             {
-                var addresses = await FirebaseService.Instance.GetCustomerAddressesAsync(_selectedCustomer.Id);
+                var addresses = await AppServices.AddressService.GetCustomerAddressesAsync(_selectedCustomer.Id);
+                //var addresses = await FirebaseService.Instance.GetCustomerAddressesAsync(_selectedCustomer.Id);
 
                 var gridData = addresses.Select(x => new AddressModel
                 {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
 using Firebase.Storage;
+using EsteknikCRM1.Services;
 
 namespace EsteknikCRM1.DatabaseCon
 {
@@ -894,7 +895,8 @@ namespace EsteknikCRM1.DatabaseCon
         {
             try
             {
-                var relations = await GetCustomerDeviceRelationsAsync(customerId);
+                var relations = await AppServices.CustomerDeviceService.GetCustomerDeviceRelationsAsync(customerId);
+                //var relations = await GetCustomerDeviceRelationsAsync(customerId);
                 var devices = new List<DeviceModel>();
 
                 foreach (var relation in relations)

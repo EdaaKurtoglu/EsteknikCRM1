@@ -1,5 +1,6 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -27,7 +28,8 @@ namespace EsteknikCRM1.Popups
         {
             try
             {
-                var teams = await FirebaseService.Instance.GetTeamsAsync();
+                var teams = await AppServices.TeamService.GetTeamsAsync();
+                //var teams = await FirebaseService.Instance.GetTeamsAsync();
                 TeamComboBox.Items.Clear();
 
                 TeamComboBox.ItemsSource = teams;

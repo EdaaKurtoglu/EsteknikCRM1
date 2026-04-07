@@ -1,6 +1,7 @@
 ﻿using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
 using EsteknikCRM1.Pages;
+using EsteknikCRM1.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +35,8 @@ namespace EsteknikCRM1
         {
             try
             {
-                var data = await FirebaseService.Instance.GetHomeTextsAsync();
-
+                //var data = await FirebaseService.Instance.GetHomeTextsAsync();
+                var data = await AppServices.HomeService.GetHomeTextsAsync();
                 _allRecords = data.Select(x => new RecordModel
                 {
                     Subject = x.HomeText
