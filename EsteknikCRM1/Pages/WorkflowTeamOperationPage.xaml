@@ -1,0 +1,133 @@
+﻿<Page x:Class="EsteknikCRM1.Pages.WorkflowTeamOperationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="#F3F3F3"
+      Title="WorkflowTeamOperationPage">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="İş Akışı Teknik İşlem"
+                   FontSize="24"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,20"/>
+
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Cihaz Seri No" Margin="0,0,0,6"/>
+                <TextBox x:Name="SerialNumberTextBox"
+                         Height="36"
+                         TextChanged="DeviceLookupTextBox_TextChanged"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Stok Kodu" Margin="0,0,0,6"/>
+                <TextBox x:Name="StockCodeTextBox"
+                         Height="36"
+                         TextChanged="DeviceLookupTextBox_TextChanged"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="4">
+                <TextBlock Text="Cihaz Adı" Margin="0,0,0,6"/>
+                <TextBox x:Name="DeviceNameTextBox"
+                         Height="36"
+                         IsReadOnly="True"
+                         Background="#ECECEC"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Yapılacak İşlem" Margin="0,0,0,6"/>
+                <ComboBox x:Name="OperationTypeComboBox" Height="36">
+                    <ComboBoxItem Content="Lütfen seçiniz..."/>
+                    <ComboBoxItem Content="Parça Değişimi"/>
+                    <ComboBoxItem Content="Bakım"/>
+                    <ComboBoxItem Content="Servis"/>
+                    <ComboBoxItem Content="Montaj"/>
+                </ComboBox>
+            </StackPanel>
+
+            <Button Grid.Column="2"
+                    Content="Ekle"
+                    Width="100"
+                    Height="36"
+                    VerticalAlignment="Bottom"
+                    Background="#005A9E"
+                    Foreground="White"
+                    BorderBrush="#005A9E"
+                    Click="AddItemButton_Click"/>
+        </Grid>
+
+        <DataGrid Grid.Row="3"
+                  x:Name="OperationItemsGrid"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  Margin="0,0,0,20">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Seri No" Binding="{Binding SerialNumber}" Width="180"/>
+                <DataGridTextColumn Header="Stok Kodu" Binding="{Binding StockCode}" Width="140"/>
+                <DataGridTextColumn Header="Cihaz Adı" Binding="{Binding DeviceName}" Width="220"/>
+                <DataGridTextColumn Header="İşlem" Binding="{Binding OperationType}" Width="180"/>
+                <DataGridTextColumn Header="Fiyat" Binding="{Binding Price}" Width="100"/>
+                <DataGridTextColumn Header="Miktar" Binding="{Binding Quantity}" Width="80"/>
+                <DataGridTextColumn Header="Toplam" Binding="{Binding TotalAmount}" Width="100"/>
+
+                <DataGridTemplateColumn Header="" Width="90">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Sil"
+                                    Width="60"
+                                    Height="30"
+                                    Background="#C62828"
+                                    Foreground="White"
+                                    BorderBrush="#C62828"
+                                    Click="DeleteItemButton_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="4"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button Content="Vazgeç"
+                    Width="100"
+                    Height="40"
+                    Margin="0,0,10,0"
+                    Background="White"
+                    Foreground="#005A9E"
+                    BorderBrush="#005A9E"
+                    Click="CancelButton_Click"/>
+
+            <Button Content="Kaydet"
+                    Width="100"
+                    Height="40"
+                    Background="#005A9E"
+                    Foreground="White"
+                    BorderBrush="#005A9E"
+                    Click="SaveButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

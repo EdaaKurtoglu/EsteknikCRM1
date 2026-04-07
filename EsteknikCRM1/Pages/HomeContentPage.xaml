@@ -52,26 +52,50 @@
                BasedOn="{StaticResource PaginationButtonStyle}">
             <Setter Property="Foreground" Value="#888"/>
         </Style>
+
+        <Style x:Key="BlueButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="Background" Value="#005A9E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#005A9E"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
     </Page.Resources>
 
     <Grid Margin="40" Background="White">
-
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
 
-        <!-- SEARCH -->
-        <TextBox x:Name="SearchBox"
-                 Width="250"
-                 Height="34"
-                 HorizontalAlignment="Right"
-                 VerticalContentAlignment="Center"
-                 Padding="10,0"
-                 Background="#F3F6F9"
-                 BorderBrush="#DADADA"
-                 TextChanged="SearchBox_TextChanged"/>
+        <!-- TOP -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="260"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Content="+ Duyuru Ekle"
+                    Width="130"
+                    Style="{StaticResource BlueButtonStyle}"
+                    Click="AddAnnouncement_Click"/>
+
+            <TextBox Grid.Column="2"
+                     x:Name="SearchBox"
+                     Width="250"
+                     Height="34"
+                     HorizontalAlignment="Right"
+                     VerticalContentAlignment="Center"
+                     Padding="10,0"
+                     Background="#F3F6F9"
+                     BorderBrush="#DADADA"
+                     TextChanged="SearchBox_TextChanged"/>
+        </Grid>
 
         <!-- TABLE -->
         <Border Grid.Row="1"
@@ -124,14 +148,14 @@
                     <DataGridTemplateColumn Width="120">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Select"
+                                <Button Content="İşlem"
                                         Width="80"
                                         Height="30"
                                         Background="#1565C0"
                                         Foreground="White"
                                         BorderThickness="0"
                                         Cursor="Hand"
-                                        Click="Select_Click"/>
+                                        Click="Operation_Click"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

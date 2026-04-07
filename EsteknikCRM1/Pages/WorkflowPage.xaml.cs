@@ -274,7 +274,17 @@ namespace EsteknikCRM1
                 return;
             }
 
-            NavigationService?.Navigate(new WorkflowOperationDetailPage(selectedWorkflow, _loggedUser));
+            bool isAdmin = (_loggedUser?.UserRole ?? "")
+                .Equals("admin", StringComparison.OrdinalIgnoreCase);
+
+            if (isAdmin)
+            {
+                NavigationService?.Navigate(new WorkflowOperationDetailPage(selectedWorkflow, _loggedUser));
+            }
+            else
+            {
+                NavigationService?.Navigate(new WorkflowTeamOperationPage(selectedWorkflow, _loggedUser));
+            }
         }
     }
    

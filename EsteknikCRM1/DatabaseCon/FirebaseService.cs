@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
+using Firebase.Storage;
 
 namespace EsteknikCRM1.DatabaseCon
 {
@@ -930,6 +931,225 @@ namespace EsteknikCRM1.DatabaseCon
             catch (Exception ex)
             {
                 throw new Exception("Müşteri-cihaz ilişkisi eklenemedi: " + ex.Message);
+            }
+        }
+        public async Task<DeviceModel> GetDeviceBySerialOrStockCodeAsync(string serialNo, string stockCode)
+        {
+            try
+            {
+                QuerySnapshot snapshot = await db.Collection("Devices").GetSnapshotAsync();
+
+                foreach (DocumentSnapshot doc in snapshot.Documents)
+                {
+                    if (!doc.Exists)
+                        continue;
+
+                    string serial = doc.ContainsField("SerialNumber") ? doc.GetValue<string>("SerialNumber") : "";
+                    string code = doc.ContainsField("DeviceCode") ? doc.GetValue<string>("DeviceCode") : "";
+
+                    bool serialMatch = !string.IsNullOrWhiteSpace(serialNo) &&
+                                       serial.Equals(serialNo, StringComparison.OrdinalIgnoreCase);
+
+                    bool codeMatch = !string.IsNullOrWhiteSpace(stockCode) &&
+                                     code.Equals(stockCode, StringComparison.OrdinalIgnoreCase);
+
+                    if (serialMatch || codeMatch)
+                    {
+                        return new DeviceModel
+                        {
+                            Id = doc.Id,
+                            SerialNumber = serial,
+                            DeviceCode = code,
+                            DeviceName = doc.ContainsField("DeviceName") ? doc.GetValue<string>("DeviceName") : "",
+                            Brand = doc.ContainsField("Brand") ? doc.GetValue<string>("Brand") : "",
+                            Status = doc.ContainsField("Status") ? doc.GetValue<string>("Status") : ""
+                        };
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Cihaz bulunamadı: " + ex.Message);
+            }
+        }
+        public async Task<decimal> GetOperationPriceAsync(string stockCode, string operationType)
+        {
+            try
+            {
+                QuerySnapshot snapshot = await db.Collection("OperationPrices")
+                    .WhereEqualTo("StockCode", stockCode)
+                    .WhereEqualTo("OperationType", operationType)
+                    .GetSnapshotAsync();
+
+                if (snapshot.Documents.Count == 0)
+                    return 0;
+
+                var doc = snapshot.Documents[0];
+
+                if (doc.ContainsField("Price"))
+                {
+                    object value = doc.GetValue<object>("Price");
+                    return Convert.ToDecimal(value);
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Fiyat alınamadı: " + ex.Message);
+            }
+        }
+        public async Task<string> AddWorkflowTeamOperationAsync(WorkflowTeamOperationSaveModel model)
+        {
+            try
+            {
+                CollectionReference collection = db.Collection("WorkflowTeamOperations");
+
+                Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            { "WorkflowId", model.WorkflowId ?? "" },
+            { "CustomerId", model.CustomerId ?? "" },
+            { "DeviceId", model.DeviceId ?? "" },
+            { "SerialNumber", model.SerialNumber ?? "" },
+            { "StockCode", model.StockCode ?? "" },
+            { "DeviceName", model.DeviceName ?? "" },
+            { "OperationType", model.OperationType ?? "" },
+            { "Price", model.Price },
+            { "Quantity", model.Quantity },
+            { "TotalAmount", model.TotalAmount },
+            { "CreatedByUserMail", model.CreatedByUserMail ?? "" },
+            { "CreatedByName", model.CreatedByName ?? "" },
+            { "CreatedBySurname", model.CreatedBySurname ?? "" },
+            { "CreatedByRole", model.CreatedByRole ?? "" },
+            { "CreatedDate", Google.Cloud.Firestore.Timestamp.FromDateTime(model.CreatedDate.ToUniversalTime()) }
+        };
+
+                DocumentReference addedDoc = await collection.AddAsync(data);
+                return addedDoc.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Workflow işlem kaydı oluşturulamadı: " + ex.Message);
+            }
+        }
+        public async Task<List<RecordModel>> GetAnnouncementsAsync()
+        {
+            try
+            {
+                QuerySnapshot snapshot = await db.Collection("Announcements")
+                    .OrderByDescending("CreatedDate")
+                    .GetSnapshotAsync();
+
+                List<RecordModel> announcements = new List<RecordModel>();
+
+                foreach (DocumentSnapshot doc in snapshot.Documents)
+                {
+                    if (!doc.Exists)
+                        continue;
+
+                    DateTime createdDate = doc.ContainsField("CreatedDate")
+                        ? doc.GetValue<Timestamp>("CreatedDate").ToDateTime()
+                        : DateTime.Now;
+
+                    var model = new RecordModel
+                    {
+                        Id = doc.Id,
+                        Subject = doc.ContainsField("Subject") ? doc.GetValue<string>("Subject") : "",
+                        BodyText = doc.ContainsField("BodyText") ? doc.GetValue<string>("BodyText") : "",
+                        CreatedDate = createdDate,
+                        DateText = createdDate.ToString("dd/MM/yyyy HH:mm"),
+                        GroupText = GetGroupText(createdDate)
+                    };
+
+                    if (doc.ContainsField("FileNames"))
+                        model.FileNames = doc.GetValue<List<string>>("FileNames");
+
+                    if (doc.ContainsField("FileUrls"))
+                        model.FileUrls = doc.GetValue<List<string>>("FileUrls");
+
+                    if (doc.ContainsField("FileSizes"))
+                        model.FileSizes = doc.GetValue<List<string>>("FileSizes");
+
+                    announcements.Add(model);
+                }
+
+                return announcements;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Duyurular alınamadı: " + ex.Message);
+            }
+        }
+
+        private string GetGroupText(DateTime date)
+        {
+            int days = (DateTime.Now.Date - date.Date).Days;
+
+            if (days <= 0) return "Bugün";
+            if (days == 1) return "1 gün önce";
+            return days + " gün önce";
+        }
+        public async Task<string> AddAnnouncementAsync(RecordModel model)
+        {
+            try
+            {
+                CollectionReference announcementsRef = db.Collection("Announcements");
+
+                Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            { "Subject", model.Subject ?? "" },
+            { "BodyText", model.BodyText ?? "" },
+            { "CreatedDate", Timestamp.FromDateTime(model.CreatedDate.ToUniversalTime()) },
+            { "FileNames", model.FileNames ?? new List<string>() },
+            { "FileUrls", model.FileUrls ?? new List<string>() },
+            { "FileSizes", model.FileSizes ?? new List<string>() }
+        };
+
+                DocumentReference docRef = await announcementsRef.AddAsync(data);
+                return docRef.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Duyuru kaydedilemedi: " + ex.Message);
+            }
+        }
+        public async Task<(List<string> fileNames, List<string> fileUrls, List<string> fileSizes)> UploadAnnouncementFilesAsync(List<string> filePaths)
+        {
+            try
+            {
+                List<string> fileNames = new List<string>();
+                List<string> fileUrls = new List<string>();
+                List<string> fileSizes = new List<string>();
+
+                var storage = new FirebaseStorage("your-bucket-name.appspot.com");
+
+                foreach (string filePath in filePaths)
+                {
+                    string fileName = Path.GetFileName(filePath);
+                    byte[] fileBytes = File.ReadAllBytes(filePath);
+
+                    using (var stream = new MemoryStream(fileBytes))
+                    {
+                        string downloadUrl = await storage
+                            .Child("announcements")
+                            .Child(Guid.NewGuid().ToString() + "_" + fileName)
+                            .PutAsync(stream);
+
+                        fileNames.Add(fileName);
+                        fileUrls.Add(downloadUrl);
+
+                        double mb = new FileInfo(filePath).Length / 1024d / 1024d;
+                        fileSizes.Add(mb.ToString("0.0") + " MB");
+                    }
+                }
+
+                return (fileNames, fileUrls, fileSizes);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Dosyalar yüklenemedi: " + ex.Message);
             }
         }
     }
