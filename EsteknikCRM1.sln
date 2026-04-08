@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EsteknikCRM1", "EsteknikCRM1\EsteknikCRM1.csproj", "{F6FD927A-95CC-412F-8CE3-FE02C7916921}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EsteknikCRM.Api", "EsteknikCRM\EsteknikCRM.Api.csproj", "{5D236B6F-296F-4C4B-9619-06ABBC9067C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EsteknikCRM.Api", "EsteknikCRM\EsteknikCRM.Api.csproj", "{5D236B6F-296F-4C4B-9619-06ABBC9067C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

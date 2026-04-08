@@ -28,7 +28,7 @@ namespace EsteknikCRM1.Popups
         {
             try
             {
-                var teams = await AppServices.TeamService.GetTeamsAsync();
+                var teams = await AppServices.ApiTeamService.GetTeamsAsync();
                 //var teams = await FirebaseService.Instance.GetTeamsAsync();
                 TeamComboBox.Items.Clear();
 

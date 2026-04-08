@@ -1,5 +1,4 @@
-﻿using EsteknikCRM1.DatabaseCon;
-using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Pages;
 using EsteknikCRM1.Services;
 using System;
@@ -18,7 +17,6 @@ namespace EsteknikCRM1
         private const int _itemsPerPage = 5;
         private bool _isLoadingPage = false;
 
-
         public HomeContentPage()
         {
             InitializeComponent();
@@ -35,12 +33,8 @@ namespace EsteknikCRM1
         {
             try
             {
-                //var data = await FirebaseService.Instance.GetHomeTextsAsync();
-                var data = await AppServices.HomeService.GetHomeTextsAsync();
-                _allRecords = data.Select(x => new RecordModel
-                {
-                    Subject = x.HomeText
-                }).ToList();
+                var data = await AppServices.ApiAnnouncementService.GetAnnouncementsAsync();
+                _allRecords = data ?? new List<RecordModel>();
 
                 _currentPage = 1;
                 RefreshGridAndPagination();
@@ -59,7 +53,11 @@ namespace EsteknikCRM1
                 return _allRecords;
 
             return _allRecords
-                .Where(x => (x.Subject ?? "").ToLower().Contains(search))
+                .Where(x =>
+                    (x.Subject ?? "").ToLower().Contains(search) ||
+                    (x.BodyText ?? "").ToLower().Contains(search) ||
+                    (x.DateText ?? "").ToLower().Contains(search) ||
+                    (x.GroupText ?? "").ToLower().Contains(search))
                 .ToList();
         }
 
@@ -207,6 +205,7 @@ namespace EsteknikCRM1
             _currentPage = 1;
             RefreshGridAndPagination();
         }
+
         private void AddAnnouncement_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Duyuru ekleme sayfası açılacak.");

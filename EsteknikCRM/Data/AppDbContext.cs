@@ -13,6 +13,14 @@ namespace EsteknikCRM.Api.Data
         public DbSet<Workflow> Workflows { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<CustomerDevice> CustomerDevices { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<NotificationType> NotificationTypes { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
+
+
 
 
     }

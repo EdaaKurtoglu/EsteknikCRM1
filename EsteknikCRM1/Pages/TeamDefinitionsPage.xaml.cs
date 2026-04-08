@@ -26,9 +26,11 @@ namespace EsteknikCRM1.Pages
         {
             try
             {
-                var teams = await AppServices.TeamService.GetTeamsAsync();
-                //var teams = await FirebaseService.Instance.GetTeamsAsync();
+                //var teams = await AppServices.TeamService.GetTeamsAsync();
+                var teams = await AppServices.ApiTeamService.GetTeamsAsync();
                 TeamGrid.ItemsSource = teams;
+                //var teams = await FirebaseService.Instance.GetTeamsAsync();
+                //TeamGrid.ItemsSource = teams;
             }
             catch (Exception ex)
             {

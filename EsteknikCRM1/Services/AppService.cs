@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EsteknikCRM1.Services.Api;
 using EsteknikCRM1.Services.Infrastructure;
 using Google.Cloud.Firestore;
 
@@ -23,6 +24,16 @@ namespace EsteknikCRM1.Services
         public static CustomerDeviceService CustomerDeviceService { get; } = new CustomerDeviceService(_context.Db);
         public static OperationService OperationService { get; } = new OperationService(_context.Db);
         public static AnnouncementService AnnouncementService { get; } = new AnnouncementService(_context.Db);
+        public static ApiTeamService ApiTeamService { get; } = new ApiTeamService();
+        public static ApiCustomerService ApiCustomerService { get; } = new ApiCustomerService();
+        public static ApiAddressService ApiAddressService { get; } = new ApiAddressService();
+        public static ApiWorkflowService ApiWorkflowService { get; } = new ApiWorkflowService();
+        public static ApiCustomerDeviceService ApiCustomerDeviceService { get; } = new ApiCustomerDeviceService();
+        public static ApiDeviceService ApiDeviceService { get; } = new ApiDeviceService();
+        public static ApiLookupService ApiLookupService { get; } = new ApiLookupService();
+        public static ApiAnnouncementService ApiAnnouncementService { get; } = new ApiAnnouncementService();
+        public static ApiAuthService ApiAuthService { get; } = new ApiAuthService();
+
 
 
     }

@@ -1,5 +1,4 @@
-﻿using EsteknikCRM1.DatabaseCon;
-using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
 using System;
 using System.Collections.Generic;
@@ -28,13 +27,13 @@ namespace EsteknikCRM1.Pages
         {
             try
             {
-                _allCustomers = await AppServices.CustomerService.GetCustomersAsync();
-                //_allCustomers = await FirebaseService.Instance.GetCustomersAsync();
+                _allCustomers = await AppServices.ApiCustomerService.GetCustomersAsync();
                 CustomerGrid.ItemsSource = _allCustomers;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Müşteriler yüklenirken hata oluştu:\n" + ex.Message,
+                MessageBox.Show(
+                    "Müşteriler yüklenirken hata oluştu:\n" + ex.Message,
                     "Hata",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);

@@ -25,7 +25,7 @@ namespace EsteknikCRM.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
             var customer = await _context.Customers.FindAsync(id);
 
@@ -38,6 +38,7 @@ namespace EsteknikCRM.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(Customer customer)
         {
+            customer.Id = Guid.NewGuid().ToString();
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
 
@@ -45,7 +46,7 @@ namespace EsteknikCRM.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Customer updatedCustomer)
+        public async Task<IActionResult> Update(string id, Customer updatedCustomer)
         {
             var customer = await _context.Customers.FindAsync(id);
 
@@ -68,7 +69,7 @@ namespace EsteknikCRM.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var customer = await _context.Customers.FindAsync(id);
 

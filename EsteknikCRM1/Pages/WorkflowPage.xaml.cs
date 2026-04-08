@@ -43,9 +43,16 @@ namespace EsteknikCRM1
 
         private async Task LoadWorkflowsAsync()
         {
+            AssignedToPersonRadioButton.IsChecked = false;
+            WaitingOnMeRadioButton.IsChecked = false;
+            LiveFlowRadioButton.IsChecked = false;
+            CompletedRadioButton.IsChecked = false;
+            RejectedRadioButton.IsChecked = false;
             try
             {
-                var workflows = await AppServices.WorkflowService.GetWorkflowsAsync();
+                //var workflows = await AppServices.WorkflowService.GetWorkflowsAsync();
+                var workflows = await AppServices.ApiWorkflowService.GetWorkflowsAsync();
+
                 //var workflows = await FirebaseService.Instance.GetWorkflowsAsync();
                 var gridItems = new List<WorkflowModel>();
 
@@ -73,9 +80,10 @@ namespace EsteknikCRM1
 
                     if (!string.IsNullOrEmpty(item.CustomerId))
                     {
-                        var customer = await AppServices.CustomerService.GetCustomerByIdAsync(item.CustomerId);
+                        //var customer = await AppServices.CustomerService.GetCustomerByIdAsync(item.CustomerId);
+                        var customer = await AppServices.ApiCustomerService.GetCustomerByIdAsync(item.CustomerId);
 
-                       // var customer = await FirebaseService.Instance.GetCustomerByIdAsync(item.CustomerId);
+                        // var customer = await FirebaseService.Instance.GetCustomerByIdAsync(item.CustomerId);
 
                         if (customer != null)
                         {
@@ -255,7 +263,7 @@ namespace EsteknikCRM1
             PhoneFilterTextBox.Text = string.Empty;
 
             AssignedToPersonRadioButton.IsChecked = false;
-            WaitingOnMeRadioButton.IsChecked = true;
+            WaitingOnMeRadioButton.IsChecked = false;
             LiveFlowRadioButton.IsChecked = false;
             CompletedRadioButton.IsChecked = false;
             RejectedRadioButton.IsChecked = false;

@@ -24,7 +24,7 @@ namespace EsteknikCRM1.Popups
             try
             {
                 //_allCustomers = await FirebaseService.Instance.GetCustomersAsync();
-                _allCustomers = await AppServices.CustomerService.GetCustomersAsync();
+                _allCustomers = await AppServices.ApiCustomerService.GetCustomersAsync();
                 ApplyFilters();
 
                 CustomerGrid.Visibility = Visibility.Visible;

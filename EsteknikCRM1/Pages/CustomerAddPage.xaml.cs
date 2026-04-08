@@ -1,9 +1,9 @@
-﻿using EsteknikCRM1.DatabaseCon;
-using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using EsteknikCRM1.Services.Api;
 
 namespace EsteknikCRM1.Pages
 {
@@ -66,24 +66,33 @@ namespace EsteknikCRM1.Pages
 
                     Status = "Aktif"
                 };
-                string newCustomerId = await AppServices.CustomerService.AddCustomerAsync(customer);
-                //string newCustomerId = await FirebaseService.Instance.AddCustomerAsync(customer);
+
+                string newCustomerId = await AppServices.ApiCustomerService.AddCustomerAsync(customer);
+
                 string fullAddress = string.Format("{0} {1} {2} {3} {4}",
-                AddressBox.Text?.Trim(),
+                    AddressBox.Text?.Trim(),
                     NeighborhoodBox.Text?.Trim(),
                     DistrictBox.Text?.Trim(),
                     CityBox.Text?.Trim(),
-                    CountryBox.Text?.Trim());
+                    CountryBox.Text?.Trim()).Trim();
 
                 if (!string.IsNullOrWhiteSpace(fullAddress))
                 {
                     AddressModel address = new AddressModel
                     {
                         CustomerId = newCustomerId,
-                        AddressLine = fullAddress
+                        AddressLine = fullAddress,
+                        Country = CountryBox.Text?.Trim(),
+                        City = CityBox.Text?.Trim(),
+                        District = DistrictBox.Text?.Trim(),
+                        Neighborhood = NeighborhoodBox.Text?.Trim(),
+                        Status = "Aktif",
+                        Id = Guid.NewGuid().ToString(), // 🔥 BURASI ÇÖZÜM
+                        CreatedDate = DateTime.Now.ToUniversalTime(),
+
                     };
-                    await AppServices.AddressService.AddCustomerAddressAsync(address);
-                   // await FirebaseService.Instance.AddCustomerAddressAsync(address);
+
+                    await AppServices.ApiAddressService.AddAddressAsync(address);
                 }
 
                 MessageBox.Show(
@@ -92,7 +101,6 @@ namespace EsteknikCRM1.Pages
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
-                // Kayıttan sonra geri dön
                 NavigationService?.GoBack();
             }
             catch (Exception ex)

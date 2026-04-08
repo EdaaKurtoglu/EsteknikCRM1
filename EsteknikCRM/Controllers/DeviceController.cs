@@ -23,7 +23,7 @@ namespace EsteknikCRM.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
             var device = await _context.Devices.FindAsync(id);
 
@@ -33,17 +33,36 @@ namespace EsteknikCRM.Api.Controllers
             return Ok(device);
         }
 
+        
         [HttpPost]
         public async Task<IActionResult> Add(Device device)
         {
-            _context.Devices.Add(device);
-            await _context.SaveChangesAsync();
+            try
+            {
+                device.Id = Guid.NewGuid().ToString();
 
-            return Ok(device);
+                device.SerialNumber ??= "";
+                device.DeviceCode ??= "";
+                device.DeviceName ??= "";
+                device.Brand ??= "";
+                device.TopGroup ??= "";
+                device.SubGroup ??= "";
+                device.SpecialGroup ??= "";
+                device.Status ??= "Aktif";
+
+                _context.Devices.Add(device);
+                await _context.SaveChangesAsync();
+
+                return Ok(device);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException?.Message ?? ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Device updatedDevice)
+        public async Task<IActionResult> Update(string id, Device updatedDevice)
         {
             var device = await _context.Devices.FindAsync(id);
 
@@ -66,7 +85,7 @@ namespace EsteknikCRM.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var device = await _context.Devices.FindAsync(id);
 
@@ -78,5 +97,6 @@ namespace EsteknikCRM.Api.Controllers
 
             return Ok("Silindi");
         }
+
     }
 }

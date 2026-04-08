@@ -39,7 +39,7 @@ namespace EsteknikCRM1.Pages
         public WorkflowWizardPage()
         {
             InitializeComponent();
-           
+
         }
         private void InitializePageState()
         {
@@ -131,7 +131,7 @@ namespace EsteknikCRM1.Pages
                     CustomerNameBox.Text = $"{selectedCustomer.Name} {selectedCustomer.Surname}";
                     AddressSelectionPanel.Visibility = Visibility.Visible;
 
-                    var addresses = await AppServices.AddressService.GetCustomerAddressesAsync(_selectedCustomer.Id);
+                    var addresses = await AppServices.ApiAddressService.GetAddressesByCustomerIdAsync(_selectedCustomer.Id);
                     //var addresses = await FirebaseService.Instance.GetCustomerAddressesAsync(selectedCustomer.Id);
                     AddressComboBox.ItemsSource = addresses;
 
@@ -195,19 +195,19 @@ namespace EsteknikCRM1.Pages
         private async Task LoadWorkflowDataAsync()
         {
             //var categories = await FirebaseService.Instance.GetCategoriesAsync();
-            var categories = await AppServices.LookupService.GetCategoriesAsync();
+            var categories = await AppServices.ApiLookupService.GetCategoriesAsync();
             CategoryBox.ItemsSource = categories;
 
             //var notifyTypes = await FirebaseService.Instance.GetNotificationTypeAsync();
-            var notifyTypes = await AppServices.LookupService.GetNotificationTypeAsync();
+            var notifyTypes = await AppServices.ApiLookupService.GetNotificationTypeAsync();
             NotificationTypeBox.ItemsSource = notifyTypes;
 
             //var subCategories = await FirebaseService.Instance.GetSubCategoriesAsync();
-            var subCategories = await AppServices.LookupService.GetSubCategoriesAsync();
+            var subCategories = await AppServices.ApiLookupService.GetSubCategoriesAsync();
             SubCategoryBox.ItemsSource = subCategories;
 
             //var devices = await FirebaseService.Instance.GetDevicesAsync();
-            var devices = await AppServices.DeviceService.GetDevicesAsync();
+            var devices = await AppServices.ApiDeviceService.GetDevicesAsync();
             DeviceBox.ItemsSource = devices;
         }
 
@@ -341,7 +341,7 @@ namespace EsteknikCRM1.Pages
                 else if (!string.IsNullOrWhiteSpace(_selectedDevice.Id))
                 {
                     //var device = await FirebaseService.Instance.GetDeviceByIdAsync(_selectedDevice.Id);
-                    var device = await AppServices.DeviceService.GetDeviceByIdAsync(_selectedDevice.Id);
+                    var device = await AppServices.ApiDeviceService.GetDeviceByIdAsync(_selectedDevice.Id);
 
                     if (device != null)
                     {
@@ -421,6 +421,7 @@ namespace EsteknikCRM1.Pages
 
                 WorkflowModel workflow = new WorkflowModel
                 {
+                    Id = Guid.NewGuid().ToString(),
                     StartType = startType,
 
                     CustomerId = _selectedCustomer.Id,
@@ -460,7 +461,7 @@ namespace EsteknikCRM1.Pages
                     CreatedDate = DateTime.UtcNow
                 };
 
-                string newId = await AppServices.WorkflowService.AddWorkflowAsync(workflow);
+                string newId = await AppServices.ApiWorkflowService.AddWorkflowAsync(workflow);
                 //string newId = await FirebaseService.Instance.AddWorkflowAsync(workflow);
 
                 MessageBox.Show("İş akışı başarıyla kaydedildi. ID: " + newId,
@@ -468,7 +469,7 @@ namespace EsteknikCRM1.Pages
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Information);
                 //string newRelation = await FirebaseService.Instance.AddCustomerDeviceRelationAsync(workflow.CustomerId, workflow.DeviceId);
-                string newRelation = await AppServices.CustomerDeviceService.AddCustomerDeviceRelationAsync(workflow.CustomerId, workflow.DeviceId);
+                await AppServices.ApiCustomerDeviceService.AddCustomerDeviceRelationAsync(workflow.CustomerId, workflow.DeviceId);
 
                 var home = Window.GetWindow(this) as HomePage;
                 if (home != null)

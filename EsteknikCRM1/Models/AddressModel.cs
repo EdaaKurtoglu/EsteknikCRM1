@@ -28,9 +28,9 @@ namespace EsteknikCRM1.Models
         public bool IsActive { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? PassiveDate { get; set; }
-        public string IsResidenceText
+        /*public string IsResidenceText
         {
             get { return IsResidence ? "Evet" : "Hayır"; }
-        }
+        }*/
     }
 }

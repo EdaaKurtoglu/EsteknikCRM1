@@ -1,5 +1,4 @@
-﻿using EsteknikCRM1.DatabaseCon;
-using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
 using System;
 using System.Windows;
@@ -43,15 +42,14 @@ namespace EsteknikCRM1.Pages
 
                 DeviceModel device = new DeviceModel
                 {
-                    SerialNumber = SerialNoTextBox.Text?.Trim(),
-                    DeviceCode = DeviceCodeTextBox.Text?.Trim(),
-                    DeviceName = DeviceNameTextBox.Text?.Trim(),
+                    SerialNumber = SerialNoTextBox.Text?.Trim() ?? "",
+                    DeviceCode = DeviceCodeTextBox.Text?.Trim() ?? "",
+                    DeviceName = DeviceNameTextBox.Text?.Trim() ?? "",
                     CommissionDate = CommissionDatePicker.SelectedDate,
                     Status = status
                 };
 
-                string newDeviceId = await AppServices.DeviceService.AddDeviceAsync(device);
-                //string newDeviceId = await FirebaseService.Instance.AddDeviceAsync(device);
+                string newDeviceId = await AppServices.ApiDeviceService.AddDeviceAsync(device);
 
                 MessageBox.Show(
                     "Cihaz başarıyla kaydedildi.\nKayıt ID: " + newDeviceId,
