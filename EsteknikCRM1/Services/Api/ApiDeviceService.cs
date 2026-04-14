@@ -32,6 +32,7 @@ namespace EsteknikCRM1.Services.Api
         }
         public async Task<string> AddDeviceAsync(DeviceModel device)
         {
+            device.Id = Guid.NewGuid().ToString();
             var response = await ApiClient.Client.PostAsJsonAsync("api/device", device);
             var responseContent = await response.Content.ReadAsStringAsync();
 

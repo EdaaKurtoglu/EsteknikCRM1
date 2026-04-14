@@ -1,8 +1,6 @@
-﻿using EsteknikCRM1.DatabaseCon;
-using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,24 +27,28 @@ namespace EsteknikCRM1.Pages
                     MessageBox.Show("Müşteri bilgisi bulunamadı.");
                     return;
                 }
-                var addresses = await AppServices.AddressService.GetCustomerAddressesAsync(_selectedCustomer.Id);
-                //var addresses = await FirebaseService.Instance.GetCustomerAddressesAsync(_selectedCustomer.Id);
+
+                var addresses = await AppServices.ApiAddressService.GetAddressesByCustomerIdAsync(_selectedCustomer.Id);
 
                 var gridData = addresses.Select(x => new AddressModel
                 {
                     Id = x.Id,
                     CustomerId = x.CustomerId,
                     AddressLine = x.AddressLine,
-                    FlatNo = "",
-                    BuildingNo = "",
-                    Street = "",
-                    Neighborhood = x.Neighborhood,
-                    District = x.District,
-                    City = x.City,
-                    Country = x.Country,
-                    IsResidence = false,
-                    Status = "Aktif",
-                    OwnershipType = ""
+                    FlatNo = x.FlatNo ?? "",
+                    BuildingNo = x.BuildingNo ?? "",
+                    Street = x.Street ?? "",
+                    Neighborhood = x.Neighborhood ?? "",
+                    District = x.District ?? "",
+                    City = x.City ?? "",
+                    Country = x.Country ?? "",
+                    IsResidence = x.IsResidence,
+                    Status = x.Status ?? "Aktif",
+                    OwnershipType = x.OwnershipType ?? "",
+                    PostCode = x.PostCode ?? "",
+                    IsActive = x.IsActive,
+                    CreatedDate = x.CreatedDate,
+                    PassiveDate = x.PassiveDate
                 }).ToList();
 
                 AddressGrid.ItemsSource = gridData;
@@ -74,24 +76,27 @@ namespace EsteknikCRM1.Pages
 
             if (result == true)
             {
-                var addresses = await AppServices.AddressService.GetCustomerAddressesAsync(_selectedCustomer.Id);
-                //var addresses = await FirebaseService.Instance.GetCustomerAddressesAsync(_selectedCustomer.Id);
+                var addresses = await AppServices.ApiAddressService.GetAddressesByCustomerIdAsync(_selectedCustomer.Id);
 
                 var gridData = addresses.Select(x => new AddressModel
                 {
                     Id = x.Id,
                     CustomerId = x.CustomerId,
                     AddressLine = x.AddressLine,
-                    FlatNo = x.FlatNo,
-                    BuildingNo = x.BuildingNo,
-                    Street = x.Street,
-                    Neighborhood = x.Neighborhood,
-                    District = x.District,
-                    City = x.City,
-                    Country = x.Country,
+                    FlatNo = x.FlatNo ?? "",
+                    BuildingNo = x.BuildingNo ?? "",
+                    Street = x.Street ?? "",
+                    Neighborhood = x.Neighborhood ?? "",
+                    District = x.District ?? "",
+                    City = x.City ?? "",
+                    Country = x.Country ?? "",
                     IsResidence = x.IsResidence,
-                    Status = x.Status,
-                    OwnershipType = x.OwnershipType
+                    Status = x.Status ?? "Aktif",
+                    OwnershipType = x.OwnershipType ?? "",
+                    PostCode = x.PostCode ?? "",
+                    IsActive = x.IsActive,
+                    CreatedDate = x.CreatedDate,
+                    PassiveDate = x.PassiveDate
                 }).ToList();
 
                 AddressGrid.ItemsSource = gridData;

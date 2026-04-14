@@ -1,5 +1,4 @@
-﻿using EsteknikCRM1.DatabaseCon;
-using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
 using System;
 using System.Linq;
@@ -13,7 +12,6 @@ namespace EsteknikCRM1.Pages
         public TeamDefinitionsOperationPage()
         {
             InitializeComponent();
-
             CreatedDateBox.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm zzz");
         }
 
@@ -35,23 +33,20 @@ namespace EsteknikCRM1.Pages
                 TeamItem team = new TeamItem
                 {
                     TeamName = TeamNameBox.Text.Trim(),
-                    VehiclePlate = VehiclePlateBox.Text?.Trim(),
+                    VehiclePlate = VehiclePlateBox.Text?.Trim() ?? "",
                     ServiceName = "ES İKLİMLENDİRME SAN.TİC.LTD.ŞTİ.",
                     IsActive = true,
                     Status = "Aktif",
                     CreatedDate = DateTime.Now,
                     PassiveDate = null
                 };
+
                 var parts = TeamNameBox.Text
                     .Trim()
                     .Split(' ', (char)StringSplitOptions.RemoveEmptyEntries);
 
                 string name = parts.FirstOrDefault() ?? "";
                 string surname = parts.LastOrDefault() ?? "";
-                string middleName = parts.Length > 2
-                    ? string.Join(" ", parts.Skip(1).Take(parts.Length - 2))
-                    : "";
-                
 
                 UserModel user = new UserModel
                 {
@@ -60,13 +55,12 @@ namespace EsteknikCRM1.Pages
                     UserRole = "team",
                     Name = name,
                     Surname = surname
-
                 };
-                await AppServices.AuthService.AddUserAsync(user.UserMail, user.Password, user.UserRole, user.Name, user.Surname);
-                //await FirebaseService.Instance.AddUserAsync(user.UserMail, user.Password, user.UserRole, user.Name, user.Surname);
 
-                //string newTeamId = await FirebaseService.Instance.AddTeamAsync(team);
-                string newTeamId = await AppServices.TeamService.AddTeamAsync(team);
+                await AppServices.ApiAuthService.AddUserAsync(user);
+
+                string newTeamId = await AppServices.ApiTeamService.AddTeamAsync(team);
+
                 MessageBox.Show(
                     "Takım başarıyla kaydedildi.\nKayıt ID: " + newTeamId,
                     "Başarılı",

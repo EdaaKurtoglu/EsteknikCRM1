@@ -9,11 +9,11 @@ namespace EsteknikCRM.Entities
         private string _deviceCode;
         private string _deviceName;
         private DateTime? _commissionDate;
-        private string _brand;
-        private string _topGroup;
-        private string _subGroup;
-        private string _specialGroup;
-        private string _status;
+        private string? _brand;
+        private string? _topGroup;
+        private string? _subGroup;
+        private string? _specialGroup;
+        private string? _status;
 
         public string Id
         {

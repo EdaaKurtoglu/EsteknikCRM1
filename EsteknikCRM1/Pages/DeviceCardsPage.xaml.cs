@@ -1,27 +1,17 @@
-﻿using EsteknikCRM1.DatabaseCon;
-using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 
 namespace EsteknikCRM1.Pages
 {
-    /// <summary>
-    /// Interaction logic for DeviceCardsPage.xaml
-    /// </summary>
     public partial class DeviceCardsPage : Page
     {
         private List<DeviceModel> _allDevices = new List<DeviceModel>();
@@ -30,21 +20,21 @@ namespace EsteknikCRM1.Pages
         private int _currentPage = 1;
         private int _pageSize = 10;
         private int _totalPages = 1;
+
         public DeviceCardsPage()
         {
             InitializeComponent();
             Loaded += DeviceCardsPage_Loaded;
         }
-       
 
         private async Task LoadDevicesAsync()
         {
             try
             {
-                //var devices = await FirebaseService.Instance.GetDevicesAsync();
-                var devices = await AppServices.DeviceService.GetDevicesAsync();
-                _allDevices = devices;
-                _filteredDevices = devices;
+                var devices = await AppServices.ApiDeviceService.GetDevicesAsync();
+
+                _allDevices = devices ?? new List<DeviceModel>();
+                _filteredDevices = _allDevices;
 
                 _currentPage = 1;
                 RefreshPagedGrid();
@@ -54,6 +44,7 @@ namespace EsteknikCRM1.Pages
                 MessageBox.Show("Cihazlar yüklenemedi: " + ex.Message);
             }
         }
+
         private void RefreshPagedGrid()
         {
             if (_filteredDevices == null)
@@ -162,6 +153,7 @@ namespace EsteknikCRM1.Pages
             };
             PaginationPanel.Children.Add(nextButton);
         }
+
         private Button CreatePageButton(int pageNumber)
         {
             Button button = new Button
@@ -199,6 +191,7 @@ namespace EsteknikCRM1.Pages
         {
             await LoadDevicesAsync();
         }
+
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
@@ -209,20 +202,7 @@ namespace EsteknikCRM1.Pages
                 MessageBox.Show("Seçilen cihaz: " + selectedDevice.DeviceName);
             }
         }
-        /*private async Task LoadDevicesAsync()
-        {
-            try
-            {
-                var devices = await FirebaseService.Instance.GetDevicesAsync();
 
-                _allDevices = devices;
-                DeviceGrid.ItemsSource = devices;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Cihazlar yüklenemedi: " + ex.Message);
-            }
-        }*/
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             ApplyFilter();
@@ -255,24 +235,17 @@ namespace EsteknikCRM1.Pages
 
         private void ApplyFilter()
         {
-            string searchText = SearchTextBox.Text.ToLower();
+            string searchText = SearchTextBox.Text?.ToLower() ?? "";
 
-            var view = CollectionViewSource.GetDefaultView(DeviceGrid.ItemsSource);
-            view.Filter = item =>
-            {
-                var device = item as Models.DeviceModel;
+            var filtered = _allDevices.Where(device =>
+                (device.SerialNumber ?? "").ToLower().Contains(searchText) ||
+                (device.DeviceName ?? "").ToLower().Contains(searchText) ||
+                (device.Brand ?? "").ToLower().Contains(searchText))
+                .ToList();
 
-                return device.SerialNumber.ToLower().Contains(searchText)
-                    || device.DeviceName.ToLower().Contains(searchText)
-                    || device.Brand.ToLower().Contains(searchText);
-            };
+            _filteredDevices = filtered;
+            _currentPage = 1;
+            RefreshPagedGrid();
         }
-
-       /* private void SelectButton_Click(object sender, RoutedEventArgs e)
-        {
-            var row = (sender as Button).DataContext as Models.DeviceModel;
-            MessageBox.Show("Selected Device: " + row?.DeviceName);
-        }*/
-
     }
 }

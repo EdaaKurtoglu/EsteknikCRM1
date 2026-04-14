@@ -7,11 +7,11 @@ namespace EsteknikCRM.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TeamsController : ControllerBase
+    public class TeamController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public TeamsController(AppDbContext context)
+        public TeamController(AppDbContext context)
         {
             _context = context;
         }
@@ -40,12 +40,27 @@ namespace EsteknikCRM.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(Team team)
         {
-            team.CreatedDate = DateTime.UtcNow;
+            try
+            {
+                team.Id = Guid.NewGuid().ToString();
+                team.TeamId ??= team.Id;
+                team.TeamName ??= "";
+                team.VehiclePlate ??= "";
+                team.ServiceName ??= "";
+                team.MemberName ??= "";
+                team.Role ??= "";
+                team.Status ??= "Aktif";
+                team.CreatedDate = team.CreatedDate == default ? DateTime.UtcNow : team.CreatedDate;
 
-            _context.Teams.Add(team);
-            await _context.SaveChangesAsync();
+                _context.Teams.Add(team);
+                await _context.SaveChangesAsync();
 
-            return Ok(team);
+                return Ok(team);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException?.Message ?? ex.Message);
+            }
         }
 
         // 🔹 PUT: api/teams/5

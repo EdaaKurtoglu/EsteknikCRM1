@@ -8,7 +8,7 @@ namespace EsteknikCRM1.Models
 {
     public class TeamItem
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string TeamId { get; set; }
         public string ServiceName { get; set; }
         public string TeamName { get; set; }

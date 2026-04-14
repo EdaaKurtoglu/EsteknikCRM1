@@ -7,11 +7,11 @@ namespace EsteknikCRM.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AnnouncementsController : ControllerBase
+    public class AnnouncementController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public AnnouncementsController(AppDbContext context)
+        public AnnouncementController(AppDbContext context)
         {
             _context = context;
         }
@@ -21,25 +21,29 @@ namespace EsteknikCRM.Api.Controllers
         {
             var announcements = await _context.Announcements
                 .OrderByDescending(x => x.CreatedDate)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Subject,
-                    x.BodyText,
-                    x.CreatedDate,
-                    DateText = x.CreatedDate.ToString("dd/MM/yyyy HH:mm"),
-                    GroupText = x.CreatedDate.Date == DateTime.Now.Date
-                        ? "Bugün"
-                        : (DateTime.Now.Date - x.CreatedDate.Date).Days == 1
-                            ? "1 gün önce"
-                            : (DateTime.Now.Date - x.CreatedDate.Date).Days + " gün önce",
-                    x.FileNames,
-                    x.FileUrls,
-                    x.FileSizes
-                })
                 .ToListAsync();
 
-            return Ok(announcements);
+            var result = announcements.Select(x => new
+            {
+                x.Id,
+                x.Subject,
+                x.BodyText,
+                x.CreatedDate,
+                DateText = x.CreatedDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
+
+                GroupText = GetGroupText(x.CreatedDate.ToLocalTime())
+            }).ToList();
+
+            return Ok(result);
+        }
+
+        private string GetGroupText(DateTime date)
+        {
+            int days = (DateTime.Now.Date - date.Date).Days;
+
+            if (days <= 0) return "Bugün";
+            if (days == 1) return "1 gün önce";
+            return $"{days} gün önce";
         }
 
         [HttpGet("{id}")]

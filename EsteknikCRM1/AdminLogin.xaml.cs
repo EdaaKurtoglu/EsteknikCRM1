@@ -100,7 +100,7 @@ namespace EsteknikCRM1
         {
             try
             {
-                var user = await AppServices.AuthService.LoginAsync(EmailTextBox.Text, PasswordTextBox.Password, "admin");
+                var user = await AppServices.ApiAuthService.LoginAsync(EmailTextBox.Text, PasswordTextBox.Password, "admin");
                 //var user = await FirebaseService.Instance.LoginAsync(EmailTextBox.Text, PasswordTextBox.Password, "admin");
                 /*bool isValid = await firebase.CheckUserAsync(
                     EmailTextBox.Text,

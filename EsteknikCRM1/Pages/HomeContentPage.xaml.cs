@@ -208,7 +208,7 @@ namespace EsteknikCRM1
 
         private void AddAnnouncement_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Duyuru ekleme sayfası açılacak.");
+            NavigationService?.Navigate(new AnnouncementAddPage());
         }
 
         private void Operation_Click(object sender, RoutedEventArgs e)
