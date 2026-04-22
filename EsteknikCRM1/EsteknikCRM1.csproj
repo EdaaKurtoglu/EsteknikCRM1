@@ -302,6 +302,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\HakedisSetModel.cs" />
+    <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Popups\ChangePasswordWindow.xaml.cs">
+      <DependentUpon>ChangePasswordWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\Api\ApiAddressService.cs" />
     <Compile Include="Services\Api\ApiAnnouncementService.cs" />
     <Compile Include="Services\Api\ApiAuthService.cs" />
@@ -309,7 +314,10 @@
     <Compile Include="Services\Api\ApiCustomerDeviceService.cs" />
     <Compile Include="Services\Api\ApiCustomerService.cs" />
     <Compile Include="Services\Api\ApiDeviceService.cs" />
+    <Compile Include="Services\Api\ApiHakedisSetService.cs" />
     <Compile Include="Services\Api\ApiLookupService.cs" />
+    <Compile Include="Services\Api\ApiOperationService.cs" />
+    <Compile Include="Services\Api\ApiProductService.cs" />
     <Compile Include="Services\Api\ApiTeamService.cs" />
     <Compile Include="Services\Api\ApiWorkflowService.cs" />
     <Compile Include="Models\AddressModel.cs" />
@@ -657,6 +665,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Popups\AssignTechnicalTeamWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Popups\ChangePasswordWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

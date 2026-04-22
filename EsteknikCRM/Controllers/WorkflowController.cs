@@ -7,11 +7,11 @@ namespace EsteknikCRM.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class WorkflowsController : ControllerBase
+    public class WorkflowController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public WorkflowsController(AppDbContext context)
+        public WorkflowController(AppDbContext context)
         {
             _context = context;
         }

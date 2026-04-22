@@ -98,5 +98,45 @@ namespace EsteknikCRM.Api.Controllers
             return Ok("Silindi");
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> GetBySerialOrStockCode([FromQuery] string? serialNo, [FromQuery] string? stockCode)
+        {
+            serialNo = serialNo?.Trim();
+            stockCode = stockCode?.Trim();
+
+            if (string.IsNullOrWhiteSpace(serialNo) && string.IsNullOrWhiteSpace(stockCode))
+                return BadRequest("Seri numarası veya stok kodu girilmelidir.");
+
+            var query = _context.Devices.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(serialNo) && !string.IsNullOrWhiteSpace(stockCode))
+            {
+                var device = await query.FirstOrDefaultAsync(x =>
+                    x.SerialNumber == serialNo &&
+                    x.StockCode == stockCode);
+
+                if (device == null)
+                    return NotFound("Seri numarası ve stok kodu birlikte eşleşen cihaz bulunamadı.");
+
+                return Ok(device);
+            }
+
+            if (!string.IsNullOrWhiteSpace(serialNo))
+            {
+                var device = await query.FirstOrDefaultAsync(x => x.SerialNumber == serialNo);
+
+                if (device == null)
+                    return NotFound("Seri numarasına ait cihaz bulunamadı.");
+
+                return Ok(device);
+            }
+
+            var stockDevice = await query.FirstOrDefaultAsync(x => x.DeviceCode == stockCode);
+
+            if (stockDevice == null)
+                return NotFound("Stok koduna ait cihaz bulunamadı.");
+
+            return Ok(stockDevice);
+        }
     }
 }

@@ -1,92 +1,125 @@
-﻿using System;
+﻿using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using EsteknikCRM1.DatabaseCon;
-using EsteknikCRM1.Models;
-using EsteknikCRM1.Services;
 
 namespace EsteknikCRM1.Pages
 {
-    /// <summary>
-    /// Interaction logic for HakedisRecordsOperationPage.xaml
-    /// </summary>
     public partial class HakedisRecordsOperationPage : Page
     {
+        private string _selectedPayType = "Merkez Ödeyecek";
+
+        private readonly Brush ActiveTabBrush =
+            new SolidColorBrush((Color)ColorConverter.ConvertFromString("#14A0DB"));
+
+        private readonly Brush InactiveTabBrush =
+            new SolidColorBrush(Colors.Transparent);
+
         public HakedisRecordsOperationPage()
         {
-            InitializeComponent(); 
+            InitializeComponent();
             Loaded += HakedisRecordsOperationPage_Loaded;
         }
 
         private async void HakedisRecordsOperationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            await LoadCompletedWorkflowsAsync();
+            SetActiveTabVisualAsync();
+            await LoadWorkflowOperationsAsync();
         }
 
-        private async Task LoadCompletedWorkflowsAsync()
+        private async Task LoadWorkflowOperationsAsync()
         {
             try
             {
-                var workflows = await AppServices.WorkflowService.GetCompletedWorkflowsAsync();
-                //var workflows = await FirebaseService.Instance.GetCompletedWorkflowsAsync();
-                var rows = new List<HakedisOperationItem>();
+                var operations = await AppServices.ApiOperationService.GetWorkflowTeamOperationsAsync();
 
-                foreach (var item in workflows)
+                var filtered = operations
+                    .Where(x =>
+                        (x.IsBilled == false) && // 🔥 EN ÖNEMLİ SATIR
+                        string.Equals(x.CustomerOrCenterPay ?? "", _selectedPayType, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                var rows = new List<HakedisOperationItem>();
+                int rowNo = 1;
+
+                foreach (var item in filtered)
                 {
-                   
                     string customerName = "";
-                    string serialNo = "";
-                    string productCode = "";
-                    string productName = "";
+                    string serialNo = item.SerialNumber ?? "";
+                    string productCode = item.StockCode ?? "";
+                    string productName = item.DeviceName ?? "";
+                    string serviceReceiptType = "";
+                    string laborName = item.OperationType ?? "";
+                    string subLaborName = "";
+                    decimal operationPrice = 0;
 
                     if (!string.IsNullOrWhiteSpace(item.CustomerId))
                     {
-                        var customer = await AppServices.CustomerService.GetCustomerByIdAsync(item.CustomerId);
+                        var customer = await AppServices.ApiCustomerService.GetCustomerByIdAsync(item.CustomerId);
 
-                        //var customer = await FirebaseService.Instance.GetCustomerByIdAsync(item.CustomerId);
                         if (customer != null)
-                            customerName = (customer.Name + " " + customer.Surname).Trim();
+                            customerName = $"{customer.Name ?? ""} {customer.Surname ?? ""}".Trim();
                     }
 
                     if (!string.IsNullOrWhiteSpace(item.DeviceId))
                     {
-                        var device = await AppServices.DeviceService.GetDeviceByIdAsync(item.DeviceId);
-                        //var device = await FirebaseService.Instance.GetDeviceByIdAsync(item.DeviceId);
+                        var device = await AppServices.ApiDeviceService.GetDeviceByIdAsync(item.DeviceId);
+
                         if (device != null)
                         {
-                            serialNo = device.SerialNumber ?? "";
-                            productCode = device.DeviceCode ?? "";
-                            productName = device.DeviceName ?? "";
+                            serialNo = string.IsNullOrWhiteSpace(device.SerialNumber)
+                                ? serialNo
+                                : device.SerialNumber;
+
+                            productCode = string.IsNullOrWhiteSpace(device.StockCode)
+                                ? (device.DeviceCode ?? productCode)
+                                : device.StockCode;
+
+                            productName = string.IsNullOrWhiteSpace(device.DeviceName)
+                                ? productName
+                                : device.DeviceName;
                         }
                     }
-                    int row = 1;
+
+                    if (!string.IsNullOrWhiteSpace(item.WorkflowId))
+                    {
+                        var workflow = await AppServices.ApiWorkflowService.GetWorkflowByIdAsync(item.WorkflowId);
+
+                        if (workflow != null)
+                        {
+                            serviceReceiptType = workflow.FlowType ?? "";
+                            subLaborName = workflow.SubCategoryName ?? "";
+                        }
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(productCode) && !string.IsNullOrWhiteSpace(laborName))
+                    {
+                        operationPrice = await AppServices.ApiOperationService
+                            .GetOperationPriceAsync(productCode, laborName);
+                    }
+
                     rows.Add(new HakedisOperationItem
                     {
-                        Id = row,
-                        WorkflowReceiptNo = item.Id, // istersen ayrı fis no alanın varsa onu ver
+                        Id = rowNo,
+                        OperationId = item.Id,
+                        WorkflowReceiptNo = item.WorkflowId ?? "",
                         Customer = customerName,
-                        ServiceReceiptType = item.FlowType ?? "",
+                        ServiceReceiptType = serviceReceiptType,
                         DeviceSerialNo = serialNo,
                         ProductCode = productCode,
                         ProductName = productName,
-                        LaborName = item.CategoryName ?? "",
-                        SubLaborName = item.SubCategoryName ?? "",
-                        Amount = "0",
-                        Quantity = "1"
-                        
+                        LaborName = laborName,
+                        SubLaborName = subLaborName,
+                        Amount = operationPrice.ToString("0.##"),
+                        Quantity = item.Quantity.ToString()
                     });
-                    row++;
+
+                    rowNo++;
                 }
 
                 HakedisOperationGrid.ItemsSource = rows;
@@ -96,17 +129,117 @@ namespace EsteknikCRM1.Pages
                 MessageBox.Show("Hakediş gridi yüklenirken hata oluştu:\n" + ex.Message);
             }
         }
+        private async Task SetActiveTabVisualAsync()
+        {
+            if (_selectedPayType == "Merkez Ödeyecek")
+            {
+                CenterTabUnderline.Background = ActiveTabBrush;
+                CustomerTabUnderline.Background = InactiveTabBrush;
+
+                CenterTabText.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1F2D3D"));
+                CustomerTabText.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1F2D3D"));
+            }
+            else
+            {
+                CenterTabUnderline.Background = InactiveTabBrush;
+                CustomerTabUnderline.Background = ActiveTabBrush;
+
+                CenterTabText.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1F2D3D"));
+                CustomerTabText.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1F2D3D"));
+            }
+            
+        }
+
+        private async void CenterTabButton_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedPayType = "Merkez Ödeyecek";
+            SetActiveTabVisualAsync();
+            await LoadWorkflowOperationsAsync();
+        }
+
+        private async void CustomerTabButton_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedPayType = "Müşteri Ödeyecek";
+            SetActiveTabVisualAsync();
+            await LoadWorkflowOperationsAsync();
+        }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.GoBack();
         }
 
-
-        private void CreateSetButton_Click(object sender, RoutedEventArgs e)
+        private async void CreateSetButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Hakediş seti oluşturuldu.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-    }
+            try
+            {
+                var items = HakedisOperationGrid.ItemsSource as List<HakedisOperationItem>;
 
+                if (items == null || items.Count == 0)
+                {
+                    MessageBox.Show("Set oluşturulacak kayıt bulunamadı.",
+                        "Uyarı",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+                decimal totalAmount = items.Sum(x =>
+                    decimal.TryParse(x.Amount, out var val) ? val : 0);
+
+                int totalQuantity = items.Sum(x =>
+                    int.TryParse(x.Quantity, out var q) ? q : 0);
+
+                var setModel = new HakedisSetModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ServiceTitle = "ES İKLİMLENDİRME SAN.TİC.LTD.ŞTİ.",
+                    SapServiceCode = "SAP-001",
+                    ServiceResponsible = _selectedPayType == "Merkez Ödeyecek"
+                        ? "Merkez"
+                        : "Müşteri",
+                    
+                    GreenCount = items.Count,
+                    BlueCount = 0,
+                    RedCount = 0,
+
+                    InvoiceNumber = "",
+                    InvoiceDate = "",
+                    PreApprovalDate = "",
+                    PreApprovalApproveDate = "",
+                    SetDate = DateTime.Now.ToString("dd/MM/yyyy"),
+                    SetApproveDate = "",
+                    ExportDate = "",
+                    
+                    PayType = _selectedPayType,
+                    TotalAmount = totalAmount,
+                    TotalQuantity = totalQuantity,
+                    CreatedDate = DateTime.UtcNow
+                };
+
+                await AppServices.ApiHakedisSetService.AddHakedisSetAsync(setModel);
+
+                // 🔥 ID listesi çıkar
+                var operationIds = items
+                 .Select(x => x.OperationId)
+                 .Where(x => !string.IsNullOrWhiteSpace(x))
+                 .ToList();
+
+                // 🔥 SILME YOK → FLAG
+                await AppServices.ApiOperationService
+                    .MarkOperationsAsBilledAsync(operationIds);
+
+                // grid temizle
+                HakedisOperationGrid.ItemsSource = null;
+
+                MessageBox.Show("Hakediş seti oluşturuldu ve kayıtlar işaretlendi.");
+
+                NavigationService?.Navigate(new HakedisRecordsPage());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hata:\n" + ex.Message);
+            }
+        }
+        }
 }

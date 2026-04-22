@@ -3,6 +3,7 @@ using System;
 using EsteknikCRM.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EsteknikCRM.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260416143011_AddCustomerOrCenterPay")]
+    partial class AddCustomerOrCenterPay
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,9 +114,11 @@ namespace EsteknikCRM.Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Department")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("MiddleName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -308,78 +313,6 @@ namespace EsteknikCRM.Api.Migrations
                     b.ToTable("Devices");
                 });
 
-            modelBuilder.Entity("EsteknikCRM.Entities.HakedisSet", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<int>("BlueCount")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ExportDate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("GreenCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("InvoiceDate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("InvoiceNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PayType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PreApprovalApproveDate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PreApprovalDate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("RedCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("SapServiceCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ServiceResponsible")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ServiceTitle")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SetApproveDate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SetDate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("TotalQuantity")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HakedisSets");
-                });
-
             modelBuilder.Entity("EsteknikCRM.Entities.NotificationType", b =>
                 {
                     b.Property<string>("Id")
@@ -413,94 +346,6 @@ namespace EsteknikCRM.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OperationPrices");
-                });
-
-            modelBuilder.Entity("EsteknikCRM.Entities.Product", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Brand")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("CascadeSystem")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("CostCenter")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("Ewl")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("EwlEndDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("EwlStartDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("NoSerialNumber")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("PhaseOut")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("PhaseOutDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ProductCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProductManager")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProductNameEn")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProductNameTr")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProductionPlace")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SalesInfo")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("SapPhaseOut")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("SapPhaseOutDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("SpecialGroup")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SubGroup")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TopGroup")
-                        .HasColumnType("text");
-
-                    b.Property<int>("WarrantyMonth1")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("WarrantyMonth2")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("EsteknikCRM.Entities.SubCategory", b =>
@@ -701,9 +546,6 @@ namespace EsteknikCRM.Api.Migrations
                     b.Property<string>("DeviceName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsBilled")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("OperationType")
                         .IsRequired()

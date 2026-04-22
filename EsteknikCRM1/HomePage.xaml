@@ -192,7 +192,7 @@
                         Style="{StaticResource HeaderMenuButtonStyle}">
                     <TextBlock Text="🔔"
                                FontSize="20"
-                               VerticalAlignment="Center"/>
+                               VerticalAlignment="Center" Width="108"/>
                 </Button>
 
                 <!-- User dropdown -->
@@ -202,14 +202,14 @@
                                   BorderThickness="0"
                                   Cursor="Hand"
                                   Padding="0"
-                                  HorizontalAlignment="Right"
-                                  FocusVisualStyle="{x:Null}">
+                                  HorizontalAlignment="Left"
+                                  FocusVisualStyle="{x:Null}" Margin="-68,0,0,0" Width="102">
                         <Border Background="#F8FAFC"
                                 BorderBrush="#E2E8F0"
                                 BorderThickness="1"
                                 CornerRadius="24"
-                                Padding="12,8">
-                            <Grid>
+                                Padding="12,8" Width="170">
+                            <Grid Margin="-59,0,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="10"/>
@@ -294,7 +294,9 @@
                                 <Button Content="👤 Profilim"
                                         Style="{StaticResource HeaderPopupButtonStyle}"/>
 
-                                <Button Content="🔐 Şifre Değiştir"
+                                <Button x:Name="ChangePasswordButton"
+                                        Content="🔐 Şifre Değiştir"
+                                        Click="ChangePassword_Click"
                                         Style="{StaticResource HeaderPopupButtonStyle}"/>
 
                                 <Separator Margin="4,8"/>
@@ -508,11 +510,6 @@
                                         Click="Magazine_Click"/>
                             </StackPanel>
                         </Expander>
-
-                        <Button x:Name="EmpAddButton"
-                                Content="+ Çalışan Ekle"
-                                Style="{StaticResource SidebarButtonStyle}"
-                                Click="Menu_Click"/>
 
                         <Button x:Name="BoschTTBtn"
                                 Content="🚗 Bosch TT"

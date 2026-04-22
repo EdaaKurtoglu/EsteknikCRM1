@@ -113,6 +113,7 @@
                        Foreground="Black"/>
 
             <!-- Tabs -->
+            <!-- Tabs -->
             <StackPanel Grid.Row="3" Margin="8,0,8,18">
                 <Grid Margin="0,4,0,18">
                     <Grid.ColumnDefinitions>
@@ -121,24 +122,49 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
+                    <!-- Merkez -->
                     <StackPanel Grid.Column="0" Margin="38,0,0,0">
-                        <TextBlock Text="🏭  Hakediş (Merkez Ödeyecek) Bilgileri"
-                                   FontSize="16"
-                                   Foreground="#1F2D3D"/>
-                        <Border Height="4"
-                                Background="#14A0DB"
-                                Margin="0,16,0,0"/>
+                        <Button x:Name="CenterTabButton"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"
+                    HorizontalAlignment="Left"
+                    Click="CenterTabButton_Click">
+                            <TextBlock x:Name="CenterTabText"
+                           Text="🏭  Hakediş (Merkez Ödeyecek) Bilgileri"
+                           FontSize="16"
+                           Foreground="#1F2D3D"/>
+                        </Button>
+
+                        <Border x:Name="CenterTabUnderline"
+                    Height="4"
+                    Background="#14A0DB"
+                    Margin="0,16,0,0"/>
                     </StackPanel>
 
-                    <TextBlock Grid.Column="1"
-                               Text="🏭  Hakediş (Müşteri Ödeyecek) Bilgileri"
-                               FontSize="16"
-                               Foreground="#1F2D3D"
-                               VerticalAlignment="Center"/>
+                    <!-- Müşteri -->
+                    <StackPanel Grid.Column="1" Margin="0,0,0,0">
+                        <Button x:Name="CustomerTabButton"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"
+                    HorizontalAlignment="Left"
+                    Click="CustomerTabButton_Click">
+                            <TextBlock x:Name="CustomerTabText"
+                           Text="🏭  Hakediş (Müşteri Ödeyecek) Bilgileri"
+                           FontSize="16"
+                           Foreground="#1F2D3D"/>
+                        </Button>
+
+                        <Border x:Name="CustomerTabUnderline"
+                    Height="4"
+                    Background="Transparent"
+                    Margin="0,16,0,0"/>
+                    </StackPanel>
                 </Grid>
 
                 <Border BorderBrush="#E0E0E0"
-                        BorderThickness="0,0,0,1"/>
+            BorderThickness="0,0,0,1"/>
             </StackPanel>
 
             <!-- Filter and toolbar -->

@@ -60,12 +60,19 @@
             <StackPanel Grid.Column="0">
                 <TextBlock Text="Yapılacak İşlem" Margin="0,0,0,6"/>
                 <ComboBox x:Name="OperationTypeComboBox" Height="36">
-                    <ComboBoxItem Content="Lütfen seçiniz..."/>
-                    <ComboBoxItem Content="Parça Değişimi"/>
-                    <ComboBoxItem Content="Bakım"/>
-                    <ComboBoxItem Content="Servis"/>
-                    <ComboBoxItem Content="Montaj"/>
+                    
                 </ComboBox>
+                <StackPanel Grid.Column="0" Margin="0,70,0,0" Orientation="Horizontal">
+                    <TextBlock Text="Ödeme Türü:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                    <RadioButton x:Name="CenterPayRadio"
+                 Content="Merkez Ödeyecek"
+                 IsChecked="True"
+                 Margin="0,0,15,0"/>
+
+                    <RadioButton x:Name="CustomerPayRadio"
+                 Content="Müşteri Ödeyecek"/>
+                </StackPanel>
             </StackPanel>
 
             <Button Grid.Column="2"

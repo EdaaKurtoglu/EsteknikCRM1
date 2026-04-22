@@ -65,11 +65,37 @@ namespace EsteknikCRM.Api.Controllers
                 return StatusCode(500, ex.InnerException?.Message ?? ex.Message);
             }
         }
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            if (request == null)
+                return BadRequest("Geçersiz istek.");
+
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
+
+            if (user == null)
+                return NotFound("Kullanıcı bulunamadı.");
+
+            if ((user.Password ?? "") != (request.CurrentPassword ?? ""))
+                return BadRequest("Mevcut şifre yanlış.");
+
+            user.Password = request.NewPassword ?? "";
+            await _context.SaveChangesAsync();
+
+            return Ok("Şifre güncellendi.");
+        }
         public class LoginRequest
         {
             public string UserMail { get; set; }
             public string Password { get; set; }
             public string UserRole { get; set; }
+        }
+        public class ChangePasswordRequest
+        {
+            public string UserId { get; set; }
+            public string CurrentPassword { get; set; }
+            public string NewPassword { get; set; }
         }
     }
 }

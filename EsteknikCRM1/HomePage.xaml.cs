@@ -3,6 +3,7 @@ using EsteknikCRM1.Pages;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using EsteknikCRM1.Popups;
 
 namespace EsteknikCRM1
 {
@@ -18,9 +19,12 @@ namespace EsteknikCRM1
 
             _loggedUser = user;
             CurrentUser = user;
+            UserInitialText.Text = string.IsNullOrWhiteSpace(CurrentUser.Name)
+                ? ""
+                : user.Name.Substring(0, 1).ToUpper();
             ApplyRolePermissions();
             SetLoggedUserInfo();
-            MainFrame.Navigate(new HomeContentPage());
+            MainFrame.Navigate(new HomeContentPage(user));
         }
         private void ApplyRolePermissions()
         {
@@ -49,7 +53,7 @@ namespace EsteknikCRM1
                 EMessageBtn.IsEnabled = false;
                 NotificationsBtn.IsEnabled = false;
                 MagazineBtn.IsEnabled = false;
-                HakedisActionBtn.IsEnabled = false;
+                HakedisActionBtn.IsEnabled = true;
                 PriceProductButton.IsEnabled = false;
             }
         }
@@ -111,7 +115,7 @@ namespace EsteknikCRM1
 
             if (clicked == HomeBtn)
             {
-                MainFrame.Navigate(new HomeContentPage());
+                MainFrame.Navigate(new HomeContentPage(CurrentUser));
             }
             else if (clicked == WorkflowBtn)
             {
@@ -225,6 +229,24 @@ namespace EsteknikCRM1
             AdminLogin login = new AdminLogin();
             login.Show();
             Close();
+        }
+        private void ChangePassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentUser == null)
+            {
+                MessageBox.Show("Kullanıcı bilgisi bulunamadı.",
+                    "Hata",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+
+            var window = new ChangePasswordWindow(CurrentUser)
+            {
+                Owner = this
+            };
+
+            window.ShowDialog();
         }
     }
 }

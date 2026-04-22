@@ -14,6 +14,7 @@ namespace EsteknikCRM.Entities
         private string? _subGroup;
         private string? _specialGroup;
         private string? _status;
+        private string? _stockCode;
 
         public string Id
         {
@@ -72,6 +73,11 @@ namespace EsteknikCRM.Entities
             get => _specialGroup;
             set { _specialGroup = value; OnPropertyChanged(nameof(SpecialGroup)); }
         }
+        public string StockCode
+        {
+            get => _stockCode;
+            set { _stockCode = value; OnPropertyChanged(nameof(StockCode)); }
+        }
 
         #region INotifyPropertyChanged
 
@@ -88,6 +94,7 @@ namespace EsteknikCRM.Entities
         }
 
         #endregion
+
     }
 
 }

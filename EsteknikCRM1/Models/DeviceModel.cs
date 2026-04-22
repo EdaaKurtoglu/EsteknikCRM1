@@ -19,6 +19,8 @@ namespace EsteknikCRM1.Models
         private string _subGroup;
         private string _specialGroup;
         private string _status;
+        private string _stockCode;
+
 
         public string Id
         {
@@ -37,7 +39,11 @@ namespace EsteknikCRM1.Models
             get => _deviceCode;
             set { _deviceCode = value; OnPropertyChanged(nameof(DeviceCode)); }
         }
-
+        public string StockCode
+        {
+            get => _stockCode;
+            set { _stockCode = value; OnPropertyChanged(nameof(StockCode)); }
+        }
         public string DeviceName
         {
             get => _deviceName;

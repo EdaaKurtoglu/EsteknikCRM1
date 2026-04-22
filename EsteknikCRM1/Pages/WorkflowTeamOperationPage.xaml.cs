@@ -1,11 +1,9 @@
-﻿using EsteknikCRM1.DatabaseCon;
-using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Models.EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -26,15 +24,39 @@ namespace EsteknikCRM1.Pages
             _workflow = workflow;
             _loggedUser = loggedUser;
             OperationItemsGrid.ItemsSource = _items;
-            OperationTypeComboBox.SelectedIndex = 0;
+
+            Loaded += Page_Loaded;
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            await LoadOperationTypesAsync();
+        }
+
+        private async Task LoadOperationTypesAsync()
+        {
+            try
+            {
+                OperationTypeComboBox.ItemsSource = null;
+                OperationTypeComboBox.Items.Clear();
+                var types = await AppServices.ApiOperationService.GetOperationTypesAsync();
+
+                types.Insert(0, "Lütfen seçiniz...");
+                OperationTypeComboBox.ItemsSource = types;
+                OperationTypeComboBox.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("İşlem tipleri yüklenemedi:\n" + ex.Message);
+            }
         }
 
         private async void DeviceLookupTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                string serialNo = SerialNumberTextBox.Text?.Trim();
-                string stockCode = StockCodeTextBox.Text?.Trim();
+                string serialNo = SerialNumberTextBox.Text?.Trim() ?? "";
+                string stockCode = StockCodeTextBox.Text?.Trim() ?? "";
 
                 if (string.IsNullOrWhiteSpace(serialNo) && string.IsNullOrWhiteSpace(stockCode))
                 {
@@ -43,20 +65,24 @@ namespace EsteknikCRM1.Pages
                     return;
                 }
 
-                _selectedDevice = await AppServices.DeviceService.GetDeviceBySerialOrStockCodeAsync(serialNo, stockCode);
-                //_selectedDevice = await FirebaseService.Instance.GetDeviceBySerialOrStockCodeAsync(serialNo, stockCode);
+                var device = await AppServices.ApiDeviceService
+                    .GetDeviceBySerialOrStockCodeAsync(serialNo, stockCode);
 
-                if (_selectedDevice != null)
+                if (device != null)
                 {
-                    DeviceNameTextBox.Text = _selectedDevice.DeviceName ?? "";
+                    _selectedDevice = device;
+                    DeviceNameTextBox.Text = device.DeviceName ?? "";
                 }
                 else
                 {
+                    _selectedDevice = null;
                     DeviceNameTextBox.Text = "";
                 }
             }
             catch (Exception ex)
             {
+                _selectedDevice = null;
+                DeviceNameTextBox.Text = "";
                 MessageBox.Show("Cihaz aranırken hata oluştu:\n" + ex.Message);
             }
         }
@@ -71,26 +97,25 @@ namespace EsteknikCRM1.Pages
                     return;
                 }
 
-                if (!(OperationTypeComboBox.SelectedItem is ComboBoxItem selectedOperation) ||
-                    selectedOperation.Content?.ToString() == "Lütfen seçiniz...")
+                string operationType = OperationTypeComboBox.SelectedItem?.ToString() ?? "";
+
+                if (string.IsNullOrWhiteSpace(operationType) || operationType == "Lütfen seçiniz...")
                 {
                     MessageBox.Show("Lütfen işlem tipi seçiniz.");
                     return;
                 }
 
-                string operationType = selectedOperation.Content.ToString();
+                // Tek alan kullan: StockCode yoksa DeviceCode ile devam et
+                string stockCode = _selectedDevice.StockCode ?? _selectedDevice.DeviceCode ?? "";
 
-                decimal price = await AppServices.OperationService.GetOperationPriceAsync(_selectedDevice.DeviceCode,
-                    operationType);
-                //decimal price = await FirebaseService.Instance.GetOperationPriceAsync(
-                 //   _selectedDevice.DeviceCode,
-                 //   operationType);
+                decimal price = await AppServices.ApiOperationService
+                    .GetOperationPriceAsync(stockCode, operationType);
 
                 _items.Add(new WorkflowTeamOperationItem
                 {
                     DeviceId = _selectedDevice.Id,
                     SerialNumber = _selectedDevice.SerialNumber,
-                    StockCode = _selectedDevice.DeviceCode,
+                    StockCode = stockCode,
                     DeviceName = _selectedDevice.DeviceName,
                     OperationType = operationType,
                     Price = price,
@@ -111,10 +136,7 @@ namespace EsteknikCRM1.Pages
 
         private void DeleteItemButton_Click(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
-            WorkflowTeamOperationItem selectedItem = button?.DataContext as WorkflowTeamOperationItem;
-
-            if (selectedItem != null)
+            if (sender is Button button && button.DataContext is WorkflowTeamOperationItem selectedItem)
             {
                 _items.Remove(selectedItem);
             }
@@ -129,29 +151,38 @@ namespace EsteknikCRM1.Pages
                     MessageBox.Show("Kaydedilecek işlem bulunamadı.");
                     return;
                 }
-
+                string payType = CenterPayRadio.IsChecked == true
+                    ? "Merkez Ödeyecek"
+                    : "Müşteri Ödeyecek";
                 foreach (var item in _items)
                 {
-                   await AppServices.OperationService.AddWorkflowTeamOperationAsync(new WorkflowTeamOperationSaveModel
-                    {
-                        WorkflowId = _workflow.Id,
-                        CustomerId = _workflow.CustomerId,
-                        DeviceId = item.DeviceId,
-                        SerialNumber = item.SerialNumber,
-                        StockCode = item.StockCode,
-                        DeviceName = item.DeviceName,
-                        OperationType = item.OperationType,
-                        Price = item.Price,
-                        Quantity = item.Quantity,
-                        TotalAmount = item.TotalAmount,
-                        CreatedByUserMail = _loggedUser?.UserMail,
-                        CreatedByName = _loggedUser?.Name,
-                        CreatedBySurname = _loggedUser?.Surname,
-                        CreatedByRole = _loggedUser?.UserRole,
-                        CreatedDate = DateTime.UtcNow
-                    });
+                    await AppServices.ApiOperationService.AddWorkflowTeamOperationAsync(
+                        new WorkflowTeamOperationSaveModel
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            WorkflowId = _workflow.Id,
+                            CustomerId = _workflow?.CustomerId ?? "",
+                            DeviceId = item.DeviceId,
+                            SerialNumber = item.SerialNumber,
+                            StockCode = item.StockCode,
+                            DeviceName = item.DeviceName,
+                            OperationType = item.OperationType,
+                            Price = item.Price,
+                            Quantity = item.Quantity,
+                            TotalAmount = item.TotalAmount,
+                            CreatedByUserMail = _loggedUser?.UserMail ?? "",
+                            CreatedByName = _loggedUser?.Name ?? "",
+                            CreatedBySurname = _loggedUser?.Surname ?? "",
+                            CreatedByRole = _loggedUser?.UserRole ?? "",
+                            CreatedDate = DateTime.UtcNow,
+                            CustomerOrCenterPay = payType,
+                        });
                 }
+                // workflow status güncelle
+                await AppServices.ApiWorkflowService.UpdateWorkflowStatusAsync(_workflow.Id, "Devam Ediyor");
 
+                // local nesneyi de güncelle
+                _workflow.WorkflowStatus = "Devam Ediyor";
                 MessageBox.Show("İşlemler başarıyla kaydedildi.");
                 NavigationService?.GoBack();
             }

@@ -32,12 +32,14 @@ namespace EsteknikCRM1.Pages
 
                 TeamItem team = new TeamItem
                 {
+                    Id = Guid.NewGuid().ToString(),
                     TeamName = TeamNameBox.Text.Trim(),
                     VehiclePlate = VehiclePlateBox.Text?.Trim() ?? "",
                     ServiceName = "ES İKLİMLENDİRME SAN.TİC.LTD.ŞTİ.",
                     IsActive = true,
                     Status = "Aktif",
-                    CreatedDate = DateTime.Now,
+                    MemberCount = 1,
+                    CreatedDate = DateTime.UtcNow,
                     PassiveDate = null
                 };
 
@@ -50,6 +52,7 @@ namespace EsteknikCRM1.Pages
 
                 UserModel user = new UserModel
                 {
+                    Id = team.Id,
                     UserMail = GenerateEmail(TeamNameBox.Text.Trim()),
                     Password = "123",
                     UserRole = "team",

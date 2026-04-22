@@ -1,6 +1,7 @@
 ﻿using EsteknikCRM1.Models;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -41,6 +42,25 @@ namespace EsteknikCRM1.Services.Api
 
             var createdDevice = await response.Content.ReadFromJsonAsync<DeviceModel>();
             return createdDevice?.Id ?? string.Empty;
+        }
+        public async Task<DeviceModel> GetDeviceBySerialOrStockCodeAsync(string serialNo, string stockCode)
+        {
+            string url =
+                $"api/device/search?serialNo={Uri.EscapeDataString(serialNo ?? "")}&stockCode={Uri.EscapeDataString(stockCode ?? "")}";
+
+            var response = await ApiClient.Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return null;
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"API Hatası: {response.StatusCode}\n{content}");
+
+            return JsonSerializer.Deserialize<DeviceModel>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
         }
     }
 }

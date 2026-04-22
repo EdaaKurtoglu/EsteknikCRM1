@@ -19,5 +19,6 @@ namespace EsteknikCRM1.Models
         public string SubLaborName { get; set; }
         public string Amount { get; set; }
         public string Quantity { get; set; }
+        public string OperationId { get; set; }
     }
 }

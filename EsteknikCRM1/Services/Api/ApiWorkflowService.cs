@@ -1,4 +1,5 @@
 ﻿using EsteknikCRM1.Models;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -12,38 +13,32 @@ namespace EsteknikCRM1.Services.Api
     {
         public async Task<List<WorkflowModel>> GetWorkflowsAsync()
         {
-            return await ApiClient.Client.GetFromJsonAsync<List<WorkflowModel>>("api/workflows")
+            return await ApiClient.Client.GetFromJsonAsync<List<WorkflowModel>>("api/workflow")
                    ?? new List<WorkflowModel>();
         }
-
-        public async Task<WorkflowModel> GetWorkflowByIdAsync(string id)
-        {
-            return await ApiClient.Client.GetFromJsonAsync<WorkflowModel>($"api/workflows/{id}");
-        }
-
         
         public async Task UpdateWorkflowAsync(string id, WorkflowModel workflow)
         {
-            var response = await ApiClient.Client.PutAsJsonAsync($"api/workflows/{id}", workflow);
+            var response = await ApiClient.Client.PutAsJsonAsync($"api/workflow/{id}", workflow);
             response.EnsureSuccessStatusCode();
         }
 
         public async Task DeleteWorkflowAsync(string id)
         {
-            var response = await ApiClient.Client.DeleteAsync($"api/workflows/{id}");
+            var response = await ApiClient.Client.DeleteAsync($"api/workflow/{id}");
             response.EnsureSuccessStatusCode();
         }
 
         public async Task<List<WorkflowModel>> GetCompletedWorkflowsAsync()
         {
-            return await ApiClient.Client.GetFromJsonAsync<List<WorkflowModel>>("api/workflows/completed")
+            return await ApiClient.Client.GetFromJsonAsync<List<WorkflowModel>>("api/workflow/completed")
                    ?? new List<WorkflowModel>();
         }
        
 
             public async Task<string> AddWorkflowAsync(WorkflowModel workflow)
             {
-                var response = await ApiClient.Client.PostAsJsonAsync("api/workflows", workflow);
+                var response = await ApiClient.Client.PostAsJsonAsync("api/workflow", workflow);
                 var responseContent = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
@@ -59,7 +54,7 @@ namespace EsteknikCRM1.Services.Api
                 Encoding.UTF8,
                 "application/json");
 
-            var response = await ApiClient.Client.PutAsync($"api/workflows/{id}/status", content);
+            var response = await ApiClient.Client.PutAsync($"api/workflow/{id}/status", content);
             var responseContent = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
@@ -73,11 +68,24 @@ namespace EsteknikCRM1.Services.Api
                 Encoding.UTF8,
                 "application/json");
 
-            var response = await ApiClient.Client.PutAsync($"api/workflows/{id}/team", content);
+            var response = await ApiClient.Client.PutAsync($"api/workflow/{id}/team", content);
             var responseContent = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
                 throw new System.Exception($"API Hatası: {response.StatusCode}\n{responseContent}");
+        }
+        public async Task<WorkflowModel> GetWorkflowByIdAsync(string id)
+        {
+            var response = await ApiClient.Client.GetAsync($"api/workflow/{id}");
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"API Hatası: {response.StatusCode}\n{content}");
+
+            return JsonSerializer.Deserialize<WorkflowModel>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
         }
     }
     }

@@ -104,12 +104,11 @@ namespace EsteknikCRM1
                         CategoryName = item.CategoryName,
                         SubCategoryName = item.SubCategoryName,
                         NotificationTypeName = item.NotificationTypeName,
-
+                        CustomerId = item.CustomerId,
                         CustomerName = customerName,
                         CustomerSurname = customerSurname,
                         CustomerFullName = fullName,
                         CustomerPhone = phone,
-
                         WorkTeam = item.WorkTeam,
                         AddressLine = item.AddressLine,
                         DeviceName = item.DeviceName,

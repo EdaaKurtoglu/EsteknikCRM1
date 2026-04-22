@@ -19,9 +19,10 @@ namespace EsteknikCRM.Api.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<NotificationType> NotificationTypes { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
-
-
-
+        public DbSet<OperationPrice> OperationPrices { get; set; }
+        public DbSet<WorkflowTeamOperation> WorkflowTeamOperations { get; set; }
+        public DbSet<HakedisSet> HakedisSets { get; set; }
+        public DbSet<Product> Products { get; set; }
 
     }
 }

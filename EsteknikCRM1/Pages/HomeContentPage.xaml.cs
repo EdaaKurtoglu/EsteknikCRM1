@@ -16,11 +16,13 @@ namespace EsteknikCRM1
         private int _currentPage = 1;
         private const int _itemsPerPage = 5;
         private bool _isLoadingPage = false;
+        private UserModel _user;
 
-        public HomeContentPage()
+        public HomeContentPage(UserModel currentUser)
         {
             InitializeComponent();
             Loaded += HomeContentPage_Loaded;
+            _user = currentUser;
         }
 
         private async void HomeContentPage_Loaded(object sender, RoutedEventArgs e)
@@ -31,6 +33,7 @@ namespace EsteknikCRM1
 
         private async Task LoadDataAsync()
         {
+            if(_user.UserRole != "admin")AddAnnouncementButton.Visibility = Visibility.Collapsed;
             try
             {
                 var data = await AppServices.ApiAnnouncementService.GetAnnouncementsAsync();

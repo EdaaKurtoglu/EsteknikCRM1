@@ -56,5 +56,20 @@ namespace EsteknikCRM1.Services.Api
                 PropertyNameCaseInsensitive = true
             });
         }
+        public async Task ChangePasswordAsync(string userId, string currentPassword, string newPassword)
+        {
+            var payload = new
+            {
+                UserId = userId,
+                CurrentPassword = currentPassword,
+                NewPassword = newPassword
+            };
+
+            var response = await ApiClient.Client.PostAsJsonAsync("api/auth/change-password", payload);
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"API Hatası: {response.StatusCode}\n{content}");
+        }
     }
 }

@@ -42,7 +42,7 @@ namespace EsteknikCRM.Api.Controllers
         {
             try
             {
-                team.Id = Guid.NewGuid().ToString();
+                team.Id = team.Id;
                 team.TeamId ??= team.Id;
                 team.TeamName ??= "";
                 team.VehiclePlate ??= "";
@@ -51,7 +51,7 @@ namespace EsteknikCRM.Api.Controllers
                 team.Role ??= "";
                 team.Status ??= "Aktif";
                 team.CreatedDate = team.CreatedDate == default ? DateTime.UtcNow : team.CreatedDate;
-
+                team.PassiveDate = null;
                 _context.Teams.Add(team);
                 await _context.SaveChangesAsync();
 
