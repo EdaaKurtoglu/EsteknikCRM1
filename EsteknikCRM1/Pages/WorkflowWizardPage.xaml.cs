@@ -3,6 +3,8 @@ using EsteknikCRM1.Models;
 using EsteknikCRM1.Popups;
 using EsteknikCRM1.Services;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,18 +31,16 @@ namespace EsteknikCRM1.Pages
             new SolidColorBrush((Color)ColorConverter.ConvertFromString("#BDBDBD"));
 
         private readonly UserModel _currentUser;
-
+        private List<DeviceModel> _allDevices = new List<DeviceModel>();
         public WorkflowWizardPage(UserModel currentUser)
         {
             InitializeComponent();
             _currentUser = currentUser;
             InitializePageState();
-        }
-        public WorkflowWizardPage()
-        {
-            InitializeComponent();
+            DeviceBox.Loaded += DeviceBox_Loaded;
 
         }
+       
         private void InitializePageState()
         {
             StartPanel.Visibility = Visibility.Visible;
@@ -167,7 +167,7 @@ namespace EsteknikCRM1.Pages
         {
             if (Window.GetWindow(this) is HomePage home)
             {
-                home.MainFrame.Navigate(new CustomerAddPage());
+                home.MainFrame.Navigate(new CustomerAddPage(_currentUser));
             }
         }
 
@@ -521,7 +521,17 @@ namespace EsteknikCRM1.Pages
                                 MessageBoxImage.Error);
             }
         }
+        private void WorkflowListButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new WorkflowPage(_currentUser));
+        }
 
+       
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(_currentUser));
+
+        }
         private void AddCustomerAddresses_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedCustomer == null)
@@ -530,7 +540,29 @@ namespace EsteknikCRM1.Pages
                 return;
             }
 
-            NavigationService?.Navigate(new IndividualCustomerAddressesPage(_selectedCustomer));
+            NavigationService?.Navigate(new IndividualCustomerAddressesPage(_selectedCustomer, _currentUser));
+        }
+        
+        private void DeviceBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            var textBox = DeviceBox.Template.FindName("PART_EditableTextBox", DeviceBox) as TextBox;
+
+            if (textBox != null)
+            {
+                textBox.TextChanged += DeviceTextBox_TextChanged;
+            }
+        }
+
+        private void DeviceTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            string searchText = textBox.Text.ToLower();
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                DeviceBox.ItemsSource = _allDevices.Where(x => x.DeviceName.ToLower().Contains(searchText))
+                .ToList();
+            }
+            DeviceBox.IsDropDownOpen = true;
         }
     }
 }

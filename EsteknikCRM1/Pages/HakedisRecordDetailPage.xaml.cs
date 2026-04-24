@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using static Google.LongRunning.Operations;
 
 namespace EsteknikCRM1.Pages
 {
@@ -137,6 +138,25 @@ namespace EsteknikCRM1.Pages
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.GoBack();
+        }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new HomeContentPage(currentUser));
+        }
+
+        private void Operations_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new OperationsPage());
+        }
+
+        private void HakedisRecords_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new HakedisRecordsPage());
+        }
+
+        private void HakedisOperation_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa → boş bırak
         }
     }
 

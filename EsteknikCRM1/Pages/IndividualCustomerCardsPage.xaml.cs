@@ -1,5 +1,6 @@
 ﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
+using Firebase.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,10 @@ namespace EsteknikCRM1.Pages
     public partial class IndividualCustomerCardsPage : Page
     {
         private List<CustomerModel> _allCustomers = new List<CustomerModel>();
-
-        public IndividualCustomerCardsPage()
+        UserModel _user;
+        public IndividualCustomerCardsPage(UserModel user)
         {
+            _user = user;
             InitializeComponent();
             Loaded += IndividualCustomerCardsPage_Loaded;
         }
@@ -77,7 +79,7 @@ namespace EsteknikCRM1.Pages
 
         private void AddNewCustomer_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new CustomerAddPage());
+            NavigationService?.Navigate(new CustomerAddPage(_user));
         }
 
         private void SelectButton_Click(object sender, RoutedEventArgs e)
@@ -93,6 +95,20 @@ namespace EsteknikCRM1.Pages
                 "Bilgi",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
+        }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(_user));
+        }
+
+        private void Cards_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new CardsPage());
+        }
+
+        private void IndividualCustomers_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa → boş bırak
         }
     }
 }

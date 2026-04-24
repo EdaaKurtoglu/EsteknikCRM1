@@ -297,6 +297,15 @@ namespace EsteknikCRM1
                 NavigationService?.Navigate(new WorkflowTeamOperationPage(selectedWorkflow, _loggedUser));
             }
         }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(_loggedUser));
+        }
+
+        private void Workflows_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa
+        }
     }
    
 }

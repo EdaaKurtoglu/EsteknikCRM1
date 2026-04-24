@@ -130,6 +130,20 @@ namespace EsteknikCRM1.Pages
         {
             MessageBox.Show("Bu müşteriye cihaz ekleme sayfası açılacak.");
         }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new HomeContentPage(currentUser));
+        }
+
+        private void Workflows_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new WorkflowPage());
+        }
+
+        private void WorkflowOperation_Click(object sender, RoutedEventArgs e)
+        {
+            // Şu an bulunduğun sayfa
+        }
     }
 
     public class CustomerDeviceGridItem

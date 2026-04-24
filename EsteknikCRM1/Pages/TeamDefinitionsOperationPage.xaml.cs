@@ -9,8 +9,10 @@ namespace EsteknikCRM1.Pages
 {
     public partial class TeamDefinitionsOperationPage : Page
     {
-        public TeamDefinitionsOperationPage()
+        private readonly UserModel _user;
+        public TeamDefinitionsOperationPage(UserModel user)
         {
+            _user = user;
             InitializeComponent();
             CreatedDateBox.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm zzz");
         }
@@ -98,6 +100,25 @@ namespace EsteknikCRM1.Pages
                 .Replace("ç", "c");
 
             return clean + "@bosch.com";
+        }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(_user));
+        }
+
+        private void Definitions_Click(object sender, RoutedEventArgs e)
+        {
+           // NavigationService?.Navigate(new DefinitionsPage());
+        }
+
+        private void TeamDefinitions_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new TeamDefinitionsPage(_user));
+        }
+
+        private void TeamDefinitionsOperation_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa
         }
     }
 }

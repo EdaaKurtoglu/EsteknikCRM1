@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using static Google.LongRunning.Operations;
 
 namespace EsteknikCRM1.Pages
 {
@@ -19,9 +20,10 @@ namespace EsteknikCRM1.Pages
 
         private readonly Brush InactiveTabBrush =
             new SolidColorBrush(Colors.Transparent);
-
-        public HakedisRecordsOperationPage()
+        UserModel _user;
+        public HakedisRecordsOperationPage(UserModel user)
         {
+            _user = user;
             InitializeComponent();
             Loaded += HakedisRecordsOperationPage_Loaded;
         }
@@ -240,12 +242,31 @@ namespace EsteknikCRM1.Pages
 
                 MessageBox.Show("Hakediş seti oluşturuldu ve kayıtlar işaretlendi.");
 
-                NavigationService?.Navigate(new HakedisRecordsPage());
+                NavigationService?.Navigate(new HakedisRecordsPage(_user));
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Hata:\n" + ex.Message);
             }
         }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(_user));
         }
+
+        private void Operations_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new OperationsPage());
+        }
+
+        private void HakedisRecords_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HakedisRecordsPage(_user));
+        }
+
+        private void HakedisOperation_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa → boş bırak
+        }
+    }
 }

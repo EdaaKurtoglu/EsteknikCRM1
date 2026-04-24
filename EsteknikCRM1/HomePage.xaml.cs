@@ -149,22 +149,22 @@ namespace EsteknikCRM1
 
         private void Appointment_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new AppointmentPage());
+            MainFrame.Navigate(new AppointmentPage(CurrentUser));
         }
 
         private void IndividualCustomerCards_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new IndividualCustomerCardsPage());
+            MainFrame.Navigate(new IndividualCustomerCardsPage(CurrentUser));
         }
 
         private void CorporateCustomerCards_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new CorporateCustomerCardsPage());
+            MainFrame.Navigate(new CorporateCustomerCardsPage(CurrentUser));
         }
 
         private void TeamDefinitions_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new TeamDefinitionsPage());
+            MainFrame.Navigate(new TeamDefinitionsPage(CurrentUser));
         }
 
         private void DutyDefinitions_Click(object sender, RoutedEventArgs e)
@@ -179,7 +179,7 @@ namespace EsteknikCRM1
 
         private void DeviceCards_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new DeviceCardsPage());
+            MainFrame.Navigate(new DeviceCardsPage(CurrentUser));
         }
 
         private void SparePartDefinitions_Click(object sender, RoutedEventArgs e)
@@ -204,7 +204,7 @@ namespace EsteknikCRM1
 
         private void HakedisAction_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new HakedisRecordsPage());
+            MainFrame.Navigate(new HakedisRecordsPage(CurrentUser));
         }
 
         private void ResetMenu()

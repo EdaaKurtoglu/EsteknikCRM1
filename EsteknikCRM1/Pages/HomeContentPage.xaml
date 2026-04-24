@@ -4,11 +4,13 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450"
+      d:DesignWidth="800"
       Background="White"
       Title="HomeContentPage">
 
     <Page.Resources>
+
         <Style x:Key="PaginationButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="38"/>
             <Setter Property="Height" Value="38"/>
@@ -62,9 +64,23 @@
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
+
+        <Style x:Key="BackButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Background" Value="#F3F6F9"/>
+            <Setter Property="BorderBrush" Value="#DADADA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
     </Page.Resources>
 
     <Grid Margin="40" Background="White">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="Auto"/>
@@ -75,18 +91,28 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="260"/>
             </Grid.ColumnDefinitions>
 
+            <!-- GERİ BUTONU -->
+            <Button Grid.Column="0"
+                    Content="←"
+                    Style="{StaticResource BackButtonStyle}"
+                    Margin="0,0,10,0"
+                    Click="Back_Click"/>
+
+            <!-- DUYURU EKLE -->
             <Button x:Name="AddAnnouncementButton"
-                    Grid.Column="0"
+                    Grid.Column="1"
                     Content="+ Duyuru Ekle"
                     Width="130"
                     Style="{StaticResource BlueButtonStyle}"
                     Click="AddAnnouncement_Click"/>
 
-            <TextBox Grid.Column="2"
+            <!-- ARAMA -->
+            <TextBox Grid.Column="3"
                      x:Name="SearchBox"
                      Width="250"
                      Height="34"
@@ -96,6 +122,7 @@
                      Background="#F3F6F9"
                      BorderBrush="#DADADA"
                      TextChanged="SearchBox_TextChanged"/>
+
         </Grid>
 
         <!-- TABLE -->
@@ -117,6 +144,7 @@
                       AlternationCount="2"
                       GridLinesVisibility="None"
                       SelectionMode="Single">
+
                 <DataGrid.Resources>
                     <Style TargetType="TextBlock">
                         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -142,6 +170,7 @@
                 </DataGrid.RowStyle>
 
                 <DataGrid.Columns>
+
                     <DataGridTextColumn Header="Başlık"
                                         Binding="{Binding Subject}"
                                         Width="*"/>
@@ -160,7 +189,9 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+
                 </DataGrid.Columns>
+
             </DataGrid>
         </Border>
 
@@ -170,5 +201,6 @@
                     Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"/>
+
     </Grid>
 </Page>

@@ -24,5 +24,24 @@ namespace EsteknikCRM1.Pages
         {
             InitializeComponent();
         }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new HomeContentPage());
+        }
+
+        private void Cards_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new CardsPage());
+        }
+
+        private void IndividualCustomers_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new IndividualCustomerCardsPage());
+        }
+
+        private void IndividualCustomersOperation_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa
+        }
     }
 }

@@ -90,19 +90,65 @@
             </Grid.RowDefinitions>
 
             <!-- Breadcrumb -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,8,0,14">
-                <TextBlock Text="⌂ Anasayfa" Foreground="#9AA8B6" FontSize="14"/>
-                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
-                <TextBlock Text="Kartlar" Foreground="#9AA8B6" FontSize="14"/>
-                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
-                <TextBlock Text="Bireysel Müşteri Kartları" Foreground="#0A67B2" FontSize="14"/>
-                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
-                <TextBlock Text="Bireysel Müşteri Kart İşlem"
-                           Foreground="#0A67B2"
-                           FontSize="14"
-                           FontWeight="SemiBold"/>
-            </StackPanel>
+            <StackPanel Grid.Row="0"
+            Orientation="Horizontal"
+            Margin="0,8,0,14"
+            VerticalAlignment="Center">
 
+                <Button Content="⌂ Anasayfa"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#9AA8B6"
+            FontSize="14"
+            Cursor="Hand"
+            Click="Home_Click"/>
+
+                <TextBlock Text="  >  "
+               Foreground="#9AA8B6"
+               FontSize="14"
+               VerticalAlignment="Center"/>
+
+                <Button Content="Kartlar"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#0A67B2"
+            FontSize="14"
+            Cursor="Hand"
+            Click="Cards_Click"/>
+
+                <TextBlock Text="  >  "
+               Foreground="#9AA8B6"
+               FontSize="14"
+               VerticalAlignment="Center"/>
+
+                <Button Content="Bireysel Müşteri Kartları"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#0A67B2"
+            FontSize="14"
+            Cursor="Hand"
+            Click="IndividualCustomers_Click"/>
+
+                <TextBlock Text="  >  "
+               Foreground="#9AA8B6"
+               FontSize="14"
+               VerticalAlignment="Center"/>
+
+                <Button Content="Bireysel Müşteri Kart İşlem"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#0A67B2"
+            FontSize="14"
+            FontWeight="SemiBold"
+            Cursor="Hand"
+            IsEnabled="False"
+            Click="IndividualCustomersOperation_Click"/>
+
+            </StackPanel>
             <!-- Blue line -->
             <Border Grid.Row="1"
                     Background="#0A67B2"

@@ -174,5 +174,19 @@ namespace EsteknikCRM1.Pages
                 MessageBox.Show("Dosya yükleme hatası:\n" + ex.Message);
             }
         }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(_loggedUser));
+        }
+
+        private void Workflows_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new WorkflowPage(_loggedUser));
+        }
+
+        private void WorkflowOperation_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa
+        }
     }
 }

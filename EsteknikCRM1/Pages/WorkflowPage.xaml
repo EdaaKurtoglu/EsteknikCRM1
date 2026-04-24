@@ -104,10 +104,36 @@
             </Grid.RowDefinitions>
 
             <!-- Breadcrumb -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,8,0,14">
-                <TextBlock Text="⌂ Anasayfa" Foreground="#9AA8B6" FontSize="14"/>
-                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
-                <TextBlock Text="İş Akışlar" Foreground="#0A67B2" FontSize="14" FontWeight="SemiBold"/>
+            <StackPanel Grid.Row="0"
+            Orientation="Horizontal"
+            Margin="0,8,0,14"
+            VerticalAlignment="Center">
+
+                <Button Content="⌂ Anasayfa"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#9AA8B6"
+            FontSize="14"
+            Cursor="Hand"
+            Click="Home_Click"/>
+
+                <TextBlock Text="  >  "
+               Foreground="#9AA8B6"
+               FontSize="14"
+               VerticalAlignment="Center"/>
+
+                <Button Content="İş Akışlar"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#0A67B2"
+            FontSize="14"
+            FontWeight="SemiBold"
+            Cursor="Hand"
+            IsEnabled="False"
+            Click="Workflows_Click"/>
+
             </StackPanel>
 
             <!-- Blue line -->

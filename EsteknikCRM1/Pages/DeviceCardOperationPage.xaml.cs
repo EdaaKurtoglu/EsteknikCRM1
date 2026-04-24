@@ -8,7 +8,8 @@ namespace EsteknikCRM1.Pages
 {
     public partial class DeviceCardOperationPage : Page
     {
-        public DeviceCardOperationPage()
+        private readonly UserModel _user;
+        public DeviceCardOperationPage(UserModel user)
         {
             InitializeComponent();
         }
@@ -34,16 +35,17 @@ namespace EsteknikCRM1.Pages
                     return;
                 }
 
-                string status = "Aktif";
+                string status = "Aktive";
                 if (DeviceStatusComboBox.SelectedItem is ComboBoxItem selectedStatusItem)
                 {
-                    status = selectedStatusItem.Content?.ToString() ?? "Aktif";
+                    status = selectedStatusItem.Content?.ToString() ?? "Aktive";
                 }
 
                 DeviceModel device = new DeviceModel
                 {
                     SerialNumber = SerialNoTextBox.Text?.Trim() ?? "",
                     DeviceCode = DeviceCodeTextBox.Text?.Trim() ?? "",
+                    StockCode = DeviceCodeTextBox?.Text?.Trim() ?? "",
                     DeviceName = DeviceNameTextBox.Text?.Trim() ?? "",
                     CommissionDate = CommissionDatePicker.SelectedDate,
                     Status = status
@@ -67,6 +69,25 @@ namespace EsteknikCRM1.Pages
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
+        }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(_user));
+        }
+
+        private void Cards_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new CardsPage());
+        }
+
+        private void DeviceCards_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new DeviceCardsPage(_user));
+        }
+
+        private void DeviceCardsOperation_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa
         }
     }
 }

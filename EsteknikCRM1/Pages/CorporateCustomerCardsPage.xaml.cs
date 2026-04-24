@@ -7,10 +7,12 @@ namespace EsteknikCRM1.Pages
 {
     public partial class CorporateCustomerCardsPage : Page
     {
-        public CorporateCustomerCardsPage()
+        UserModel currentUser;
+        public CorporateCustomerCardsPage(UserModel user)
         {
             InitializeComponent();
             LoadData();
+            currentUser = user;
         }
 
         private void LoadData()
@@ -39,7 +41,23 @@ namespace EsteknikCRM1.Pages
 
         private void OperationButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Kurumsal müşteri detay sayfası açılacak.");
+            
+           NavigationService?.Navigate(new CorporateCustomerOperationPage(currentUser)); // liste sayfan burasıysa
+           
+        }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(currentUser));
+        }
+
+        private void Cards_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new CardsPage()); // senin kartlar sayfan
+        }
+
+        private void CorporateCustomers_Click(object sender, RoutedEventArgs e)
+        {
+            // zaten bu sayfadasın → boş bırakıldı
         }
     }
 

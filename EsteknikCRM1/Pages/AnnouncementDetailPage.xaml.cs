@@ -16,10 +16,12 @@ namespace EsteknikCRM1.Pages
     {
         private readonly RecordModel _selectedAnnouncement;
         private readonly List<RecordModel> _allAnnouncements;
+        UserModel currentUser;
 
-        public AnnouncementDetailPage(RecordModel selectedAnnouncement, List<RecordModel> allAnnouncements)
+        public AnnouncementDetailPage(RecordModel selectedAnnouncement, List<RecordModel> allAnnouncements, UserModel user)
         {
             InitializeComponent();
+            currentUser = user;
             _selectedAnnouncement = selectedAnnouncement;
             _allAnnouncements = allAnnouncements ?? new List<RecordModel>();
 
@@ -185,6 +187,20 @@ namespace EsteknikCRM1.Pages
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.GoBack();
+        }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(currentUser));
+        }
+
+        private void Announcements_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(currentUser)); // liste sayfan burasıysa
+        }
+
+        private void CurrentPage_Click(object sender, RoutedEventArgs e)
+        {
+            // zaten bu sayfadasın → boş bırakabilirsin
         }
     }
 

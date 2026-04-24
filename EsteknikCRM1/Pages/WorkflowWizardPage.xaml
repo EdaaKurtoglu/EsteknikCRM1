@@ -120,15 +120,50 @@
             </Grid.RowDefinitions>
 
             <!-- Breadcrumb -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,8,0,14">
-                <TextBlock Text="⌂ Anasayfa" Foreground="#9AA8B6" FontSize="14"/>
-                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
-                <TextBlock Text="İş Akışlar" Foreground="#0A67B2" FontSize="14"/>
-                <TextBlock Text="  >  " Foreground="#9AA8B6" FontSize="14"/>
-                <TextBlock Text="İş Akışları İşlem"
-                           Foreground="#0A67B2"
-                           FontSize="14"
-                           FontWeight="SemiBold"/>
+            <!-- Breadcrumb -->
+            <StackPanel Grid.Row="0"
+            Orientation="Horizontal"
+            Margin="0,8,0,14"
+            VerticalAlignment="Center">
+
+                
+                <Button Content="⌂ Anasayfa"
+                Background="Transparent"
+                BorderThickness="0"
+                Padding="0"
+                Foreground="#0A67B2"
+                FontSize="14"
+                Cursor="Hand"
+                Click="HomeButton_Click"/>
+
+                <TextBlock Text="  >  "
+               Foreground="#9AA8B6"
+               FontSize="14"
+               VerticalAlignment="Center"/>
+
+                <Button Content="İş Akışlar"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#0A67B2"
+            FontSize="14"
+            Cursor="Hand"
+            Click="WorkflowListButton_Click"/>
+
+                <TextBlock Text="  >  "
+               Foreground="#9AA8B6"
+               FontSize="14"
+               VerticalAlignment="Center"/>
+
+                <Button Content="İş Akışları İşlem"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#0A67B2"
+            FontSize="14"
+            FontWeight="SemiBold"
+            Cursor="Hand"/>
+
             </StackPanel>
 
             <!-- Blue line -->
@@ -392,6 +427,9 @@
                         <ComboBox x:Name="DeviceBox"
                                   Style="{StaticResource FlatComboBoxStyle}"
                                   DisplayMemberPath="DeviceName"
+                                  IsEditable="True"
+                                  IsTextSearchEnabled="False"
+                                  StaysOpenOnEdit="True"
                                   SelectionChanged="DeviceBox_SelectionChanged"/>
                     </StackPanel>
 

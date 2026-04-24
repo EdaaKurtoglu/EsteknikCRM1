@@ -25,6 +25,7 @@ namespace EsteknikCRM1
             _user = currentUser;
         }
 
+
         private async void HomeContentPage_Loaded(object sender, RoutedEventArgs e)
         {
             Loaded -= HomeContentPage_Loaded;
@@ -211,7 +212,7 @@ namespace EsteknikCRM1
 
         private void AddAnnouncement_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new AnnouncementAddPage());
+            NavigationService?.Navigate(new AnnouncementAddPage(_user));
         }
 
         private void Operation_Click(object sender, RoutedEventArgs e)
@@ -225,7 +226,13 @@ namespace EsteknikCRM1
                 return;
             }
 
-            NavigationService?.Navigate(new AnnouncementDetailPage(selectedAnnouncement, _allRecords));
+            NavigationService?.Navigate(new AnnouncementDetailPage(selectedAnnouncement, _allRecords, _user));
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            if (NavigationService.CanGoBack)
+                NavigationService.GoBack();
         }
     }
 }

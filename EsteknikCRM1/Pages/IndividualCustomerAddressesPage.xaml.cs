@@ -10,9 +10,10 @@ namespace EsteknikCRM1.Pages
     public partial class IndividualCustomerAddressesPage : Page
     {
         private readonly CustomerModel _selectedCustomer;
-
-        public IndividualCustomerAddressesPage(CustomerModel customer)
+        private readonly  UserModel _user;
+        public IndividualCustomerAddressesPage(CustomerModel customer, UserModel user)
         {
+            _user = user;
             InitializeComponent();
             _selectedCustomer = customer;
             Loaded += IndividualCustomerAddressesPage_Loaded;
@@ -102,7 +103,25 @@ namespace EsteknikCRM1.Pages
                 AddressGrid.ItemsSource = gridData;
             }
         }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(_user));
+        }
 
+        private void Cards_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new CardsPage());
+        }
+
+        private void IndividualCustomers_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new IndividualCustomerCardsPage(_user));
+        }
+
+        private void IndividualCustomersOperation_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa → boş bırak
+        }
         private void DeleteAddress_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Silme işlemi daha sonra bağlanacak.");

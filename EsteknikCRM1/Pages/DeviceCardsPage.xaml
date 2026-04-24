@@ -28,14 +28,48 @@
         </Grid.RowDefinitions>
 
         <!-- 🔹 Breadcrumb -->
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Home" Foreground="Gray"/>
-            <TextBlock Text="  >  " Foreground="Gray"/>
-            <TextBlock Text="Cards" Foreground="Gray"/>
-            <TextBlock Text="  >  " Foreground="Gray"/>
-            <TextBlock Text="Device Cards"
-                       FontWeight="SemiBold"
-                       Foreground="#1E3A8A"/>
+        <StackPanel Orientation="Horizontal"
+            VerticalAlignment="Center">
+
+            <Button Content="⌂ Anasayfa"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="Gray"
+            FontSize="14"
+            Cursor="Hand"
+            Click="Home_Click"/>
+
+            <TextBlock Text="  >  "
+               Foreground="Gray"
+               FontSize="14"
+               VerticalAlignment="Center"/>
+
+            <Button Content="Kartlar"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#1E3A8A"
+            FontSize="14"
+            Cursor="Hand"
+            Click="Cards_Click"/>
+
+            <TextBlock Text="  >  "
+               Foreground="Gray"
+               FontSize="14"
+               VerticalAlignment="Center"/>
+
+            <Button Content="Cihaz "
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#1E3A8A"
+            FontSize="14"
+            FontWeight="SemiBold"
+            Cursor="Hand"
+            IsEnabled="False"
+            Click="DeviceCards_Click"/>
+
         </StackPanel>
 
         <!-- 🔹 Başlık + Search + Add -->

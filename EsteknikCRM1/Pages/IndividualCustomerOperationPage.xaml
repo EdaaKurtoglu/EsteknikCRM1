@@ -12,14 +12,63 @@
         </Grid.RowDefinitions>
 
         <!-- BREADCRUMB -->
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
-            <TextBlock Text="Anasayfa" Foreground="#7A8A9A" FontSize="14"/>
-            <TextBlock Text="  >  " Foreground="#7A8A9A" FontSize="14"/>
-            <TextBlock Text="Kartlar" Foreground="#7A8A9A" FontSize="14"/>
-            <TextBlock Text="  >  " Foreground="#7A8A9A" FontSize="14"/>
-            <TextBlock Text="Bireysel Müşteri Kartları" Foreground="#0A67B2" FontSize="14"/>
-            <TextBlock Text="  >  " Foreground="#7A8A9A" FontSize="14"/>
-            <TextBlock Text="Bireysel Müşteri Kart İşlem" Foreground="#0A67B2" FontSize="14" FontWeight="SemiBold"/>
+        <StackPanel Orientation="Horizontal"
+            Margin="0,0,0,18"
+            VerticalAlignment="Center">
+
+            <Button Content="Anasayfa"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#7A8A9A"
+            FontSize="14"
+            Cursor="Hand"
+            Click="Home_Click"/>
+
+            <TextBlock Text="  >  "
+               Foreground="#7A8A9A"
+               FontSize="14"
+               VerticalAlignment="Center"/>
+
+            <Button Content="Kartlar"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#0A67B2"
+            FontSize="14"
+            Cursor="Hand"
+            Click="Cards_Click"/>
+
+            <TextBlock Text="  >  "
+               Foreground="#7A8A9A"
+               FontSize="14"
+               VerticalAlignment="Center"/>
+
+            <Button Content="Bireysel Müşteri Kartları"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#0A67B2"
+            FontSize="14"
+            Cursor="Hand"
+            Click="IndividualCustomers_Click"/>
+
+            <TextBlock Text="  >  "
+               Foreground="#7A8A9A"
+               FontSize="14"
+               VerticalAlignment="Center"/>
+
+            <Button Content="Bireysel Müşteri Kart İşlem"
+            Background="Transparent"
+            BorderThickness="0"
+            Padding="0"
+            Foreground="#0A67B2"
+            FontSize="14"
+            FontWeight="SemiBold"
+            Cursor="Hand"
+            IsEnabled="False"
+            Click="IndividualCustomersOperation_Click"/>
+
         </StackPanel>
 
         <!-- TITLE + TABS -->

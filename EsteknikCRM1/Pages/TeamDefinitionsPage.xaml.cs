@@ -11,8 +11,10 @@ namespace EsteknikCRM1.Pages
 {
     public partial class TeamDefinitionsPage : Page
     {
-        public TeamDefinitionsPage()
+        private readonly UserModel _user;
+        public TeamDefinitionsPage(UserModel user)
         {
+            _user = user;
             InitializeComponent();
             Loaded += TeamDefinitionsPage_Loaded;
         }
@@ -43,7 +45,7 @@ namespace EsteknikCRM1.Pages
 
         private void AddTeam_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new TeamDefinitionsOperationPage());
+            NavigationService?.Navigate(new TeamDefinitionsOperationPage(_user));
         }
 
         private void Select_Click(object sender, RoutedEventArgs e)

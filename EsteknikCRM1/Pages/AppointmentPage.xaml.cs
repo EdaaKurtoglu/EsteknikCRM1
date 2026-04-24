@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EsteknikCRM1.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static Google.LongRunning.Operations;
 
 namespace EsteknikCRM1.Pages
 {
@@ -20,13 +22,28 @@ namespace EsteknikCRM1.Pages
     /// </summary>
     public partial class AppointmentPage : Page
     {
-        public AppointmentPage()
+        UserModel currentUser;
+        public AppointmentPage(UserModel user)
         {
+            currentUser = user;
             InitializeComponent();
         }
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Randevu verileri yenilendi.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(currentUser));
+        }
+
+        private void Operations_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Appointment_Click(object sender, RoutedEventArgs e)
+        {
+            // şu an bulunduğun sayfa → boş bırakılabilir
         }
     }
 }

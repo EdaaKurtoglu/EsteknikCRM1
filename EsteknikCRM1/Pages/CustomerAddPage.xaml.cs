@@ -9,9 +9,11 @@ namespace EsteknikCRM1.Pages
 {
     public partial class CustomerAddPage : Page
     {
-        public CustomerAddPage()
+        UserModel _user;
+        public CustomerAddPage(UserModel user)
         {
             InitializeComponent();
+            _user = user;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -111,6 +113,25 @@ namespace EsteknikCRM1.Pages
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
+        }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(_user));
+        }
+
+        private void Cards_Click(object sender, RoutedEventArgs e)
+        {
+            //NavigationService?.Navigate(new CardsPage());
+        }
+
+        private void IndividualCustomers_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new IndividualCustomerCardsPage(_user));
+        }
+
+        private void IndividualCustomersOperation_Click(object sender, RoutedEventArgs e)
+        {
+            // bulunduğun sayfa → boş bırak
         }
     }
 }

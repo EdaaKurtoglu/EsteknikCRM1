@@ -20,9 +20,10 @@ namespace EsteknikCRM1.Pages
         private int _currentPage = 1;
         private int _pageSize = 10;
         private int _totalPages = 1;
-
-        public DeviceCardsPage()
+        private readonly UserModel _user;
+        public DeviceCardsPage(UserModel user)
         {
+            _user = user;
             InitializeComponent();
             Loaded += DeviceCardsPage_Loaded;
         }
@@ -78,13 +79,14 @@ namespace EsteknikCRM1.Pages
             Button prevButton = new Button
             {
                 Content = "‹",
-                Width = 34,
-                Height = 34,
+                Width = 40,
+                Height = 40,
                 Margin = new Thickness(5, 0, 5, 0),
                 Background = Brushes.Transparent,
                 BorderThickness = new Thickness(0),
                 Foreground = Brushes.Gray,
                 Cursor = Cursors.Hand,
+                FontSize = 12,
                 IsEnabled = _currentPage > 1
             };
             prevButton.Click += (s, e) =>
@@ -210,7 +212,7 @@ namespace EsteknikCRM1.Pages
 
         private void AddNewDevice_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new DeviceCardOperationPage());
+            NavigationService?.Navigate(new DeviceCardOperationPage(_user));
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -246,6 +248,27 @@ namespace EsteknikCRM1.Pages
             _filteredDevices = filtered;
             _currentPage = 1;
             RefreshPagedGrid();
+        }
+        private void Home_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new HomeContentPage(_user));
+        }
+
+        private void Workflows_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new WorkflowPage(_user));
+        }
+        private void Cards_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa
+        }
+        private void DeviceCards_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa
+        }
+        private void WorkflowOperation_Click(object sender, RoutedEventArgs e)
+        {
+            // aktif sayfa
         }
     }
 }

@@ -12,9 +12,11 @@ namespace EsteknikCRM1.Pages
     public partial class AnnouncementAddPage : Page
     {
         private List<string> _selectedFiles = new List<string>();
-        public AnnouncementAddPage()
+        private readonly UserModel _user;
+        public AnnouncementAddPage(UserModel user)
         {
             InitializeComponent();
+            _user = user;
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -29,6 +31,7 @@ namespace EsteknikCRM1.Pages
 
                 RecordModel model = new RecordModel
                 {
+                    Id = Guid.NewGuid().ToString(),   // 👈 EKLENDİ
                     Subject = SubjectTextBox.Text.Trim(),
                     BodyText = BodyTextBox.Text?.Trim() ?? "",
                     CreatedDate = DateTime.UtcNow,
@@ -42,7 +45,7 @@ namespace EsteknikCRM1.Pages
                     await AppServices.ApiAnnouncementService.UploadFilesAsync(announcementId, _selectedFiles);
                 }
                 MessageBox.Show("Duyuru başarıyla kaydedildi.");
-                NavigationService?.GoBack();
+                NavigationService?.Navigate(new HomeContentPage(_user));
             }
             catch (Exception ex)
             {
