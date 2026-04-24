@@ -23,6 +23,7 @@ namespace EsteknikCRM1.Pages
             InitializeComponent();
             _workflow = workflow;
             _loggedUser = loggedUser;
+
             OperationItemsGrid.ItemsSource = _items;
 
             Loaded += Page_Loaded;
@@ -30,24 +31,36 @@ namespace EsteknikCRM1.Pages
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            await LoadOperationTypesAsync();
+            await LoadLaborOperationsAsync();
         }
 
-        private async Task LoadOperationTypesAsync()
+        private async Task LoadLaborOperationsAsync()
         {
             try
             {
                 OperationTypeComboBox.ItemsSource = null;
                 OperationTypeComboBox.Items.Clear();
-                var types = await AppServices.ApiOperationService.GetOperationTypesAsync();
 
-                types.Insert(0, "Lütfen seçiniz...");
-                OperationTypeComboBox.ItemsSource = types;
+                var laborOperations = await AppServices.ApiOperationService.GetLaborOperationsAsync();
+
+                var defaultItem = new LaborOperationModel
+                {
+                    Id = "",
+                    LaborCode = "",
+                    LaborName = "Lütfen seçiniz...",
+                    SubLaborName = "",
+                    Status = "active"
+                };
+
+                laborOperations.Insert(0, defaultItem);
+
+                OperationTypeComboBox.DisplayMemberPath = "DisplayName";
+                OperationTypeComboBox.ItemsSource = laborOperations;
                 OperationTypeComboBox.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("İşlem tipleri yüklenemedi:\n" + ex.Message);
+                MessageBox.Show("İşçilik tipleri yüklenemedi:\n" + ex.Message);
             }
         }
 
@@ -71,7 +84,13 @@ namespace EsteknikCRM1.Pages
                 if (device != null)
                 {
                     _selectedDevice = device;
+
                     DeviceNameTextBox.Text = device.DeviceName ?? "";
+
+                    if (string.IsNullOrWhiteSpace(StockCodeTextBox.Text))
+                    {
+                        StockCodeTextBox.Text = device.StockCode ?? device.DeviceCode ?? "";
+                    }
                 }
                 else
                 {
@@ -97,31 +116,43 @@ namespace EsteknikCRM1.Pages
                     return;
                 }
 
-                string operationType = OperationTypeComboBox.SelectedItem?.ToString() ?? "";
+                var selectedLabor = OperationTypeComboBox.SelectedItem as LaborOperationModel;
 
-                if (string.IsNullOrWhiteSpace(operationType) || operationType == "Lütfen seçiniz...")
+                if (selectedLabor == null ||
+                    string.IsNullOrWhiteSpace(selectedLabor.LaborCode) ||
+                    selectedLabor.LaborName == "Lütfen seçiniz...")
                 {
-                    MessageBox.Show("Lütfen işlem tipi seçiniz.");
+                    MessageBox.Show("Lütfen işçilik tipi seçiniz.");
                     return;
                 }
 
-                // Tek alan kullan: StockCode yoksa DeviceCode ile devam et
+                string productCode = _selectedDevice.DeviceCode ?? "";
                 string stockCode = _selectedDevice.StockCode ?? _selectedDevice.DeviceCode ?? "";
 
-                decimal price = await AppServices.ApiOperationService
-                    .GetOperationPriceAsync(stockCode, operationType);
+                if (string.IsNullOrWhiteSpace(productCode))
+                {
+                    MessageBox.Show("Seçilen cihazın ürün kodu bulunamadı.");
+                    return;
+                }
 
+                decimal price = await AppServices.ApiOperationService
+                    .GetOperationPriceAsync(productCode, selectedLabor.LaborCode);
+
+                
                 _items.Add(new WorkflowTeamOperationItem
                 {
                     DeviceId = _selectedDevice.Id,
                     SerialNumber = _selectedDevice.SerialNumber,
                     StockCode = stockCode,
                     DeviceName = _selectedDevice.DeviceName,
-                    OperationType = operationType,
+
+                    LaborCode = selectedLabor.LaborCode,
+                    LaborName = selectedLabor.LaborName,
+                    OperationType = selectedLabor.DisplayName,
+
                     Price = price,
                     Quantity = 1
                 });
-
                 SerialNumberTextBox.Text = "";
                 StockCodeTextBox.Text = "";
                 DeviceNameTextBox.Text = "";
@@ -151,9 +182,11 @@ namespace EsteknikCRM1.Pages
                     MessageBox.Show("Kaydedilecek işlem bulunamadı.");
                     return;
                 }
+
                 string payType = CenterPayRadio.IsChecked == true
                     ? "Merkez Ödeyecek"
                     : "Müşteri Ödeyecek";
+
                 foreach (var item in _items)
                 {
                     await AppServices.ApiOperationService.AddWorkflowTeamOperationAsync(
@@ -162,27 +195,32 @@ namespace EsteknikCRM1.Pages
                             Id = Guid.NewGuid().ToString(),
                             WorkflowId = _workflow.Id,
                             CustomerId = _workflow?.CustomerId ?? "",
+
                             DeviceId = item.DeviceId,
                             SerialNumber = item.SerialNumber,
                             StockCode = item.StockCode,
                             DeviceName = item.DeviceName,
+
                             OperationType = item.OperationType,
                             Price = item.Price,
                             Quantity = item.Quantity,
                             TotalAmount = item.TotalAmount,
+
                             CreatedByUserMail = _loggedUser?.UserMail ?? "",
                             CreatedByName = _loggedUser?.Name ?? "",
                             CreatedBySurname = _loggedUser?.Surname ?? "",
                             CreatedByRole = _loggedUser?.UserRole ?? "",
                             CreatedDate = DateTime.UtcNow,
                             CustomerOrCenterPay = payType,
+                            LaborCode = item.LaborCode,
+                            LaborName = item.LaborName,
                         });
                 }
-                // workflow status güncelle
+
                 await AppServices.ApiWorkflowService.UpdateWorkflowStatusAsync(_workflow.Id, "Devam Ediyor");
 
-                // local nesneyi de güncelle
                 _workflow.WorkflowStatus = "Devam Ediyor";
+
                 MessageBox.Show("İşlemler başarıyla kaydedildi.");
                 NavigationService?.GoBack();
             }

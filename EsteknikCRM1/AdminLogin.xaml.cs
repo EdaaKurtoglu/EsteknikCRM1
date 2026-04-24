@@ -101,13 +101,7 @@ namespace EsteknikCRM1
             try
             {
                 var user = await AppServices.ApiAuthService.LoginAsync(EmailTextBox.Text, PasswordTextBox.Password, "admin");
-                //var user = await FirebaseService.Instance.LoginAsync(EmailTextBox.Text, PasswordTextBox.Password, "admin");
-                /*bool isValid = await firebase.CheckUserAsync(
-                    EmailTextBox.Text,
-                    PasswordTextBox.Password,
-                    "admin"   // burada role belirliyoruz
-                );*/
-
+                
                 if (user!=null)
                 {
                     MessageBox.Show("Giriş başarılı!");
@@ -124,7 +118,7 @@ namespace EsteknikCRM1
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Hata oluştu: " + ex.Message);
+                MessageBox.Show("Hata oluştu: " + ex.ToString());
             }
         }
 

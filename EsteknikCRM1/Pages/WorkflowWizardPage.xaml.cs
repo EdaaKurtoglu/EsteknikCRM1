@@ -194,44 +194,78 @@ namespace EsteknikCRM1.Pages
 
         private async Task LoadWorkflowDataAsync()
         {
-            //var categories = await FirebaseService.Instance.GetCategoriesAsync();
             var categories = await AppServices.ApiLookupService.GetCategoriesAsync();
             CategoryBox.ItemsSource = categories;
 
-            //var notifyTypes = await FirebaseService.Instance.GetNotificationTypeAsync();
-            var notifyTypes = await AppServices.ApiLookupService.GetNotificationTypeAsync();
-            NotificationTypeBox.ItemsSource = notifyTypes;
+            NotificationTypeBox.ItemsSource = null;
+            SubCategoryBox.ItemsSource = null;
 
-            //var subCategories = await FirebaseService.Instance.GetSubCategoriesAsync();
-            var subCategories = await AppServices.ApiLookupService.GetSubCategoriesAsync();
-            SubCategoryBox.ItemsSource = subCategories;
-
-            //var devices = await FirebaseService.Instance.GetDevicesAsync();
             var devices = await AppServices.ApiDeviceService.GetDevicesAsync();
             DeviceBox.ItemsSource = devices;
         }
 
-        private void CategoryBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void CategoryBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _selectedCategory = CategoryBox.SelectedItem as CategoriesModel;
 
+            _selectedNotificationType = null;
+            _selectedSubCategory = null;
+            _selectedDevice = null;
+
+            NotificationTypeBox.SelectedItem = null;
+            SubCategoryBox.SelectedItem = null;
+            DeviceBox.SelectedItem = null;
+
+            NotificationTypeBox.ItemsSource = null;
+            SubCategoryBox.ItemsSource = null;
+
+            SubCategoryPanel.Visibility = Visibility.Collapsed;
+            DevicePanel.Visibility = Visibility.Collapsed;
+            WorkflowNextButton.Visibility = Visibility.Collapsed;
+            WorkflowNextButton.IsEnabled = false;
+
             if (_selectedCategory != null)
             {
+                var notificationTypes = await AppServices.ApiLookupService
+                    .GetNotificationTypesByCategoryIdAsync(_selectedCategory.ID);
+
+                NotificationTypeBox.ItemsSource = notificationTypes;
                 NotificationsPanel.Visibility = Visibility.Visible;
-                WorkflowNextButton.Visibility = Visibility.Collapsed;
-                WorkflowNextButton.IsEnabled = false;
+            }
+            else
+            {
+                NotificationsPanel.Visibility = Visibility.Collapsed;
             }
         }
 
-        private void NotificationTypeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void NotificationTypeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _selectedNotificationType = NotificationTypeBox.SelectedItem as NotificationTypeModel;
 
-            if (_selectedNotificationType != null)
+            _selectedSubCategory = null;
+            _selectedDevice = null;
+
+            SubCategoryBox.SelectedItem = null;
+            DeviceBox.SelectedItem = null;
+            SubCategoryBox.ItemsSource = null;
+
+            DevicePanel.Visibility = Visibility.Collapsed;
+            WorkflowNextButton.Visibility = Visibility.Collapsed;
+            WorkflowNextButton.IsEnabled = false;
+
+            if (_selectedNotificationType != null && _selectedCategory != null)
             {
+                var subCategories = await AppServices.ApiLookupService
+                    .GetSubCategoriesByCategoryAndNotificationTypeAsync(
+                        _selectedCategory.ID,
+                        _selectedNotificationType.ID);
+
+                SubCategoryBox.ItemsSource = subCategories;
                 SubCategoryPanel.Visibility = Visibility.Visible;
-                WorkflowNextButton.Visibility = Visibility.Collapsed;
-                WorkflowNextButton.IsEnabled = false;
+            }
+            else
+            {
+                SubCategoryPanel.Visibility = Visibility.Collapsed;
             }
         }
 

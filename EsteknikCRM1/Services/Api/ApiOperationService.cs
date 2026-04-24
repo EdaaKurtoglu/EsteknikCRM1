@@ -9,7 +9,39 @@ namespace EsteknikCRM1.Services.Api
 {
     public class ApiOperationService
     {
-        public async Task<decimal> GetOperationPriceAsync(string stockCode, string operationType)
+        public async Task<List<LaborOperationModel>> GetLaborOperationsAsync()
+        {
+            var response = await ApiClient.Client.GetAsync("api/operations/labor-operations");
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"API Hatası: {response.StatusCode}\n{content}");
+
+            return System.Text.Json.JsonSerializer.Deserialize<List<LaborOperationModel>>(
+                content,
+                new System.Text.Json.JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? new List<LaborOperationModel>();
+        }
+
+        public async Task<decimal> GetOperationPriceAsync(string productCode, string laborCode)
+        {
+            string url =
+                $"api/operations/price?productCode={Uri.EscapeDataString(productCode ?? "")}&laborCode={Uri.EscapeDataString(laborCode ?? "")}";
+
+            var response = await ApiClient.Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"API Hatası: {response.StatusCode}\n{content}");
+
+            if (decimal.TryParse(content, out var price))
+                return price;
+
+            return 0;
+        }
+        /*public async Task<decimal> GetOperationPriceAsync(string stockCode, string operationType)
         {
             string url = $"api/operations/price?stockCode={Uri.EscapeDataString(stockCode ?? "")}&operationType={Uri.EscapeDataString(operationType ?? "")}";
 
@@ -24,7 +56,7 @@ namespace EsteknikCRM1.Services.Api
 
             return 0;
         }
-
+        */
         public async Task AddWorkflowTeamOperationAsync(WorkflowTeamOperationSaveModel model)
         {
             var response = await ApiClient.Client.PostAsJsonAsync("api/operations/workflow-team-operation", model);
@@ -44,16 +76,29 @@ namespace EsteknikCRM1.Services.Api
                 .GetFromJsonAsync<List<WorkflowTeamOperationSaveModel>>("api/operations/workflow-team-operations")
                    ?? new List<WorkflowTeamOperationSaveModel>();
         }
-        public async Task MarkOperationsAsBilledAsync(List<string> ids)
+        public async Task MarkOperationsAsBilledAsync(string hakedisSetId, List<string> ids)
         {
+            var payload = new
+            {
+                HakedisSetId = hakedisSetId,
+                OperationIds = ids
+            };
+
             var response = await ApiClient.Client.PutAsJsonAsync(
                 "api/operations/workflow-team-operations/mark-billed",
-                ids);
+                payload);
 
             var content = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"API Hatası: {response.StatusCode}\n{content}");
+        }
+        public async Task<List<WorkflowTeamOperationSaveModel>> GetOperationsByHakedisSetIdAsync(string setId)
+        {
+            return await ApiClient.Client
+                .GetFromJsonAsync<List<WorkflowTeamOperationSaveModel>>(
+                    $"api/operations/workflow-team-operations/by-hakedis-set/{setId}")
+                ?? new List<WorkflowTeamOperationSaveModel>();
         }
     }
 }

@@ -18,22 +18,70 @@ namespace EsteknikCRM.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var devices = await _context.Devices.ToListAsync();
-            return Ok(devices);
+            try
+            {
+                var devices = await _context.Devices
+                    .AsNoTracking()
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.SerialNumber,
+                        x.DeviceCode,
+                        x.DeviceName,
+                        x.CommissionDate,
+                        x.Brand,
+                        x.TopGroup,
+                        x.SubGroup,
+                        x.SpecialGroup,
+                        x.Status,
+                        x.StockCode
+                    })
+                    .ToListAsync();
+
+                return Ok(devices);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            var device = await _context.Devices.FindAsync(id);
+            try
+            {
+                var device = await _context.Devices
+                    .AsNoTracking()
+                    .Where(x => x.Id == id)
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.SerialNumber,
+                        x.DeviceCode,
+                        x.DeviceName,
+                        x.CommissionDate,
+                        x.Brand,
+                        x.TopGroup,
+                        x.SubGroup,
+                        x.SpecialGroup,
+                        x.Status,
+                        x.StockCode
+                    })
+                    .FirstOrDefaultAsync();
 
-            if (device == null)
-                return NotFound();
+                if (device == null)
+                    return NotFound();
 
-            return Ok(device);
+                return Ok(device);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
         }
 
-        
+
         [HttpPost]
         public async Task<IActionResult> Add(Device device)
         {

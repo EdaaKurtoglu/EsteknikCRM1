@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
+using Microsoft.Win32;
+using System.Collections.Generic;
 
 namespace EsteknikCRM1.Pages
 {
@@ -12,6 +14,7 @@ namespace EsteknikCRM1.Pages
     {
         private readonly WorkflowModel _workflow;
         public UserModel _loggedUser { get; set; }
+        private readonly List<string> _selectedWorkflowFiles = new List<string>();
 
         public WorkflowOperationDetailPage(WorkflowModel workflow, UserModel currentUser)
         {
@@ -94,9 +97,9 @@ namespace EsteknikCRM1.Pages
 
         private void CustomerProjectComboBox_SelectionChanged(object sender, RoutedEventArgs e) { }
 
-        private void PutOnHoldButton_Click(object sender, RoutedEventArgs e)
+        private async void PutOnHoldButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Beklemeye alma işlemi çalışacak.");
+            await AppServices.ApiWorkflowService.UpdateWorkflowStatusAsync(_workflow.Id, "Beklemeye Alındı");
         }
 
         private async void AssignTechnicalTeamButton_Click(object sender, RoutedEventArgs e)
@@ -137,6 +140,38 @@ namespace EsteknikCRM1.Pages
             catch (Exception ex)
             {
                 MessageBox.Show("Hata oluştu: " + ex.Message);
+            }
+        }
+        private async void SelectWorkflowFiles_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(_workflow.Id))
+                {
+                    MessageBox.Show("Önce iş akışı kaydı seçilmelidir.");
+                    return;
+                }
+
+                var dialog = new OpenFileDialog
+                {
+                    Multiselect = true,
+                    Title = "İş akışına ait dosyaları seçin"
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    _selectedWorkflowFiles.Clear();
+                    _selectedWorkflowFiles.AddRange(dialog.FileNames);
+
+                    var uploaded = await AppServices.ApiWorkflowFileService
+                        .UploadFilesAsync(_workflow.Id, _selectedWorkflowFiles);
+
+                    MessageBox.Show($"{uploaded.Count} dosya başarıyla yüklendi.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Dosya yükleme hatası:\n" + ex.Message);
             }
         }
     }

@@ -18,6 +18,9 @@ namespace EsteknikCRM1.Models
 
             public decimal Price { get; set; }
             public int Quantity { get; set; } = 1;
+            public string LaborCode { get; set; }
+            public string LaborName { get; set; }
+            public string HakedisSetId { get; set; }
             public decimal TotalAmount
             {
                 get { return Price * Quantity; }

@@ -1,4 +1,5 @@
 ﻿using EsteknikCRM.Api.Data;
+using EsteknikCRM.Api.Entities;
 using EsteknikCRM.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -90,6 +91,83 @@ namespace EsteknikCRM.Api.Controllers
             await _context.SaveChangesAsync();
 
             return Ok("Silindi");
+        }
+
+        [HttpGet("download/{fileId}")]
+        public async Task<IActionResult> Download(string fileId)
+        {
+            var file = await _context.AnnouncementFiles.FindAsync(fileId);
+
+            if (file == null)
+                return NotFound("Dosya bulunamadı.");
+
+            if (!System.IO.File.Exists(file.FilePath))
+                return NotFound("Fiziksel dosya bulunamadı.");
+
+            var bytes = await System.IO.File.ReadAllBytesAsync(file.FilePath);
+
+            return File(bytes, file.ContentType ?? "application/octet-stream", file.FileName);
+        }
+        [HttpGet("files/{announcementId}")]
+        public async Task<IActionResult> GetFiles(string announcementId)
+        {
+            var files = await _context.AnnouncementFiles
+                .Where(x => x.AnnouncementId == announcementId)
+                .OrderByDescending(x => x.CreatedDate)
+                .ToListAsync();
+
+            return Ok(files);
+        }
+        [HttpPost("upload/{announcementId}")]
+        public async Task<IActionResult> Upload(string announcementId, [FromForm] List<IFormFile> files)
+        {
+            try
+            {
+                if (files == null || files.Count == 0)
+                    return BadRequest("Dosya seçilmedi.");
+
+                var uploadFolder = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "uploads",
+                    "announcements",
+                    announcementId);
+
+                Directory.CreateDirectory(uploadFolder);
+
+                foreach (var file in files)
+                {
+                    if (file.Length <= 0)
+                        continue;
+
+                    var storedFileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                    var fullPath = Path.Combine(uploadFolder, storedFileName);
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    _context.AnnouncementFiles.Add(new AnnouncementFile
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        AnnouncementId = announcementId,
+                        FileName = file.FileName,
+                        StoredFileName = storedFileName,
+                        FilePath = fullPath,
+                        ContentType = file.ContentType,
+                        FileSize = file.Length,
+                        CreatedDate = DateTime.UtcNow
+                    });
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok("Dosyalar yüklendi.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
         }
     }
 }

@@ -32,9 +32,12 @@ namespace EsteknikCRM1.Services
         public static ApiDeviceService ApiDeviceService { get; } = new ApiDeviceService();
         public static ApiLookupService ApiLookupService { get; } = new ApiLookupService();
         public static ApiAnnouncementService ApiAnnouncementService { get; } = new ApiAnnouncementService();
+        public static ApiWorkflowFileService ApiWorkflowFileService { get; } = new ApiWorkflowFileService();
         public static ApiAuthService ApiAuthService { get; } = new ApiAuthService();
         public static ApiOperationService ApiOperationService { get; } = new ApiOperationService();
         public static ApiHakedisSetService ApiHakedisSetService { get; } = new ApiHakedisSetService();
         public static ApiProductService ApiProductService { get; } = new ApiProductService();
+        public static ApiProductLaborPriceService ApiProductLaborPriceService { get; } = new ApiProductLaborPriceService();
+
     }
 }

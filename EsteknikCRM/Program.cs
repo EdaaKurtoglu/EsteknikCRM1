@@ -1,28 +1,31 @@
-using EsteknikCRM.Api.Data;
+﻿using EsteknikCRM.Api.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// DB bağlantısı
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add services to the container.
+// API dışarı aç
+builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
+// Services
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// 🔥 Swagger'ı HER ZAMAN aç (test için)
+app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+// Test endpoint
+app.MapGet("/", () => "EsteknikCRM API çalışıyor");
+
+// ❗ Şimdilik bunu kapat (HTTP kullanıyorsun)
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

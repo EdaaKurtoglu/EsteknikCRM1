@@ -161,5 +161,6 @@ namespace EsteknikCRM.Api.Controllers
 
             return Ok("Silindi");
         }
+
     }
 }

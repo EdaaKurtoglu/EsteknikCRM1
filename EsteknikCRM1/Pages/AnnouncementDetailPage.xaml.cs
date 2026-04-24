@@ -1,7 +1,11 @@
 ﻿using EsteknikCRM1.Models;
+using EsteknikCRM1.Services;
+using Grpc.Net.Client.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,8 +25,12 @@ namespace EsteknikCRM1.Pages
 
             LoadRightPanel();
             LoadLeftPanel();
+            Load();
         }
-
+        private async void Load()
+        {
+            await LoadAnnouncementFilesAsync(_selectedAnnouncement.Id);
+        }
         private void LoadRightPanel()
         {
             if (_selectedAnnouncement == null)
@@ -115,7 +123,20 @@ namespace EsteknikCRM1.Pages
 
             return panel;
         }
+        private async Task LoadAnnouncementFilesAsync(string announcementId)
+        {
+            try
+            {
+                var files = await AppServices.ApiAnnouncementService
+                    .GetAnnouncementFilesAsync(announcementId);
 
+                FilesItemsControl.ItemsSource = files;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Duyuru dosyaları yüklenemedi:\n" + ex.Message);
+            }
+        }
         private void DownloadFile_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             TextBlock tb = sender as TextBlock;
@@ -130,7 +151,37 @@ namespace EsteknikCRM1.Pages
                 UseShellExecute = true
             });
         }
+        private async void DownloadFile_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!(sender is Button button))
+                    return;
 
+                var file = button.DataContext as AnnouncementFileModel;
+
+                if (file == null)
+                    return;
+
+                var dialog = new Microsoft.Win32.SaveFileDialog
+                {
+                    FileName = file.FileName,
+                    Title = "Dosyayı kaydet"
+                };
+
+                if (dialog.ShowDialog() == true)
+                {
+                    await AppServices.ApiAnnouncementService
+                        .DownloadAnnouncementFileAsync(file.Id, dialog.FileName);
+
+                    MessageBox.Show("Dosya indirildi.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Dosya indirilemedi:\n" + ex.Message);
+            }
+        }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.GoBack();

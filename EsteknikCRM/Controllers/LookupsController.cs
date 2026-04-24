@@ -56,5 +56,38 @@ namespace EsteknikCRM.Api.Controllers
 
             return Ok(subCategories);
         }
+
+        [HttpGet("subcategories/by-category/{categoryId}")]
+        public async Task<IActionResult> GetSubCategoriesByCategoryId(string categoryId)
+        {
+            var subCategories = await _context.SubCategories
+                .Where(x => x.CategoryId == categoryId)
+                .ToListAsync();
+
+            return Ok(subCategories);
+        }
+
+        [HttpGet("notificationtypes/by-category/{categoryId}")]
+        public async Task<IActionResult> GetNotificationTypesByCategoryId(string categoryId)
+        {
+            var data = await _context.NotificationTypes
+                .Where(x => x.CategoryId == categoryId)
+                .ToListAsync();
+
+            return Ok(data);
+        }
+        [HttpGet("subcategories/by-category-and-notification")]
+        public async Task<IActionResult> GetSubCategoriesByCategoryAndNotification(
+        [FromQuery] string categoryId,
+        [FromQuery] string notificationTypeId)
+        {
+            var data = await _context.SubCategories
+                .Where(x => x.CategoryId == categoryId &&
+                            x.NotificationTypeId == notificationTypeId)
+                .ToListAsync();
+
+            return Ok(data);
+        }
+
     }
 }

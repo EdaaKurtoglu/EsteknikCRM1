@@ -3,6 +3,7 @@ using EsteknikCRM.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace EsteknikCRM.Api.Controllers
 {
     [ApiController]
@@ -16,18 +17,26 @@ namespace EsteknikCRM.Api.Controllers
             _context = context;
         }
 
+        [HttpGet("labor-operations")]
+        public async Task<IActionResult> GetLaborOperations()
+        {
+            var data = await _context.LaborOperations
+                .Where(x => x.Status == "active")
+                .OrderBy(x => x.LaborCode)
+                .ToListAsync();
+
+            return Ok(data);
+        }
         // 🔹 fiyat çekme
         [HttpGet("price")]
-        public async Task<IActionResult> GetPrice([FromQuery] string stockCode, [FromQuery] string operationType)
+        public async Task<IActionResult> GetPrice([FromQuery] string productCode, [FromQuery] string laborCode)
         {
-            var priceRow = await _context.OperationPrices
-                .FirstOrDefaultAsync(x =>
-                    x.OperationType == operationType);
+            var price = await _context.ProductLaborPrices
+                .Where(x => x.ProductCode == productCode && x.LaborCode == laborCode && x.Status == "active")
+                .Select(x => x.Price)
+                .FirstOrDefaultAsync();
 
-            if (priceRow == null)
-                return Ok(0);
-
-            return Ok(priceRow.Price);
+            return Ok(price);
         }
 
         // 🔹 yeni fiyat ekleme
@@ -114,30 +123,35 @@ namespace EsteknikCRM.Api.Controllers
         }
 
         [HttpPut("workflow-team-operations/mark-billed")]
-        public async Task<IActionResult> MarkAsBilled([FromBody] List<string> ids)
+        public async Task<IActionResult> MarkAsBilled([FromBody] MarkBilledRequest request)
         {
-            if (ids == null || ids.Count == 0)
-                return BadRequest("Id listesi boş geldi.");
-
             var list = await _context.WorkflowTeamOperations
-                .Where(x => ids.Contains(x.Id))
+                .Where(x => request.OperationIds.Contains(x.Id))
                 .ToListAsync();
-
-            if (list.Count == 0)
-                return BadRequest("Gönderilen id'lerle eşleşen operation kaydı bulunamadı.");
 
             foreach (var item in list)
             {
                 item.IsBilled = true;
+                item.HakedisSetId = request.HakedisSetId;
             }
 
             await _context.SaveChangesAsync();
 
-            return Ok(new
-            {
-                UpdatedCount = list.Count,
-                UpdatedIds = list.Select(x => x.Id).ToList()
-            });
+            return Ok();
         }
+        [HttpGet("workflow-team-operations/by-hakedis-set/{setId}")]
+        public async Task<IActionResult> GetOperationsByHakedisSet(string setId)
+        {
+            var list = await _context.WorkflowTeamOperations
+                .Where(x => x.HakedisSetId == setId)
+                .ToListAsync();
+
+            return Ok(list);
+        }
+    }
+    public class MarkBilledRequest
+    {
+        public string HakedisSetId { get; set; }
+        public List<string> OperationIds { get; set; }
     }
 }

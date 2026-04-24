@@ -44,6 +44,10 @@ namespace EsteknikCRM1.Pages
 
         private void Operation_Click(object sender, RoutedEventArgs e)
         {
+            if (sender is Button button && button.DataContext is HakedisSetModel selectedSet)
+            {
+                NavigationService?.Navigate(new HakedisSetDetailPage(selectedSet));
+            }
         }
     }
 }

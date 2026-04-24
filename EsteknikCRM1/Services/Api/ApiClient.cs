@@ -7,7 +7,7 @@ namespace EsteknikCRM1.Services.Api
     {
         public static HttpClient Client { get; } = new HttpClient
         {
-            BaseAddress = new Uri("https://localhost:7256/") // API portunu yaz
+            BaseAddress = new Uri("http://185.95.164.196:5000/") // API portunu yaz
         };
     }
 }

@@ -1,7 +1,5 @@
 ﻿using EsteknikCRM.Api.Data;
 using EsteknikCRM.Api.Entities;
-using EsteknikCRM.Entities;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,8 +39,9 @@ namespace EsteknikCRM.Api.Controllers
 
             return Ok(user);
         }
+
         [HttpPost("users")]
-        public async Task<IActionResult> AddUser(User user)
+        public async Task<IActionResult> AddUser([FromBody] User user)
         {
             try
             {
@@ -85,17 +84,19 @@ namespace EsteknikCRM.Api.Controllers
 
             return Ok("Şifre güncellendi.");
         }
+
         public class LoginRequest
         {
-            public string UserMail { get; set; }
-            public string Password { get; set; }
-            public string UserRole { get; set; }
+            public string UserMail { get; set; } = "";
+            public string Password { get; set; } = "";
+            public string UserRole { get; set; } = "";
         }
+
         public class ChangePasswordRequest
         {
-            public string UserId { get; set; }
-            public string CurrentPassword { get; set; }
-            public string NewPassword { get; set; }
+            public string UserId { get; set; } = "";
+            public string CurrentPassword { get; set; } = "";
+            public string NewPassword { get; set; } = "";
         }
     }
 }

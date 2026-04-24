@@ -97,7 +97,7 @@ namespace EsteknikCRM1.Pages
                 .Replace("ö", "o")
                 .Replace("ç", "c");
 
-            return clean + "@esiklimlendirme.com";
+            return clean + "@bosch.com";
         }
     }
 }

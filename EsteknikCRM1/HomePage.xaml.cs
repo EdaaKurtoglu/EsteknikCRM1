@@ -123,7 +123,7 @@ namespace EsteknikCRM1
             }
             else if (clicked == ReportsBtn)
             {
-                MainFrame.Navigate(new ReportsPage());
+                MainFrame.Navigate(new ProductLaborPricePage());
             }
         }
 

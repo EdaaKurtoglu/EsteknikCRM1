@@ -23,6 +23,10 @@ namespace EsteknikCRM.Api.Data
         public DbSet<WorkflowTeamOperation> WorkflowTeamOperations { get; set; }
         public DbSet<HakedisSet> HakedisSets { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<WorkflowFile> WorkflowFiles { get; set; }
+        public DbSet<LaborOperation> LaborOperations { get; set; }
+        public DbSet<ProductLaborPrice> ProductLaborPrices { get; set; }
+        public DbSet<AnnouncementFile> AnnouncementFiles { get; set; }
 
     }
 }

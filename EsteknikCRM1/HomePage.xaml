@@ -463,7 +463,7 @@
                         </Expander>
 
                         <Button x:Name="ReportsBtn"
-                                Content="📊 Reports"
+                                Content="📊 Ürün Fiyat Güncelle"
                                 Style="{StaticResource SidebarButtonStyle}"
                                 Click="Menu_Click"/>
 

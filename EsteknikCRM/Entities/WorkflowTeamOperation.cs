@@ -19,6 +19,9 @@
         public string CreatedByRole { get; set; }
         public DateTime CreatedDate { get; set; }
         public string? CustomerOrCenterPay { get; set; }
+        public string? LaborCode { get; set; }
+        public string? LaborName { get; set; }
+        public string? HakedisSetId { get; set; }
         public bool IsBilled { get; set; } = false;
     }
 }

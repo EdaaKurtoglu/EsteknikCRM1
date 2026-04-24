@@ -54,7 +54,10 @@ namespace EsteknikCRM1.Pages
                     string productCode = item.StockCode ?? "";
                     string productName = item.DeviceName ?? "";
                     string serviceReceiptType = "";
-                    string laborName = item.OperationType ?? "";
+                    string laborCode = item.LaborCode ?? "";
+                    string laborName = !string.IsNullOrWhiteSpace(item.LaborName)
+                        ? item.LaborName
+                        : item.OperationType ?? "";
                     string subLaborName = "";
                     decimal operationPrice = 0;
 
@@ -97,10 +100,14 @@ namespace EsteknikCRM1.Pages
                         }
                     }
 
-                    if (!string.IsNullOrWhiteSpace(productCode) && !string.IsNullOrWhiteSpace(laborName))
+                    if (!string.IsNullOrWhiteSpace(productCode) && !string.IsNullOrWhiteSpace(laborCode))
                     {
                         operationPrice = await AppServices.ApiOperationService
-                            .GetOperationPriceAsync(productCode, laborName);
+                            .GetOperationPriceAsync(productCode, laborCode);
+                    }
+                    else
+                    {
+                        operationPrice = item.Price;
                     }
 
                     rows.Add(new HakedisOperationItem
@@ -217,7 +224,7 @@ namespace EsteknikCRM1.Pages
                     CreatedDate = DateTime.UtcNow
                 };
 
-                await AppServices.ApiHakedisSetService.AddHakedisSetAsync(setModel);
+                string hakedisSetId = await AppServices.ApiHakedisSetService.AddHakedisSetAsync(setModel);
 
                 // 🔥 ID listesi çıkar
                 var operationIds = items
@@ -226,8 +233,7 @@ namespace EsteknikCRM1.Pages
                  .ToList();
 
                 // 🔥 SILME YOK → FLAG
-                await AppServices.ApiOperationService
-                    .MarkOperationsAsBilledAsync(operationIds);
+                await AppServices.ApiOperationService.MarkOperationsAsBilledAsync(hakedisSetId, operationIds);
 
                 // grid temizle
                 HakedisOperationGrid.ItemsSource = null;

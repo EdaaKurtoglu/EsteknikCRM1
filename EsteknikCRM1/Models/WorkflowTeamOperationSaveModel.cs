@@ -24,7 +24,8 @@ namespace EsteknikCRM1.Models
         public string CreatedByName { get; set; }
         public string CreatedBySurname { get; set; }
         public string CreatedByRole { get; set; }
-
+        public string LaborCode { get; set; }
+        public string LaborName { get; set; }
         public DateTime CreatedDate { get; set; }
         public Boolean IsBilled { get; set; }
     }

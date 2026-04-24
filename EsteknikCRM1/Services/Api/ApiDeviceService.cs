@@ -12,10 +12,18 @@ namespace EsteknikCRM1.Services.Api
     {
         public async Task<List<DeviceModel>> GetDevicesAsync()
         {
-            return await ApiClient.Client.GetFromJsonAsync<List<DeviceModel>>("api/device")
-                   ?? new List<DeviceModel>();
-        }
+            var response = await ApiClient.Client.GetAsync("api/device");
+            var content = await response.Content.ReadAsStringAsync();
 
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"API Hatası: {response.StatusCode}\n\n{content}");
+
+            return System.Text.Json.JsonSerializer.Deserialize<List<DeviceModel>>(content,
+                new System.Text.Json.JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }) ?? new List<DeviceModel>();
+        }
         public async Task<DeviceModel> GetDeviceByIdAsync(string id)
         {
             var response = await ApiClient.Client.GetAsync($"api/device/{id}");

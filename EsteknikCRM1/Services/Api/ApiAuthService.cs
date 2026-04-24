@@ -1,6 +1,8 @@
 ﻿using EsteknikCRM1.Models;
+using EsteknikCRM1.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -9,6 +11,15 @@ namespace EsteknikCRM1.Services.Api
 {
     public class ApiAuthService
     {
+        private readonly HttpClient _httpClient;
+
+        public ApiAuthService()
+        {
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(ApiConfig.BaseUrl)
+            };
+        }
         public async Task<List<UserModel>> GetUsersAsync()
         {
             return await ApiClient.Client.GetFromJsonAsync<List<UserModel>>("api/auth/users")
@@ -49,7 +60,7 @@ namespace EsteknikCRM1.Services.Api
             }
 
             if (!response.IsSuccessStatusCode)
-                throw new Exception($"API Hatası: {response.StatusCode}\n{content}");
+                throw new Exception($"API Hatası: {response.StatusCode}\n\n{content}");
 
             return JsonSerializer.Deserialize<UserModel>(content, new JsonSerializerOptions
             {
