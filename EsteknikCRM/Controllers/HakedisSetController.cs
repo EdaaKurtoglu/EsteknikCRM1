@@ -7,11 +7,11 @@ namespace EsteknikCRM.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class HakedisSetsController : ControllerBase
+    public class HakedisSetController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public HakedisSetsController(AppDbContext context)
+        public HakedisSetController(AppDbContext context)
         {
             _context = context;
         }
@@ -55,5 +55,33 @@ namespace EsteknikCRM.Api.Controllers
                 return StatusCode(500, ex.InnerException?.Message ?? ex.Message);
             }
         }
+
+        [HttpPut("{id}/approve-date")]
+        public async Task<IActionResult> UpdateSetApproveDate(
+            string id,
+            [FromBody] UpdateSetApproveDateRequest request)
+        {
+            var set = await _context.HakedisSets
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (set == null)
+                return NotFound($"Hakediş set bulunamadı. Id: {id}");
+
+            set.SetApproveDate = request.SetApproveDate;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(set);
+        }
+        [HttpGet("test-put-visible")]
+        public IActionResult TestPutVisible()
+        {
+            return Ok("HakedisSetsController yeni hali çalışıyor.");
+        }
+    }
+
+    public class UpdateSetApproveDateRequest
+    {
+        public string SetApproveDate { get; set; }
     }
 }

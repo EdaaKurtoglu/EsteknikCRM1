@@ -23,5 +23,6 @@
         public string? LaborName { get; set; }
         public string? HakedisSetId { get; set; }
         public bool IsBilled { get; set; } = false;
+        public int ApprovalStatus { get; set; } // 0,1,2
     }
 }

@@ -100,5 +100,14 @@ namespace EsteknikCRM1.Services.Api
                     $"api/operations/workflow-team-operations/by-hakedis-set/{setId}")
                 ?? new List<WorkflowTeamOperationSaveModel>();
         }
+        public async Task UpdateApprovalAsync(string operationId, int status)
+        {
+            var response = await ApiClient.Client.PutAsJsonAsync(
+                "api/operations/approve",
+                new { OperationId = operationId, Status = status });
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Onay işlemi başarısız");
+        }
     }
 }

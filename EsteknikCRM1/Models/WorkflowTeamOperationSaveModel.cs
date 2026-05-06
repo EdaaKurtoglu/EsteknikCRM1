@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace EsteknikCRM1.Models
 {
     public class WorkflowTeamOperationSaveModel
     {
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        public int _approvalStatus;
         public string Id { get; set; }
         public string WorkflowId { get; set; }
         public string CustomerId { get; set; }
@@ -19,7 +21,15 @@ namespace EsteknikCRM1.Models
         public int Quantity { get; set; }
         public decimal TotalAmount { get; set; }
         public string CustomerOrCenterPay { get; set; } // 🔥 YENİ ALAN
-
+        public int ApprovalStatus
+        {
+            get => _approvalStatus;
+            set
+            {
+                _approvalStatus = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ApprovalStatus)));
+            }
+        }
         public string CreatedByUserMail { get; set; }
         public string CreatedByName { get; set; }
         public string CreatedBySurname { get; set; }

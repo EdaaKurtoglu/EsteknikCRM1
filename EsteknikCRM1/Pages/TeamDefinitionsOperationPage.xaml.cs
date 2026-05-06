@@ -99,7 +99,7 @@ namespace EsteknikCRM1.Pages
                 .Replace("ö", "o")
                 .Replace("ç", "c");
 
-            return clean + "@bosch.com";
+            return clean + "@esbemuhendislik.com";
         }
         private void Home_Click(object sender, RoutedEventArgs e)
         {

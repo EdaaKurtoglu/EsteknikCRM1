@@ -164,7 +164,7 @@
                 <Image Source="/assets/ttsm.png"
                        Height="100"
                        Stretch="Uniform"
-                       HorizontalAlignment="Left"/>
+                       HorizontalAlignment="Left" Width="138"/>
             </Border>
 
             <!-- Title -->
@@ -173,7 +173,7 @@
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Foreground="#6B7280"
-                       FontSize="16"
+                       FontSize="20"
                        FontWeight="Medium"/>
 
             <!-- Right user area -->
@@ -192,7 +192,7 @@
                         Style="{StaticResource HeaderMenuButtonStyle}">
                     <TextBlock Text="🔔"
                                FontSize="20"
-                               VerticalAlignment="Center" Width="108"/>
+                               VerticalAlignment="Center" Width="146"/>
                 </Button>
 
                 <!-- User dropdown -->
@@ -209,7 +209,7 @@
                                 BorderThickness="1"
                                 CornerRadius="24"
                                 Padding="12,8" Width="170">
-                            <Grid Margin="-59,0,0,0">
+                            <Grid Margin="-114,0,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="10"/>
@@ -220,9 +220,9 @@
 
                                 <!-- Avatar -->
                                 <Border Grid.Column="0"
-                                        Width="46"
-                                        Height="46"
-                                        CornerRadius="23"
+                                        Width="66"
+                                        Height="66"
+                                        CornerRadius="33"
                                         Background="#1565C0"
                                         VerticalAlignment="Center">
                                     <TextBlock x:Name="UserInitialText"
@@ -239,12 +239,12 @@
                                             VerticalAlignment="Center">
                                     <TextBlock x:Name="UserNameText"
                                                Text="Kullanıcı Adı"
-                                               FontSize="18"
+                                               FontSize="20"
                                                FontWeight="Bold"
                                                Foreground="#1E293B"/>
                                     <TextBlock x:Name="UserRoleText"
                                                Text="Admin"
-                                               FontSize="13"
+                                               FontSize="16"
                                                Foreground="#64748B"
                                                Margin="0,2,0,0"/>
                                 </StackPanel>
@@ -468,12 +468,12 @@
                                 Click="Menu_Click"/>
 
                         <Button x:Name="OtherApplicationsBtn"
-                                Content="🔗 Other Applications"
+                                Content="🔗 Diğer Uygulamalar"
                                 Style="{StaticResource SidebarButtonStyle}"
                                 Click="Menu_Click"/>
 
                         <Button x:Name="DocumentsBtn"
-                                Content="📁 Documents"
+                                Content="📁 Belgeler"
                                 Style="{StaticResource SidebarButtonStyle}"
                                 Click="Menu_Click"/>
 
@@ -486,7 +486,7 @@
                                         Padding="20,0"
                                         VerticalAlignment="Center"
                                         Background="White">
-                                    <TextBlock Text="📞 Contact"
+                                    <TextBlock Text="📞 İletişim"
                                                VerticalAlignment="Center"
                                                Foreground="#444"/>
                                 </Border>
@@ -494,17 +494,17 @@
 
                             <StackPanel Background="#FAFAFA">
                                 <Button x:Name="EMessageBtn" 
-                                    Content="   E-Messages"
+                                    Content="   Mesajlar"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="EMessage_Click"/>
                                 <Button x:Name="NotificationsBtn" 
-                                    Content="   Notifications"
+                                    Content="   Bildirimler"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="Notifications_Click"/>
                                 <Button x:Name="MagazineBtn"
-                                    Content="   Bosch Corporate Magazine"
+                                    Content="   Bosch Kurumsal"
                                         Style="{StaticResource SidebarButtonStyle}"
                                         Background="#FAFAFA"
                                         Click="Magazine_Click"/>
@@ -517,12 +517,12 @@
                                 Click="Menu_Click"/>
 
                         <Button x:Name="ManagementBtn"
-                                Content="👨‍💼 Management"
+                                Content="👨‍💼 Yönetim"
                                 Style="{StaticResource SidebarButtonStyle}"
                                 Click="Menu_Click"/>
 
                         <Button x:Name="HelpBtn"
-                                Content="❓ Help"
+                                Content="❓ Yardım"
                                 Style="{StaticResource SidebarButtonStyle}"
                                 Click="Menu_Click"/>
                     </StackPanel>
@@ -543,7 +543,7 @@
 
         <!-- FOOTER -->
         <Grid Grid.Row="5" Background="White" Opacity="0.95">
-            <TextBlock Text="© 2026 Es Teknik CRM - Tüm Hakları Saklıdır"
+            <TextBlock Text="© 2026 CRM - Tüm Hakları Saklıdır"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Foreground="Gray"

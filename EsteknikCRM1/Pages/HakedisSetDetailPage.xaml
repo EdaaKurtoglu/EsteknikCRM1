@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="#F4F6F9" Height="651">
 
-    <Grid Margin="24">
+    <Grid Margin="0,24,0,43">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -19,7 +19,22 @@
         <DataGrid x:Name="OperationsGrid"
                   Grid.Row="1"
                   AutoGenerateColumns="False"
-                  IsReadOnly="True">
+                  IsReadOnly="True" Margin="0,0,0,10">
+
+            <!-- 🔥 ROW STYLE DOĞRU YER -->
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ApprovalStatus}" Value="1">
+                            <Setter Property="Background" Value="#D4EDDA"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ApprovalStatus}" Value="2">
+                            <Setter Property="Background" Value="#F8D7DA"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Workflow" Binding="{Binding WorkflowId}" Width="160"/>
                 <DataGridTextColumn Header="Seri No" Binding="{Binding SerialNumber}" Width="180"/>
@@ -31,6 +46,26 @@
                 <DataGridTextColumn Header="Adet" Binding="{Binding Quantity}" Width="80"/>
                 <DataGridTextColumn Header="Toplam" Binding="{Binding TotalAmount}" Width="120"/>
                 <DataGridTextColumn Header="Ödeme Tipi" Binding="{Binding CustomerOrCenterPay}" Width="150"/>
+
+                <!-- 🔥 ONAY / RED -->
+                <DataGridTemplateColumn x:Name="OperationColumn" Header="İşlem" Width="200">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Content="✔"
+                        Width="50"
+                        Margin="2"
+                        Click="Approve_Click"/>
+
+                                <Button Content="✖"
+                        Width="50"
+                        Margin="2"
+                        Click="Reject_Click"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
             </DataGrid.Columns>
         </DataGrid>
 
@@ -40,6 +75,6 @@
                 Height="38"
                 Margin="0,16,0,0"
                 HorizontalAlignment="Left"
-                Click="BackButton_Click"/>
+                Click="BackButton_Click" RenderTransformOrigin="0.456,-1.674"/>
     </Grid>
 </Page>

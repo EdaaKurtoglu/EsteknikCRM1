@@ -35,7 +35,7 @@
 
         <Style x:Key="OperationButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="72"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Height" Value="36"/>
             <Setter Property="Background" Value="#005A9E"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderBrush" Value="#005A9E"/>
@@ -56,6 +56,7 @@
     </Page.Resources>
 
     <Grid Margin="16,10,16,8">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="4"/>
@@ -66,60 +67,57 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Breadcrumb -->
         <StackPanel Grid.Row="0"
-            Orientation="Horizontal"
-            Margin="0,8,0,14"
-            VerticalAlignment="Center">
+                    Orientation="Horizontal"
+                    Margin="0,8,0,14"
+                    VerticalAlignment="Center">
 
             <Button Content="⌂ Anasayfa"
-            Background="Transparent"
-            BorderThickness="0"
-            Padding="0"
-            Foreground="#9AA8B6"
-            FontSize="14"
-            Cursor="Hand"
-            Click="Home_Click"/>
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"
+                    Foreground="#9AA8B6"
+                    FontSize="14"
+                    Cursor="Hand"
+                    Click="Home_Click"/>
 
             <TextBlock Text="  >  "
-               Foreground="#9AA8B6"
-               FontSize="14"
-               VerticalAlignment="Center"/>
+                       Foreground="#9AA8B6"
+                       FontSize="14"
+                       VerticalAlignment="Center"/>
 
             <Button Content="İşlemler"
-            Background="Transparent"
-            BorderThickness="0"
-            Padding="0"
-            Foreground="#0A67B2"
-            FontSize="14"
-            Cursor="Hand"
-            Click="Operations_Click"/>
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"
+                    Foreground="#0A67B2"
+                    FontSize="14"
+                    Cursor="Hand"
+                    Click="Operations_Click"/>
 
             <TextBlock Text="  >  "
-               Foreground="#9AA8B6"
-               FontSize="14"
-               VerticalAlignment="Center"/>
+                       Foreground="#9AA8B6"
+                       FontSize="14"
+                       VerticalAlignment="Center"/>
 
             <Button Content="Hakediş Kayıtları"
-            Background="Transparent"
-            BorderThickness="0"
-            Padding="0"
-            Foreground="#0A67B2"
-            FontSize="14"
-            FontWeight="SemiBold"
-            Cursor="Hand"
-            IsEnabled="False"
-            Click="HakedisRecords_Click"/>
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="0"
+                    Foreground="#0A67B2"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Cursor="Hand"
+                    IsEnabled="False"
+                    Click="HakedisRecords_Click"/>
 
         </StackPanel>
 
-        <!-- Blue line -->
         <Border Grid.Row="1"
                 Background="#0A67B2"
                 Height="2"
                 Margin="0,0,0,20"/>
 
-        <!-- Title -->
         <Grid Grid.Row="2" Margin="0,0,0,16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -138,7 +136,6 @@
                     Click="AddNewRecord_Click"/>
         </Grid>
 
-        <!-- Filters -->
         <Grid Grid.Row="3" Margin="0,18,0,18">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
@@ -150,6 +147,7 @@
                 <TextBlock Text="Başlangıç Tarihi"
                            FontSize="13"
                            Margin="2,0,0,6"/>
+
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -176,6 +174,7 @@
                 <TextBlock Text="Bitiş Tarihi"
                            FontSize="13"
                            Margin="2,0,0,6"/>
+
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -199,7 +198,6 @@
             </StackPanel>
         </Grid>
 
-        <!-- Toolbar -->
         <Grid Grid.Row="4" Margin="0,18,0,14">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -208,12 +206,25 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Kopyala" Style="{StaticResource ToolbarButtonStyle}"/>
-                <Button Content="CSV" Style="{StaticResource ToolbarButtonStyle}"/>
-                <Button Content="Excel" Style="{StaticResource ToolbarButtonStyle}"/>
-                <Button Content="PDF" Style="{StaticResource ToolbarButtonStyle}"/>
-                <Button Content="Yazdır" Style="{StaticResource ToolbarButtonStyle}"/>
+            <StackPanel Grid.Column="0"
+                        Orientation="Horizontal">
+
+                <Button Content="Kopyala"
+                        Style="{StaticResource ToolbarButtonStyle}"/>
+
+                <Button Content="CSV"
+                        Style="{StaticResource ToolbarButtonStyle}"/>
+
+                <Button Content="Excel"
+                        Style="{StaticResource ToolbarButtonStyle}"/>
+
+                <Button Content="PDF"
+                        Style="{StaticResource ToolbarButtonStyle}"
+                        Click="PdfButton_Click"/>
+
+                <Button Content="Yazdır"
+                        Style="{StaticResource ToolbarButtonStyle}"/>
+
             </StackPanel>
 
             <Button Grid.Column="1"
@@ -226,146 +237,209 @@
                         Orientation="Horizontal"
                         VerticalAlignment="Bottom"
                         Margin="0,0,0,4">
+
                 <TextBlock Text="Hızlı Arama"
                            FontSize="16"
                            Foreground="Black"
                            Margin="0,0,28,0"
                            VerticalAlignment="Center"/>
+
                 <StackPanel>
                     <TextBlock Text="Kayıt Ara"
                                FontSize="16"
                                Foreground="#9E9E9E"
                                Margin="0,0,0,8"/>
+
                     <Border Width="160"
                             BorderBrush="#C9CDD2"
                             BorderThickness="0,0,0,1"/>
                 </StackPanel>
+
             </StackPanel>
         </Grid>
 
-        <!-- DataGrid -->
         <DataGrid Grid.Row="5"
                   x:Name="HakedisGrid"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   HeadersVisibility="Column"
                   GridLinesVisibility="All"
-                  HorizontalGridLinesBrush="#AEB6BF"
-                  VerticalGridLinesBrush="#AEB6BF"
-                  BorderBrush="#AEB6BF"
+                  HorizontalGridLinesBrush="#D0D7DE"
+                  VerticalGridLinesBrush="#D0D7DE"
+                  BorderBrush="#B8C0CC"
                   BorderThickness="1"
                   Background="White"
                   RowBackground="White"
-                  AlternatingRowBackground="White"
+                  AlternatingRowBackground="#F8FAFC"
                   RowHeaderWidth="0"
-                  ColumnHeaderHeight="72"
-                  RowHeight="170"
-                  FontSize="16"
+                  ColumnHeaderHeight="56"
+                  RowHeight="58"
+                  FontSize="14"
                   SelectionMode="Single"
                   SelectionUnit="FullRow"
                   CanUserResizeRows="False"
                   CanUserReorderColumns="False"
-                  HorizontalScrollBarVisibility="Auto">
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
 
             <DataGrid.Resources>
+
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Background" Value="White"/>
                     <Setter Property="Foreground" Value="#1E1E1E"/>
                     <Setter Property="FontWeight" Value="SemiBold"/>
-                    <Setter Property="FontSize" Value="17"/>
-                    <Setter Property="BorderBrush" Value="#AEB6BF"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="BorderBrush" Value="#D0D7DE"/>
                     <Setter Property="BorderThickness" Value="0,0,1,1"/>
-                    <Setter Property="Padding" Value="10,0,10,0"/>
+                    <Setter Property="Padding" Value="8,0"/>
                     <Setter Property="HorizontalContentAlignment" Value="Left"/>
                     <Setter Property="VerticalContentAlignment" Value="Center"/>
                 </Style>
 
                 <Style TargetType="DataGridCell">
-                    <Setter Property="BorderBrush" Value="#AEB6BF"/>
+                    <Setter Property="BorderBrush" Value="#D0D7DE"/>
                     <Setter Property="BorderThickness" Value="0,0,1,1"/>
-                    <Setter Property="Padding" Value="8,8,8,8"/>
-                    <Setter Property="VerticalContentAlignment" Value="Top"/>
+                    <Setter Property="Padding" Value="8,4"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
                     <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
                 </Style>
 
                 <Style TargetType="DataGridRow">
                     <Setter Property="Background" Value="White"/>
                     <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="MinHeight" Value="58"/>
                 </Style>
+
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="" Width="42">
+
+                <DataGridTemplateColumn Header="" Width="36">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="▶"
                                        Foreground="#6E6E6E"
                                        VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       Margin="0,62,0,0"/>
+                                       HorizontalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="78"/>
-                <DataGridTextColumn Header="Servis Ünvan" Binding="{Binding ServiceTitle}" Width="190"/>
-                <DataGridTextColumn Header="SAP&#x0a;Servis&#x0a;Kodu" Binding="{Binding SapServiceCode}" Width="120"/>
-                <DataGridTextColumn Header="Servis&#x0a;Sorumlusu" Binding="{Binding ServiceResponsible}" Width="150"/>
+                <DataGridTextColumn Header="Id"
+                                    Binding="{Binding Id}"
+                                    Width="80"/>
 
-                <DataGridTemplateColumn Header="İçerik&#x0a;Bilgisi" Width="110">
+                <DataGridTextColumn Header="Servis Ünvan"
+                                    Binding="{Binding ServiceTitle}"
+                                    Width="180"/>
+
+                <DataGridTextColumn Header="SAP Servis Kodu"
+                                    Binding="{Binding SapServiceCode}"
+                                    Width="120"/>
+
+                <DataGridTextColumn Header="Servis Sorumlusu"
+                                    Binding="{Binding ServiceResponsible}"
+                                    Width="150"/>
+
+                <DataGridTemplateColumn Header="İçerik Bilgisi" Width="130">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" Margin="0,48,0,0">
-                                <Border Background="#7CC019" CornerRadius="14" Width="34" Height="28" Margin="0,0,4,0">
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+
+                                <Border Background="#7CC019"
+                                        CornerRadius="12"
+                                        Width="30"
+                                        Height="24"
+                                        Margin="0,0,4,0">
                                     <TextBlock Text="{Binding GreenCount}"
                                                Foreground="White"
                                                FontWeight="Bold"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"/>
                                 </Border>
-                                <TextBlock Text="/" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                <Border Background="#1292D4" CornerRadius="14" Width="34" Height="28" Margin="0,0,4,0">
+
+                                <TextBlock Text="/"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,4,0"/>
+
+                                <Border Background="#1292D4"
+                                        CornerRadius="12"
+                                        Width="30"
+                                        Height="24"
+                                        Margin="0,0,4,0">
                                     <TextBlock Text="{Binding BlueCount}"
                                                Foreground="White"
                                                FontWeight="Bold"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"/>
                                 </Border>
-                                <TextBlock Text="/" VerticalAlignment="Center" Margin="0,0,4,0"/>
-                                <Border Background="#F0001E" CornerRadius="14" Width="34" Height="28">
+
+                                <TextBlock Text="/"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,4,0"/>
+
+                                <Border Background="#F0001E"
+                                        CornerRadius="12"
+                                        Width="30"
+                                        Height="24">
                                     <TextBlock Text="{Binding RedCount}"
                                                Foreground="White"
                                                FontWeight="Bold"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"/>
                                 </Border>
+
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Header="Fatura&#x0a;Numarası" Binding="{Binding InvoiceNumber}" Width="190"/>
-                <DataGridTextColumn Header="Fatura&#x0a;Tarihi" Binding="{Binding InvoiceDate}" Width="120"/>
-                <DataGridTextColumn Header="Ön&#x0a;Onay&#x0a;Set&#x0a;Tarihi" Binding="{Binding PreApprovalDate}" Width="130"/>
-                <DataGridTextColumn Header="Ön&#x0a;Onay&#x0a;Set&#x0a;Onay&#x0a;Tarihi" Binding="{Binding PreApprovalApproveDate}" Width="130"/>
-                <DataGridTextColumn Header="Set&#x0a;Tarihi" Binding="{Binding SetDate}" Width="120"/>
-                <DataGridTextColumn Header="Set&#x0a;Onay&#x0a;Tarihi" Binding="{Binding SetApproveDate}" Width="120"/>
-                <DataGridTextColumn Header="Export&#x0a;Tarihi" Binding="{Binding ExportDate}" Width="120"/>
+                <DataGridTextColumn Header="Fatura Numarası"
+                                    Binding="{Binding InvoiceNumber}"
+                                    Width="160"/>
 
-                <DataGridTemplateColumn Header="" Width="110">
+                <DataGridTextColumn Header="Fatura Tarihi"
+                                    Binding="{Binding InvoiceDate}"
+                                    Width="120"/>
+
+                <DataGridTextColumn Header="Ön Onay Set Tarihi"
+                                    Binding="{Binding PreApprovalDate}"
+                                    Width="150"/>
+
+                <DataGridTextColumn Header="Ön Onay Set Onay Tarihi"
+                                    Binding="{Binding PreApprovalApproveDate}"
+                                    Width="170"/>
+
+                <DataGridTextColumn Header="Set Tarihi"
+                                    Binding="{Binding SetDate}"
+                                    Width="120"/>
+
+                <DataGridTextColumn Header="Set Onay Tarihi"
+                                    Binding="{Binding SetApproveDate}"
+                                    Width="140"/>
+
+                <DataGridTextColumn Header="Export Tarihi"
+                                    Binding="{Binding ExportDate}"
+                                    Width="120"/>
+
+                <DataGridTemplateColumn Header="İşlem" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="İşlem"
                                     Style="{StaticResource OperationButtonStyle}"
-                                    Margin="0,54,0,0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"
                                     Click="Operation_Click"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
             </DataGrid.Columns>
+
         </DataGrid>
 
-        <!-- Pagination -->
         <Grid Grid.Row="6" Margin="0,20,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -376,21 +450,27 @@
             <StackPanel Grid.Column="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                <Button Content="‹" Style="{StaticResource PagerButtonStyle}"/>
+
+                <Button Content="‹"
+                        Style="{StaticResource PagerButtonStyle}"/>
 
                 <Border Width="38"
                         Height="38"
                         CornerRadius="19"
                         Background="#005A9E"
                         Margin="10,0">
+
                     <TextBlock Text="1"
                                Foreground="White"
                                FontSize="18"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
+
                 </Border>
 
-                <Button Content="›" Style="{StaticResource PagerButtonStyle}"/>
+                <Button Content="›"
+                        Style="{StaticResource PagerButtonStyle}"/>
+
             </StackPanel>
 
             <TextBlock Grid.Column="2"
@@ -399,6 +479,9 @@
                        VerticalAlignment="Center"
                        FontSize="16"
                        Foreground="Black"/>
+
         </Grid>
+
     </Grid>
+
 </Page>

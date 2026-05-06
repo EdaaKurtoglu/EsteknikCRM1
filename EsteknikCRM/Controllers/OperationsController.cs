@@ -148,10 +148,31 @@ namespace EsteknikCRM.Api.Controllers
 
             return Ok(list);
         }
+        
+        [HttpPut("approve")]
+        public async Task<IActionResult> ApproveOperation([FromBody] ApproveRequest request)
+        {
+            var operation = await _context.WorkflowTeamOperations
+                .FirstOrDefaultAsync(x => x.Id == request.OperationId);
+
+            if (operation == null)
+                return NotFound();
+
+            operation.ApprovalStatus = request.Status;
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
     public class MarkBilledRequest
     {
         public string HakedisSetId { get; set; }
         public List<string> OperationIds { get; set; }
+    }
+    public class ApproveRequest
+    {
+        public string OperationId { get; set; }
+        public int Status { get; set; } // 1 = onay, 2 = red
     }
 }

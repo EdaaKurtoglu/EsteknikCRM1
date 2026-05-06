@@ -208,7 +208,7 @@ namespace EsteknikCRM1.Pages
                         ? "Merkez"
                         : "Müşteri",
                     
-                    GreenCount = items.Count,
+                    GreenCount = 0,
                     BlueCount = 0,
                     RedCount = 0,
 

@@ -35,7 +35,7 @@ namespace EsteknikCRM1.Pages
                 {
                     Id = 2664867,
                     ExtraDescription2 = "",
-                    ServiceName = "ES IKLIMLENDIRME VE OTOMASYON SISTEMLERI OTOMOTIV TAAHHÜT HAYVANCILIK SAN. TIC. LTD. STI.",
+                    ServiceName = "ESBE MUHENDISLIK",
                     TeamName = "",
                     Date = "24/03/2026",
                     StockType = "Yedek Parça",
@@ -50,7 +50,7 @@ namespace EsteknikCRM1.Pages
                 {
                     Id = 2664866,
                     ExtraDescription2 = "",
-                    ServiceName = "ES IKLIMLENDIRME VE OTOMASYON SISTEMLERI OTOMOTIV TAAHHÜT HAYVANCILIK SAN. TIC. LTD. STI.",
+                    ServiceName = "ESBE MUHENDISLIK",
                     TeamName = "",
                     Date = "24/03/2026",
                     StockType = "Yedek Parça",
