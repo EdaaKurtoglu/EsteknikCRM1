@@ -26,7 +26,7 @@ namespace EsteknikCRM1.Services
                     { "TeamName", team.TeamName ?? string.Empty },
                     { "VehiclePlate", team.VehiclePlate ?? string.Empty },
                     { "IsActive", team.IsActive },
-                    { "Status", team.Status ?? "Aktif" },
+                    { "Status", team.Status ?? "active" },
                     { "CreatedDate", team.CreatedDate.ToUniversalTime() },
                     { "PassiveDate", team.PassiveDate.HasValue ? (object)team.PassiveDate.Value.ToUniversalTime() : null },
                     { "ServiceName", team.ServiceName ?? string.Empty

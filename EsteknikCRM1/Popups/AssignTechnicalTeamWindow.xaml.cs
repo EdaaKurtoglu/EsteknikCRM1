@@ -1,5 +1,4 @@
-﻿using EsteknikCRM1.DatabaseCon;
-using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
 using System;
 using System.Collections.Generic;

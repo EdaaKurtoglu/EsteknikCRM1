@@ -37,7 +37,7 @@ namespace EsteknikCRM1.Services
                     { "IsActive", address.IsActive },
                     { "IsResidence", address.IsResidence },
                     { "OwnershipType", address.OwnershipType ?? "" },
-                    { "Status", address.Status ?? "Aktif" },
+                    { "Status", address.Status ?? "acttive" },
                     { "CreatedDate", address.CreatedDate.HasValue ? address.CreatedDate.Value : (object)"" },
                     { "PassiveDate", address.PassiveDate.HasValue ? address.PassiveDate.Value : (object)"" }
                 };
@@ -76,7 +76,7 @@ namespace EsteknikCRM1.Services
                         FlatNo = data.ContainsKey("FlatNo") ? data["FlatNo"]?.ToString() : "",
 
                         OwnershipType = data.ContainsKey("OwnershipType") ? data["OwnershipType"]?.ToString() : "",
-                        Status = data.ContainsKey("Status") ? data["Status"]?.ToString() : "Aktif",
+                        Status = data.ContainsKey("Status") ? data["Status"]?.ToString() : "active",
                         IsActive = data.ContainsKey("IsActive") && data["IsActive"] is bool active && active,
                         IsResidence = data.ContainsKey("IsResidence") && data["IsResidence"] is bool residence && residence
                     });

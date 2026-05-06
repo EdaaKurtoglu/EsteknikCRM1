@@ -84,7 +84,7 @@ namespace EsteknikCRM1.Services
             { "TopGroup", device.TopGroup ?? "" },
             { "SubGroup", device.SubGroup ?? "" },
             { "SpecialGroup", device.SpecialGroup ?? "" },
-            { "Status", device.Status ?? "Aktif" }
+            { "Status", device.Status ?? "active" }
         };
 
                 if (device.CommissionDate.HasValue)

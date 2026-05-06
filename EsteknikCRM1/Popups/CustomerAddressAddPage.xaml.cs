@@ -1,5 +1,4 @@
-﻿using EsteknikCRM1.DatabaseCon;
-using EsteknikCRM1.Models;
+﻿using EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
 using System;
 using System.Linq;
@@ -102,7 +101,7 @@ namespace EsteknikCRM1.Popups
                     OwnershipType = ownershipType,
                     CreatedDate = DateTime.UtcNow,
                     PassiveDate = null,
-                    Status = IsActiveCheckBox.IsChecked == true ? "Aktif" : "Pasif"
+                    Status = IsActiveCheckBox.IsChecked == true ? "active" : "pasive"
                 };
 
                 //await FirebaseService.Instance.AddCustomerAddressAsync(address);

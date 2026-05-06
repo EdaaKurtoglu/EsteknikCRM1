@@ -78,7 +78,7 @@ namespace EsteknikCRM1.Pages
                     SalesInfo = SalesInfoTextBox.Text?.Trim() ?? "",
 
                     CreatedDate = DateTime.UtcNow,
-                    Status = "Aktif"
+                    Status = "active"
                 };
 
                 string newId = await AppServices.ApiProductService.AddProductAsync(product);

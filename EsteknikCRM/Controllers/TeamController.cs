@@ -49,7 +49,7 @@ namespace EsteknikCRM.Api.Controllers
                 team.ServiceName ??= "";
                 team.MemberName ??= "";
                 team.Role ??= "";
-                team.Status ??= "Aktif";
+                team.Status ??= "active";
                 team.CreatedDate = team.CreatedDate == default ? DateTime.UtcNow : team.CreatedDate;
                 team.PassiveDate = null;
                 _context.Teams.Add(team);

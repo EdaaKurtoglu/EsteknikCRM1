@@ -31,31 +31,7 @@ namespace EsteknikCRM1
         {
             bool isAdmin = (_loggedUser?.UserRole ?? "").ToLower() == "admin";
 
-            if (!isAdmin)
-            {
-                ReportsBtn.IsEnabled = false;
-                ServiceLocationBtn.IsEnabled = false;
-                FreeMaterialBtn.IsEnabled = false;
-                ReturnOperationBtn.IsEnabled = false;
-                StockActionBtn.IsEnabled = false;
-                AppointmentBtn.IsEnabled = false;
-                IndividualCustomerCardsBtn.IsEnabled = false;
-                CorporateCustomerCardsBtn.IsEnabled = false;
-                TeamDefinitionsBtn.IsEnabled = false;
-                DutyDefinitionsBtn.IsEnabled = false;
-                ProductDefinitionsBtn.IsEnabled = false;
-                DeviceCardsBtn.IsEnabled = false;
-                SparePartDefinitionsBtn.IsEnabled = false;
-                EMessageBtn.IsEnabled = false;
-                NotificationsBtn.IsEnabled = false;
-                MagazineBtn.IsEnabled = false;
-                PriceProductButton.IsEnabled = false;
-
-                // sadece bunlar açık
-                HomeBtn.IsEnabled = true;
-                WorkflowBtn.IsEnabled = true;
-                HakedisActionBtn.IsEnabled = true;
-            }
+            
         }
         private void SetLoggedUserInfo()
         {

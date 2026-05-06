@@ -23,7 +23,7 @@ namespace EsteknikCRM1.Services.Api
                 CustomerId = customerId,
                 DeviceId = deviceId,
                 CreatedDate = DateTime.Now.ToUniversalTime(),
-                Status = "Aktif"
+                Status = "active"
             };
 
             var response = await ApiClient.Client.PostAsJsonAsync("api/customerdevice", payload);

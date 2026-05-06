@@ -29,7 +29,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829991",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -44,7 +44,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829992",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -59,7 +59,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829992",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -89,7 +89,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829991",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -104,7 +104,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "",
                     WarrantyMonth = "",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -119,7 +119,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829940",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -134,7 +134,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829990",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -149,7 +149,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829940",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -164,7 +164,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829937",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -179,7 +179,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829940",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -194,7 +194,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829942",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -209,7 +209,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829940",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 },
                 new ProductItem
@@ -224,7 +224,7 @@ namespace EsteknikCRM1.Pages
                     CostCenter = "829940",
                     WarrantyMonth = "24",
                     Price = "",
-                    Status = "Aktif",
+                    Status = "active",
                     Country = "Türkiye"
                 }
             };

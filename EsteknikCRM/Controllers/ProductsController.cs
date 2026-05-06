@@ -40,7 +40,7 @@ public class ProductsController : ControllerBase
             product.Country ??= "";
             product.ProductionPlace ??= "";
             product.SalesInfo ??= "";
-            product.Status ??= "Aktif";
+            product.Status ??= "active";
             product.CreatedDate = product.CreatedDate == default ? DateTime.UtcNow : product.CreatedDate;
 
             _context.Products.Add(product);

@@ -53,7 +53,7 @@ namespace EsteknikCRM.Api.Controllers
                 address.District ??= "";
                 address.City ??= "";
                 address.Country ??= "";
-                address.Status ??= "Aktif";
+                address.Status ??= "active";
                 address.OwnershipType ??= "";
                 address.PostCode ??= "";
                 address.CreatedDate ??= DateTime.UtcNow;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Models;
 using EsteknikCRM1.Services;
 

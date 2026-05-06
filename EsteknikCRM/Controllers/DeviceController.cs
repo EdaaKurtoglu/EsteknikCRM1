@@ -96,7 +96,7 @@ namespace EsteknikCRM.Api.Controllers
                 device.TopGroup ??= "";
                 device.SubGroup ??= "";
                 device.SpecialGroup ??= "";
-                device.Status ??= "Aktif";
+                device.Status ??= "active";
 
                 _context.Devices.Add(device);
                 await _context.SaveChangesAsync();
@@ -147,44 +147,39 @@ namespace EsteknikCRM.Api.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> GetBySerialOrStockCode([FromQuery] string? serialNo, [FromQuery] string? stockCode)
+        public async Task<IActionResult> GetBySerialOrStockCode(
+            [FromQuery] string? serialNo,
+            [FromQuery] string? stockCode)
         {
             serialNo = serialNo?.Trim();
             stockCode = stockCode?.Trim();
 
-            if (string.IsNullOrWhiteSpace(serialNo) && string.IsNullOrWhiteSpace(stockCode))
+            if (string.IsNullOrWhiteSpace(serialNo) &&
+                string.IsNullOrWhiteSpace(stockCode))
+            {
                 return BadRequest("Seri numarası veya stok kodu girilmelidir.");
-
-            var query = _context.Devices.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(serialNo) && !string.IsNullOrWhiteSpace(stockCode))
-            {
-                var device = await query.FirstOrDefaultAsync(x =>
-                    x.SerialNumber == serialNo &&
-                    x.StockCode == stockCode);
-
-                if (device == null)
-                    return NotFound("Seri numarası ve stok kodu birlikte eşleşen cihaz bulunamadı.");
-
-                return Ok(device);
             }
 
-            if (!string.IsNullOrWhiteSpace(serialNo))
-            {
-                var device = await query.FirstOrDefaultAsync(x => x.SerialNumber == serialNo);
+            var device = await _context.Devices
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x =>
 
-                if (device == null)
-                    return NotFound("Seri numarasına ait cihaz bulunamadı.");
+                    (!string.IsNullOrWhiteSpace(serialNo) &&
+                     x.SerialNumber == serialNo)
 
-                return Ok(device);
-            }
+                    ||
 
-            var stockDevice = await query.FirstOrDefaultAsync(x => x.DeviceCode == stockCode);
+                    (!string.IsNullOrWhiteSpace(stockCode) &&
+                     (
+                         x.StockCode == stockCode ||
+                         x.DeviceCode == stockCode
+                     ))
+                );
 
-            if (stockDevice == null)
-                return NotFound("Stok koduna ait cihaz bulunamadı.");
+            if (device == null)
+                return NotFound("Cihaz bulunamadı.");
 
-            return Ok(stockDevice);
+            return Ok(device);
         }
     }
 }

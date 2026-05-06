@@ -66,7 +66,7 @@ namespace EsteknikCRM1.Pages
                     SpecialProjectInfo = SpecialProjectBox.Text?.Trim(),
                     BuildingInfo = BuildingInfoBox.Text?.Trim(),
 
-                    Status = "Aktif"
+                    Status = "active"
                 };
 
                 string newCustomerId = await AppServices.ApiCustomerService.AddCustomerAsync(customer);
@@ -88,7 +88,7 @@ namespace EsteknikCRM1.Pages
                         City = CityBox.Text?.Trim(),
                         District = DistrictBox.Text?.Trim(),
                         Neighborhood = NeighborhoodBox.Text?.Trim(),
-                        Status = "Aktif",
+                        Status = "active",
                         Id = Guid.NewGuid().ToString(), // 🔥 BURASI ÇÖZÜM
                         CreatedDate = DateTime.Now.ToUniversalTime(),
 

@@ -15,7 +15,6 @@ using System.Text.RegularExpressions;
 using System.Windows.Media.Animation;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
-using EsteknikCRM1.DatabaseCon;
 using EsteknikCRM1.Services;
 
 

@@ -38,7 +38,7 @@ namespace EsteknikCRM1.Services
                     Email = data.ContainsKey("Email") ? data["Email"]?.ToString() : "",
                     Address = data.ContainsKey("Address") ? data["Address"]?.ToString() : "",
 
-                    Status = data.ContainsKey("Status") ? data["Status"]?.ToString() : "Aktif"
+                    Status = data.ContainsKey("Status") ? data["Status"]?.ToString() : "active"
                 });
             }
 
@@ -77,7 +77,7 @@ namespace EsteknikCRM1.Services
                 { "SpecialProjectInfo", customer.SpecialProjectInfo ?? "" },
                 { "BuildingInfo", customer.BuildingInfo ?? "" },
 
-                { "Status", customer.Status ?? "Aktif" }
+                { "Status", customer.Status ?? "active" }
             };
 
             DocumentReference addedDoc = await customersRef.AddAsync(data);

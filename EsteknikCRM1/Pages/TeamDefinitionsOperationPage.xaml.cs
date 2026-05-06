@@ -37,9 +37,9 @@ namespace EsteknikCRM1.Pages
                     Id = Guid.NewGuid().ToString(),
                     TeamName = TeamNameBox.Text.Trim(),
                     VehiclePlate = VehiclePlateBox.Text?.Trim() ?? "",
-                    ServiceName = "ES İKLİMLENDİRME SAN.TİC.LTD.ŞTİ.",
+                    ServiceName = "ESBE MÜHENDİSLİK",
                     IsActive = true,
-                    Status = "Aktif",
+                    Status = "active",
                     MemberCount = 1,
                     CreatedDate = DateTime.UtcNow,
                     PassiveDate = null
