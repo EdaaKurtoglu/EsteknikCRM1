@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F6FD927A-95CC-412F-8CE3-FE02C7916921}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>EsteknikCRM1</RootNamespace>
-    <AssemblyName>EsteknikCRM1</AssemblyName>
+    <RootNamespace>EsbeCRM1</RootNamespace>
+    <AssemblyName>EsbeCRM1</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -27,7 +27,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationRevision>8</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -65,7 +65,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>esbe.ico</ApplicationIcon>
+    <ApplicationIcon>esbelogo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Firebase.Auth, Version=4.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -806,6 +806,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="esbelogo.ico" />
     <Content Include="serviceAccountKey.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -916,7 +917,9 @@
     <Resource Include="assets\esbe.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="esbe.ico" />
+    <Content Include="esbe.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Google.Api.CommonProtos.2.17.0\build\Google.Api.CommonProtos.targets" Condition="Exists('..\packages\Google.Api.CommonProtos.2.17.0\build\Google.Api.CommonProtos.targets')" />

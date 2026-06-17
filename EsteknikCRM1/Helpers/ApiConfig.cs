@@ -8,6 +8,6 @@ namespace EsteknikCRM1.Helpers
 {
     public static class ApiConfig
     {
-        public const string BaseUrl = "https://api.esbemuhendislik.com/";
+        public const string BaseUrl = "http://185.95.164.196:5000/";
     }
 }
